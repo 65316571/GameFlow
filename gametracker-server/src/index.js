@@ -65,10 +65,11 @@ app.get('/api/overview', async (req, res) => {
 
     // 最近5条记录
     const recentResult = await query(
-      `SELECT ps.*, g.name as game_name, gen.code as genre_code
+      `SELECT ps.*, g.name as game_name, gen.code as genre_code, plat.code as platform_code
        FROM play_sessions ps
        JOIN games g ON ps.game_id = g.id
        LEFT JOIN genres gen ON g.genre_id = gen.id
+       LEFT JOIN platforms plat ON g.platform_id = plat.id
        ORDER BY ps.start_time DESC
        LIMIT 5`
     )
@@ -117,14 +118,27 @@ app.get('/api/overview', async (req, res) => {
       })
     }
 
+    // 格式化最近记录
+    const recentSessions = recentResult.rows.map(s => ({
+      id: s.id,
+      game_name: s.game_name,
+      genre_code: s.genre_code,
+      platform_code: s.platform_code,
+      played_at: new Date(s.start_time).toLocaleString('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      duration_seconds: s.duration
+    }))
+
     res.json({
-      totalGames,
-      totalDuration,
-      weeklyDuration,
-      monthlyDuration,
-      playedToday,
-      recentSessions: recentResult.rows,
-      weeklyChart
+      total_games: totalGames,
+      total_platforms: 5,
+      total_seconds: totalDuration,
+      total_sessions: await query('SELECT COUNT(*) FROM play_sessions').then(r => parseInt(r.rows[0].count)),
+      week_seconds: weeklyDuration,
+      month_seconds: monthlyDuration,
+      month_days_played: await query('SELECT COUNT(DISTINCT DATE(start_time)) FROM play_sessions WHERE start_time >= $1', [monthStart]).then(r => parseInt(r.rows[0].count)),
+      played_today: playedToday,
+      recent_sessions: recentSessions,
+      weekly_chart: weeklyChart.map(d => ({ label: d.day, total_minutes: Math.round(d.total / 60) }))
     })
   } catch (err) {
     console.error('Get overview error:', err)

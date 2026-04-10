@@ -6,9 +6,10 @@
 
 GameFlow（前端项目名为 GameTracker）是一个游戏时间追踪和游戏资产管理系统。核心功能包括：
 
-- **总览页**: 游戏数据统计、本周时长柱状图、最近游玩记录
+- **总览页**: 游戏数据统计、本周时长柱状图（含上周对比）、最近游玩记录
 - **游戏库**: 游戏管理（增删改查），支持按平台和类型筛选
-- **游玩计时**: 实时计时器，支持开始/停止计时，支持手动补录记录
+- **开始游玩**: 实时计时器，选择游戏后开始/停止计时
+- **记录统计**: 展示最近游玩记录列表，支持手动补录数据
 - **日历**: 按日历视图查看每日游玩时长和详细记录
 - **百科**: 游戏类型百科（RPG、FPS、MOBA、SIM、ADV、OTHER），含介绍和代表作
 
@@ -43,7 +44,8 @@ GameFlow/
 │   │   ├── pages/
 │   │   │   ├── Overview.jsx      # 总览页：统计数据、本周柱状图、最近记录
 │   │   │   ├── Library.jsx       # 游戏库页：游戏列表、筛选、增删改
-│   │   │   ├── Timer.jsx         # 计时页：计时器、补录表单、最近记录
+│   │   │   ├── Timer.jsx         # 开始游玩页：计时器、开始/停止计时
+│   │   │   ├── Stats.jsx         # 记录统计页：最近记录、补录功能
 │   │   │   ├── Calendar.jsx      # 日历页：月历视图、日期详情
 │   │   │   └── Wiki.jsx          # 百科页：游戏类型百科（静态配置）
 │   │   ├── utils.js              # 工具函数：时长格式化、颜色映射等
@@ -143,23 +145,23 @@ const api = axios.create({
 
 ### API 端点列表
 
-| 功能 | 方法 | 端点 |
-|------|------|------|
-| 总览数据 | GET | `/overview` |
-| 游戏列表 | GET | `/games` |
-| 创建游戏 | POST | `/games` |
-| 更新游戏 | PUT | `/games/:id` |
-| 删除游戏 | DELETE | `/games/:id` |
-| 类型列表 | GET | `/genres` |
-| 平台列表 | GET | `/platforms` |
-| 开始计时 | POST | `/sessions/start` |
-| 停止计时 | POST | `/sessions/:id/stop` |
-| 活跃会话 | GET | `/sessions/active` |
-| 手动补录 | POST | `/sessions/manual` |
-| 最近记录 | GET | `/sessions/recent` |
-| 时长统计 | GET | `/stats/playtime` |
-| 月历数据 | GET | `/calendar` |
-| 日详情 | GET | `/calendar/day` |
+| 功能 | 方法 | 端点 | 使用页面 |
+|------|------|------|----------|
+| 总览数据 | GET | `/overview` | 总览 |
+| 游戏列表 | GET | `/games` | 游戏库、开始游玩、记录统计 |
+| 创建游戏 | POST | `/games` | 游戏库 |
+| 更新游戏 | PUT | `/games/:id` | 游戏库 |
+| 删除游戏 | DELETE | `/games/:id` | 游戏库 |
+| 类型列表 | GET | `/genres` | 游戏库 |
+| 平台列表 | GET | `/platforms` | 游戏库、开始游玩 |
+| 开始计时 | POST | `/sessions/start` | 开始游玩 |
+| 停止计时 | POST | `/sessions/:id/stop` | 开始游玩 |
+| 活跃会话 | GET | `/sessions/active` | 开始游玩 |
+| 手动补录 | POST | `/sessions/manual` | 记录统计 |
+| 最近记录 | GET | `/sessions/recent` | 记录统计、总览 |
+| 时长统计 | GET | `/stats/playtime` | 总览 |
+| 月历数据 | GET | `/calendar` | 日历 |
+| 日详情 | GET | `/calendar/day` | 日历 |
 
 ## 代码规范
 
@@ -218,13 +220,14 @@ const api = axios.create({
 
 ## 路由结构
 
-| 路径 | 页面 | 组件 |
-|------|------|------|
-| `/` | 总览 | `Overview` |
-| `/library` | 游戏库 | `Library` |
-| `/timer` | 计时 | `Timer` |
-| `/calendar` | 日历 | `Calendar` |
-| `/wiki` | 百科 | `Wiki` |
+| 路径 | 页面 | 组件 | 功能描述 |
+|------|------|------|----------|
+| `/` | 总览 | `Overview` | 统计数据、本周柱状图、最近记录 |
+| `/library` | 游戏库 | `Library` | 游戏列表、筛选、增删改 |
+| `/timer` | 开始游玩 | `Timer` | 选择游戏、开始/停止计时 |
+| `/stats` | 记录统计 | `Stats` | 最近记录列表、补录功能 |
+| `/calendar` | 日历 | `Calendar` | 月历视图、日期详情 |
+| `/wiki` | 百科 | `Wiki` | 游戏类型百科 |
 
 ## 数据库设计参考
 

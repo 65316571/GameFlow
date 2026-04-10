@@ -3,7 +3,8 @@ import { NavLink } from 'react-router-dom'
 const links = [
   { to: '/',        icon: '⊞', label: '总览' },
   { to: '/library', icon: '◫', label: '游戏库' },
-  { to: '/timer',   icon: '◷', label: '游玩计时' },
+  { to: '/timer',   icon: '◷', label: '开始游玩' },
+  { to: '/stats',   icon: '◧', label: '记录统计' },
   { to: '/calendar',icon: '▦', label: '日历' },
   { to: '/wiki',    icon: '◉', label: '百科' },
 ]

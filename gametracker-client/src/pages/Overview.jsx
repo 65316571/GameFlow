@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
-  BarElement, Tooltip,
+  BarElement, LineElement, PointElement, Tooltip,
 } from 'chart.js'
 import { getOverview, getPlaytimeStats } from '../api'
 import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip)
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip)
 
 export default function Overview() {
   const [overview, setOverview] = useState(null)
@@ -29,8 +29,10 @@ export default function Overview() {
   const todaySession = overview?.today_sessions?.[0]
   const recentSessions = overview?.recent_sessions || []
 
-  const chartLabels = weekData.map(d => d.label)
-  const chartValues = weekData.map(d => Math.round(d.total_minutes || 0))
+  // 新的数据结构：weekData = { labels, thisWeek, lastWeek }
+  const chartLabels = weekData.labels || []
+  const thisWeekValues = weekData.thisWeek || []
+  const lastWeekValues = weekData.lastWeek || []
 
   return (
     <div>
@@ -77,26 +79,57 @@ export default function Overview() {
             <Bar
               data={{
                 labels: chartLabels,
-                datasets: [{
-                  data: chartValues,
-                  backgroundColor: '#afa9ec',
-                  borderRadius: 4,
-                  borderSkipped: false,
-                }]
+                datasets: [
+                  {
+                    type: 'bar',
+                    label: '本周',
+                    data: thisWeekValues,
+                    backgroundColor: '#afa9ec',
+                    borderRadius: 4,
+                    borderSkipped: false,
+                    order: 2,
+                  },
+                  {
+                    type: 'line',
+                    label: '上周',
+                    data: lastWeekValues,
+                    borderColor: '#b4b2a9',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 3,
+                    pointBackgroundColor: '#b4b2a9',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    tension: 0.3,
+                    order: 1,
+                  }
+                ]
               }}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                  legend: { display: false },
+                  legend: { 
+                    display: true,
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                      usePointStyle: true,
+                      boxWidth: 8,
+                      font: { size: 11 }
+                    }
+                  },
                   tooltip: {
                     callbacks: {
                       label: (ctx) => {
+                        const label = ctx.dataset.label
                         const m = ctx.raw
-                        if (m === 0) return '无记录'
+                        if (m === 0) return `${label}: 无记录`
                         const h = Math.floor(m / 60)
                         const min = m % 60
-                        return h > 0 ? `${h}h ${min}m` : `${min}m`
+                        const timeStr = h > 0 ? `${h}h ${min}m` : `${min}m`
+                        return `${label}: ${timeStr}`
                       }
                     }
                   }

@@ -6,7 +6,7 @@ const router = Router()
 // GET /api/games - 获取游戏列表（支持筛选）
 router.get('/', async (req, res) => {
   try {
-    const { genre_id, platform_id } = req.query
+    const { genre_id, platform_id, genre_code, platform_code } = req.query
     let sql = `
       SELECT g.*, 
         gen.code as genre_code, gen.name as genre_name,
@@ -26,6 +26,14 @@ router.get('/', async (req, res) => {
     if (platform_id) {
       sql += ` AND g.platform_id = $${paramIndex++}`
       params.push(platform_id)
+    }
+    if (genre_code) {
+      sql += ` AND gen.code = $${paramIndex++}`
+      params.push(genre_code)
+    }
+    if (platform_code) {
+      sql += ` AND plat.code = $${paramIndex++}`
+      params.push(platform_code)
     }
 
     sql += ` ORDER BY g.created_at DESC`

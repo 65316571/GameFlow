@@ -49,123 +49,124 @@ input:focus, select:focus, textarea:focus {
   padding: 0 1.25rem 1.5rem;
   border-bottom: 0.5px solid #e8e6df;
 }
-.sidebar-nav { padding: 0.75rem 0.75rem; display: flex; flex-direction: column; gap: 2px; }
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-  color: #888780;
-  background: none;
-  border: none;
-  text-align: left;
-  width: 100%;
-  transition: background .12s, color .12s;
-}
-.nav-link:hover { background: #f1efe8; color: #2c2c2a; }
-.nav-link.active { background: #eeedfe; color: #534ab7; font-weight: 500; }
-.nav-link .nav-icon { font-size: 15px; width: 18px; text-align: center; }
 
-/* Main */
-.main { margin-left: 200px; padding: 2rem; flex: 1; max-width: calc(100vw - 200px); }
+/* Nav */
+.sidebar-nav { padding: 0.75rem 0; display: flex; flex-direction: column; }
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 1.25rem;
+  font-size: 13px; color: #888780;
+  transition: all .12s;
+}
+.nav-link:hover { color: #534ab7; background: #fafaf8; }
+.nav-link.active { color: #534ab7; background: #eeedfe; font-weight: 500; }
+.nav-icon { font-size: 14px; width: 20px; text-align: center; }
+
+/* Main content */
+.main { flex: 1; margin-left: 200px; padding: 1.5rem 2rem; }
 
 /* Page header */
-.page-header { margin-bottom: 1.5rem; }
-.page-title { font-size: 20px; font-weight: 600; color: #2c2c2a; }
-.page-subtitle { font-size: 13px; color: #888780; margin-top: 3px; }
+.page-header { margin-bottom: 1.25rem; }
+.page-title { font-size: 18px; font-weight: 600; color: #2c2c2a; }
+.page-subtitle { font-size: 12px; color: #888780; margin-top: 3px; }
 
 /* Cards */
 .card {
   background: #fff;
-  border: 0.5px solid #e8e6df;
   border-radius: 12px;
-  padding: 1.25rem;
+  border: 0.5px solid #e8e6df;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
-
-/* Metric cards */
-.metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
-.metric-card { background: #f5f5f3; border-radius: 8px; padding: 1rem; }
-.metric-label { font-size: 12px; color: #888780; margin-bottom: 5px; }
-.metric-value { font-size: 22px; font-weight: 600; color: #2c2c2a; }
-.metric-sub { font-size: 11px; color: #b4b2a9; margin-top: 3px; }
+.section-label { font-size: 13px; font-weight: 600; color: #888780; margin-bottom: 0.875rem; }
 
 /* Buttons */
 .btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 8px; font-size: 13px;
-  font-weight: 500; border: 0.5px solid #d3d1c7;
-  background: #fff; color: #2c2c2a; cursor: pointer;
-  transition: background .12s;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 7px 14px; font-size: 13px; border-radius: 8px;
+  border: 0.5px solid #d3d1c7; background: #fff; color: #2c2c2a;
+  transition: all .12s;
 }
-.btn:hover { background: #f1efe8; }
-.btn-primary { background: #7f77dd; color: #fff; border-color: #7f77dd; }
-.btn-primary:hover { background: #6b63cc; }
-.btn-danger { background: #fff; color: #e24b4a; border-color: #f09595; }
-.btn-danger:hover { background: #fcebeb; }
-.btn-sm { padding: 4px 10px; font-size: 12px; }
-.btn-ghost { border-color: transparent; background: none; }
-.btn-ghost:hover { background: #f1efe8; }
+.btn:hover { border-color: #888780; background: #fafaf8; }
+.btn-primary { background: #534ab7; color: #fff; border-color: #534ab7; }
+.btn-primary:hover { background: #433a9e; border-color: #433a9e; }
+.btn-danger { color: #e24b4a; border-color: #e24b4a; }
+.btn-danger:hover { background: #fdf2f2; }
+.btn-ghost { border-color: transparent; background: transparent; color: #888780; }
+.btn-ghost:hover { color: #2c2c2a; background: #f1efe8; }
 
-/* Badges / tags */
+/* Badges */
 .badge {
-  display: inline-block;
-  font-size: 11px; font-weight: 500;
-  padding: 2px 7px; border-radius: 4px;
+  font-size: 11px; padding: 2px 6px; border-radius: 4px;
+  font-weight: 500; display: inline-block;
 }
 .badge-platform { background: #f1efe8; color: #5f5e5a; }
-.badge-RPG  { background: #eeedfe; color: #534ab7; }
-.badge-FPS  { background: #faece7; color: #993c1d; }
+.badge-RPG { background: #eeedfe; color: #534ab7; }
+.badge-FPS { background: #faece7; color: #993c1d; }
 .badge-MOBA { background: #e1f5ee; color: #0f6e56; }
-.badge-SIM  { background: #e6f1fb; color: #185fa5; }
-.badge-ADV  { background: #faeeda; color: #854f0b; }
-.badge-OTHER{ background: #f1efe8; color: #5f5e5a; }
+.badge-SIM { background: #e6f1fb; color: #185fa5; }
+.badge-ADV { background: #faeeda; color: #854f0b; }
+.badge-OTHER { background: #f1efe8; color: #5f5e5a; }
 
 /* Game avatar */
 .game-avatar {
-  width: 36px; height: 36px; border-radius: 8px;
+  width: 40px; height: 40px; border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
   font-size: 13px; font-weight: 600; flex-shrink: 0;
 }
 
-/* Modal overlay */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.3);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 100;
+/* Metric cards */
+.metric-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
+  margin-bottom: 1.25rem;
 }
-.modal {
-  background: #fff; border-radius: 12px;
-  padding: 1.5rem; width: 420px;
-  border: 0.5px solid #e8e6df;
+.metric-card {
+  background: #fff; border: 0.5px solid #e8e6df; border-radius: 10px;
+  padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
-.modal-title { font-size: 15px; font-weight: 600; margin-bottom: 1.25rem; }
-.modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 1.25rem; }
+.metric-label { font-size: 11px; color: #888780; letter-spacing: .4px; }
+.metric-value { font-size: 22px; font-weight: 600; color: #2c2c2a; margin: 6px 0 2px; }
+.metric-sub { font-size: 11px; color: #b4b2a9; }
 
 /* Form fields */
 .field { margin-bottom: 12px; }
-.field label { font-size: 12px; color: #888780; display: block; margin-bottom: 4px; }
+.field label { display: block; font-size: 12px; color: #888780; margin-bottom: 5px; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-textarea { resize: vertical; min-height: 64px; }
 
-/* Divider */
-.divider { height: 0.5px; background: #e8e6df; margin: 1rem 0; }
-
-/* Section label */
-.section-label {
-  font-size: 11px; font-weight: 600; color: #b4b2a9;
-  letter-spacing: .6px; text-transform: uppercase; margin-bottom: 10px;
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; padding: 1rem;
 }
+.modal {
+  background: #fff; border-radius: 12px; border: 0.5px solid #e8e6df;
+  width: 100%; max-width: 420px; padding: 1.25rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+.modal-title { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+
+/* Calendar */
+.cal-day {
+  aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 12px; cursor: pointer; position: relative;
+}
+.cal-day:hover { background: #fafaf8; }
+.cal-day.is-today { background: #eeedfe; color: #534ab7; font-weight: 500; }
+.cal-day.is-active { outline: 1.5px solid #afa9ec; }
+.cal-day.empty { pointer-events: none; }
 
 /* Today banner */
 .today-banner {
-  display: flex; align-items: center; gap: 10px;
-  background: #eeedfe; border-radius: 8px;
+  display: flex; align-items: center; gap: 8px;
+  background: #eeedfe; border: 0.5px solid #afa9ec; border-radius: 8px;
   padding: 10px 14px; margin-bottom: 1.5rem;
 }
-.today-dot { width: 8px; height: 8px; border-radius: 50%; background: #7f77dd; flex-shrink: 0; }
+.today-dot { 
+  width: 8px; height: 8px; border-radius: 50%; background: #7f77dd; 
+  flex-shrink: 0;
+}
 .today-text { font-size: 13px; color: #534ab7; font-weight: 500; }
 .today-sub { font-size: 12px; color: #7f77dd; margin-left: auto; }
 
@@ -193,3 +194,9 @@ textarea { resize: vertical; min-height: 64px; }
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d3d1c7; border-radius: 2px; }
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
