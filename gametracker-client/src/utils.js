@@ -7,7 +7,16 @@ export const GENRE_LABELS = {
   OTHER: '其他',
 }
 
-export const PLATFORM_CODES = ['NS', 'PS4', 'PC', 'APP', '网站']
+export const PLATFORM_CODES = ['NS', 'PS4', 'Xbox', 'Steam', 'APP', '网站']
+
+export const PLATFORM_ICONS = {
+  'NS': '/ns.svg',
+  'PS4': '/ps.svg',
+  'Xbox': '/xbox.svg',
+  'Steam': '/steam.svg',
+  'APP': '/phone.svg',
+  '网站': '/web.svg',
+}
 
 export const GENRE_CODES = ['RPG', 'FPS', 'MOBA', 'SIM', 'ADV', 'OTHER']
 

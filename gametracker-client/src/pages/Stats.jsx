@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getGames, addManualSession, getRecentSessions } from '../api'
-import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
+import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 import dayjs from 'dayjs'
 
 const STAT_ICONS = {
@@ -196,7 +196,20 @@ export default function Stats() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
                     <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
-                      {dayjs(s.start_time).format('MM/DD HH:mm')} · {s.platform_code}
+                      {dayjs(s.start_time).format('MM/DD HH:mm')} · <span className="badge badge-platform" style={{ padding: '2px 6px', fontSize: 11 }}>
+                        {PLATFORM_ICONS[s.platform_code] && (
+                          <span 
+                            className="platform-icon" 
+                            data-platform={s.platform_code}
+                            style={{ 
+                              width: 12, height: 12,
+                              maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
+                              WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
+                            }}
+                          />
+                        )}
+                        {s.platform_code}
+                      </span>
                     </div>
                   </div>
                   <span className={`record-source-tag ${s.source}`}>

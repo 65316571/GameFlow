@@ -1,16 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSettings } from '../contexts/SettingsContext'
 import { getGames, getPlatforms, startSession, stopSession, getActiveSession } from '../api'
-import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
+import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 import dayjs from 'dayjs'
-
-const PLATFORM_ICONS = {
-  'NS': '🎮',
-  'PS4': '🕹️',
-  'PC': '💻',
-  'APP': '📱',
-  '网站': '🌐',
-}
 
 const GENRE_ICONS = {
   'RPG': '⚔️',
@@ -194,7 +186,17 @@ export default function Timer() {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: 10 }}>
                   <span className="badge badge-platform" style={{ fontSize: 14, padding: '6px 14px' }}>
-                    {PLATFORM_ICONS[active.platform_code] || '🎮'} {active.platform_code}
+                    {PLATFORM_ICONS[active.platform_code] ? (
+                      <span 
+                        className="platform-icon" 
+                        data-platform={active.platform_code}
+                        style={{ 
+                          maskImage: `url(${PLATFORM_ICONS[active.platform_code]})`,
+                          WebkitMaskImage: `url(${PLATFORM_ICONS[active.platform_code]})`
+                        }}
+                      />
+                    ) : '🎮'}
+                    {active.platform_code}
                   </span>
                   <span className={`badge badge-${active.genre_code}`} style={{ fontSize: 14, padding: '6px 14px' }}>
                     {GENRE_ICONS[active.genre_code] || '🎯'} {active.genre_code}
@@ -257,7 +259,18 @@ export default function Timer() {
                         cursor: isPlatformDisabled ? 'not-allowed' : 'pointer'
                       }}
                     >
-                      <span style={{ fontSize: 18 }}>{PLATFORM_ICONS[p.code] || '🎮'}</span>
+                      <span style={{ fontSize: 18 }}>
+                        {PLATFORM_ICONS[p.code] ? (
+                          <span 
+                            className="platform-icon lg" 
+                            data-platform={p.code}
+                            style={{ 
+                              maskImage: `url(${PLATFORM_ICONS[p.code]})`,
+                              WebkitMaskImage: `url(${PLATFORM_ICONS[p.code]})`
+                            }}
+                          />
+                        ) : '🎮'}
+                      </span>
                       {p.code}
                     </button>
                   ))}

@@ -1,6 +1,7 @@
 import { useSettings } from '../contexts/SettingsContext'
 import { useState, useEffect } from 'react'
 import { getGames } from '../api'
+import { PLATFORM_ICONS } from '../utils'
 
 // 主题模式选项
 const THEME_OPTIONS = [
@@ -115,7 +116,16 @@ export default function Design() {
                       onClick={() => handleGameSelect(game.id)}
                       className={`selection-card ${selectedGame === game.id ? 'active' : ''}`}
                     >
-                      <span>🎮</span>
+                      {PLATFORM_ICONS[game.platform_code] ? (
+                        <span 
+                          className="platform-icon" 
+                          data-platform={game.platform_code}
+                          style={{ 
+                            maskImage: `url(${PLATFORM_ICONS[game.platform_code]})`,
+                            WebkitMaskImage: `url(${PLATFORM_ICONS[game.platform_code]})`
+                          }}
+                        />
+                      ) : <span>🎮</span>}
                       <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
                         {game.name}
                       </span>

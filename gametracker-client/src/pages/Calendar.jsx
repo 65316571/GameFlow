@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { getCalendarMonth, getCalendarDay } from '../api'
-import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
+import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 
 function durLevel(minutes) {
   if (!minutes || minutes === 0) return 'none'
@@ -212,7 +212,20 @@ export default function Calendar() {
                                   {gameInitial(s.game_name)}
                                 </div>
                                 <div style={{ flex: 1 }}>
-                                  <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
+                                  <div style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    {s.game_name}
+                                    {PLATFORM_ICONS[s.platform_code] && (
+                                      <span 
+                                        className="platform-icon" 
+                                        data-platform={s.platform_code}
+                                        style={{ 
+                                          width: 14, height: 14,
+                                          maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
+                                          WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
+                                        }}
+                                      />
+                                    )}
+                                  </div>
                                   <div className="progress-bar">
                                     <div className="progress-fill" style={{ width: `${pct}%` }} />
                                   </div>

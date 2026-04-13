@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSettings } from '../contexts/SettingsContext'
 import { getGames, getGenres, getPlatforms, createGame, updateGame, deleteGame } from '../api'
-import { gameInitial, GENRE_AVATAR_COLORS } from '../utils'
-
-const PLATFORM_ICONS = {
-  'NS': '🎮',
-  'PS4': '🕹️',
-  'PC': '💻',
-  'APP': '📱',
-  '网站': '🌐',
-}
+import { gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 
 const GENRE_ICONS = {
   'RPG': '⚔️',
@@ -18,6 +10,15 @@ const GENRE_ICONS = {
   'SIM': '🏗️',
   'ADV': '🗺️',
   'OTHER': '🎯',
+}
+
+const PLATFORM_EMOJIS = {
+  'NS': '🎮',
+  'PS4': '🕹️',
+  'Xbox': '❎',
+  'Steam': '♨️',
+  'APP': '📱',
+  '网站': '🌐',
 }
 
 function GameModal({ game, genres, platforms, onClose, onSave }) {
@@ -54,7 +55,7 @@ function GameModal({ game, genres, platforms, onClose, onSave }) {
               <option value="">请选择</option>
               {platforms.map(p => (
                 <option key={p.id} value={p.id}>
-                  {PLATFORM_ICONS[p.code] || '🎮'} {p.code}
+                  {PLATFORM_EMOJIS[p.code] || '🎮'} {p.code}
                 </option>
               ))}
             </select>
@@ -178,7 +179,17 @@ export default function Library() {
           {platforms.map(p => (
             <button key={p.id} className={`chip ${filterPlatform === p.code ? 'active' : ''}`}
               onClick={() => setFilterPlatform(filterPlatform === p.code ? '' : p.code)}>
-              {PLATFORM_ICONS[p.code] || '🎮'} {p.code}
+              {PLATFORM_ICONS[p.code] ? (
+                <span 
+                  className="platform-icon" 
+                  data-platform={p.code}
+                  style={{ 
+                    maskImage: `url(${PLATFORM_ICONS[p.code]})`,
+                    WebkitMaskImage: `url(${PLATFORM_ICONS[p.code]})`
+                  }}
+                />
+              ) : '🎮'}
+              {p.code}
             </button>
           ))}
         </div>
@@ -262,7 +273,17 @@ export default function Library() {
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <span className="badge badge-platform" style={{ fontSize: 13, padding: '4px 10px' }}>
-                      {PLATFORM_ICONS[game.platform_code] || '🎮'} {game.platform_code}
+                      {PLATFORM_ICONS[game.platform_code] ? (
+                        <span 
+                          className="platform-icon" 
+                          data-platform={game.platform_code}
+                          style={{ 
+                            maskImage: `url(${PLATFORM_ICONS[game.platform_code]})`,
+                            WebkitMaskImage: `url(${PLATFORM_ICONS[game.platform_code]})`
+                          }}
+                        />
+                      ) : '🎮'}
+                      {game.platform_code}
                     </span>
                     <span className={`badge badge-${game.genre_code}`} style={{ fontSize: 13, padding: '4px 10px' }}>
                       {GENRE_ICONS[game.genre_code] || '🎯'} {game.genre_code}

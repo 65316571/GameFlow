@@ -119,9 +119,10 @@ const initDatabase = async () => {
         INSERT INTO platforms (code, name, description, sort_order) VALUES
         ('NS', 'Nintendo Switch', '任天堂出品的混合型游戏主机', 1),
         ('PS4', 'PlayStation 4', '索尼出品的游戏主机', 2),
-        ('PC', '个人电脑', 'Windows/Mac/Linux 平台', 3),
-        ('APP', '手机游戏', 'iOS/Android 移动设备', 4),
-        ('网站', '网页游戏', '浏览器可直接游玩的游戏', 5)
+        ('Xbox', 'Xbox Series X/S', '微软出品的游戏主机', 3),
+        ('Steam', 'Steam 平台', 'Steam 游戏平台 (Windows/Mac/Linux)', 4),
+        ('APP', '手机游戏', 'iOS/Android 移动设备', 5),
+        ('网站', '网页游戏', '浏览器可直接游玩的游戏', 6)
       `)
       console.log('✓ platforms data inserted')
     }

@@ -6,7 +6,7 @@ import {
   BarElement, LineElement, PointElement, Tooltip,
 } from 'chart.js'
 import { getOverview, getPlaytimeStats } from '../api'
-import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
+import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip)
 
@@ -201,7 +201,19 @@ export default function Overview() {
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
                       <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
-                        {s.played_at} · <span className={`badge badge-platform`}>{s.platform_code}</span>
+                        {s.played_at} · <span className={`badge badge-platform`}>
+                          {PLATFORM_ICONS[s.platform_code] && (
+                            <span 
+                              className="platform-icon" 
+                              data-platform={s.platform_code}
+                              style={{ 
+                                maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
+                                WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
+                              }}
+                            />
+                          )}
+                          {s.platform_code}
+                        </span>
                       </div>
                     </div>
                     <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--primary-color)' }}>

@@ -40,6 +40,14 @@
   --status-other-bg: var(--border-light);
   --status-other-text: var(--text-secondary);
 
+  /* 平台特定颜色 */
+  --plat-ns: #e60012;
+  --plat-ps: #003791;
+  --plat-xbox: #107c10;
+  --plat-steam: #171a21;
+  --plat-app: #f5a623;
+  --plat-web: #0088cc;
+
   /* 日历等级颜色 */
   --cal-level-0: transparent;
   --cal-level-1: #eeedfe;
@@ -82,6 +90,14 @@
   --status-adv-text: #f3cc8f;
   --status-other-bg: rgba(255, 255, 255, 0.05);
   --status-other-text: #888;
+
+  /* 平台特定颜色 - 深色模式 */
+  --plat-ns: #ff3e3e;
+  --plat-ps: #3e8dff;
+  --plat-xbox: #27d427;
+  --plat-steam: #f0f0f0;
+  --plat-app: #ffcc00;
+  --plat-web: #33ccff;
 
   /* 日历等级颜色 - 深色 */
   --cal-level-0: transparent;
@@ -770,6 +786,42 @@ input:focus, select:focus, textarea:focus {
 .badge-SIM { background: var(--status-sim-bg); color: var(--status-sim-text); }
 .badge-ADV { background: var(--status-adv-bg); color: var(--status-adv-text); }
 .badge-OTHER { background: var(--status-other-bg); color: var(--status-other-text); }
+
+.platform-icon {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-color: var(--text-secondary); /* 默认颜色 */
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+}
+
+/* 平台特定的颜色应用 */
+.platform-icon[data-platform="NS"]    { background-color: var(--plat-ns); }
+.platform-icon[data-platform="PS4"]   { background-color: var(--plat-ps); }
+.platform-icon[data-platform="Xbox"]  { background-color: var(--plat-xbox); }
+.platform-icon[data-platform="Steam"] { background-color: var(--plat-steam); }
+.platform-icon[data-platform="APP"]   { background-color: var(--plat-app); }
+.platform-icon[data-platform="网站"] { background-color: var(--plat-web); }
+
+.badge:hover .platform-icon {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+.platform-icon.lg {
+  width: 24px;
+  height: 24px;
+}
+.platform-icon.xl {
+  width: 32px;
+  height: 32px;
+}
 
 /* ============================================
    状态提醒类
