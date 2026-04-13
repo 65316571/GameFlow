@@ -6,6 +6,7 @@ import Timer from './pages/Timer'
 import Stats from './pages/Stats'
 import Calendar from './pages/Calendar'
 import Wiki from './pages/Wiki'
+import Design from './pages/Design'
 import './index.css'
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/stats" element={<Stats />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/wiki" element={<Wiki />} />
+          <Route path="/design" element={<Design />} />
         </Routes>
       </Layout>
     </BrowserRouter>

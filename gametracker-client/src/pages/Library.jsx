@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSettings } from '../contexts/SettingsContext'
 import { getGames, getGenres, getPlatforms, createGame, updateGame, deleteGame } from '../api'
 import { gameInitial, GENRE_AVATAR_COLORS } from '../utils'
 
@@ -86,6 +87,7 @@ function GameModal({ game, genres, platforms, onClose, onSave }) {
 }
 
 export default function Library() {
+  const { settings, disableImmersiveMode } = useSettings()
   const [games, setGames] = useState([])
   const [genres, setGenres] = useState([])
   const [platforms, setPlatforms] = useState([])
@@ -123,6 +125,11 @@ export default function Library() {
     load()
   }
 
+  // 获取沉浸游戏信息
+  const immersiveGame = settings.immersiveMode 
+    ? games.find(g => g.id === settings.immersiveGameId)
+    : null
+
   return (
     <div>
       <div className="page-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
@@ -138,7 +145,47 @@ export default function Library() {
         </button>
       </div>
 
-      {/* 筛选 */}
+      {/* 沉浸模式提示 */}
+      {settings.immersiveMode && immersiveGame && (
+        <div style={{
+          marginBottom: '1.5rem',
+          padding: '16px 20px',
+          background: '#e1f5ee',
+          borderRadius: 14,
+          border: '0.5px solid #0f6e56',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 28 }}>🧘</span>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: '#0f6e56' }}>
+                沉浸模式已开启
+              </div>
+              <div style={{ fontSize: 14, color: '#0f6e56', marginTop: 2 }}>
+                当前限定游戏：<strong>{immersiveGame.name}</strong>
+              </div>
+            </div>
+          </div>
+          <button 
+            className="btn"
+            onClick={disableImmersiveMode}
+            style={{
+              background: 'rgba(15,110,86,0.1)',
+              color: '#0f6e56',
+              borderColor: '#0f6e56',
+              fontSize: 13,
+              padding: '8px 16px'
+            }}
+          >
+            退出沉浸模式
+          </button>
+        </div>
+      )}
+
+      {/* 筛选 -->
       <div style={{ display: 'flex', gap: 16, marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <div className="chip-group">
           <button className={`chip ${!filterPlatform ? 'active' : ''}`} onClick={() => setFilterPlatform('')}>
@@ -177,8 +224,35 @@ export default function Library() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
             {games.map(game => {
               const colors = GENRE_AVATAR_COLORS[game.genre_code] || GENRE_AVATAR_COLORS.OTHER
+              const isImmersiveGame = settings.immersiveMode && settings.immersiveGameId === game.id
+              const isOtherGameBlocked = settings.immersiveMode && !isImmersiveGame
+              
               return (
-                <div key={game.id} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div key={game.id} className="card" style={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: 12,
+                  position: 'relative',
+                  border: isImmersiveGame ? '2px solid #0f6e56' : undefined,
+                  background: isImmersiveGame ? '#f0faf7' : undefined,
+                  opacity: isOtherGameBlocked ? 0.6 : 1
+                }}>
+                  {/* 沉浸模式标签 */}
+                  {isImmersiveGame && (
+                    <div style={{
+                      position: 'absolute',
+                      top: -1,
+                      right: 12,
+                      background: '#0f6e56',
+                      color: '#fff',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '4px 12px',
+                      borderRadius: '0 0 8px 8px'
+                    }}>
+                      🧘 沉浸中
+                    </div>
+                  )}
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                     <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 56, height: 56, fontSize: 18 }}>
                       {gameInitial(game.name)}
@@ -187,8 +261,22 @@ export default function Library() {
                       <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.4 }}>{game.name}</div>
                     </div>
                     <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-                      <button className="btn btn-sm btn-ghost" onClick={() => setModal(game)}>✏️</button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleDelete(game.id)}>🗑️</button>
+                      <button 
+                        className="btn btn-sm btn-ghost" 
+                        onClick={() => setModal(game)}
+                        disabled={isOtherGameBlocked}
+                        title={isOtherGameBlocked ? '沉浸模式下无法编辑其他游戏' : ''}
+                      >
+                        ✏️
+                      </button>
+                      <button 
+                        className="btn btn-sm btn-danger" 
+                        onClick={() => handleDelete(game.id)}
+                        disabled={isOtherGameBlocked}
+                        title={isOtherGameBlocked ? '沉浸模式下无法删除其他游戏' : ''}
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
