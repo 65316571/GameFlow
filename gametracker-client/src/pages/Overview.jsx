@@ -9,6 +9,13 @@ import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip)
 
+const METRIC_ICONS = {
+  games: '🎲',
+  playtime: '⏳',
+  week: '📅',
+  month: '📆',
+}
+
 export default function Overview() {
   const [overview, setOverview] = useState(null)
   const [weekData, setWeekData] = useState([])
@@ -24,12 +31,16 @@ export default function Overview() {
       .finally(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="empty-state">加载中…</div>
+  if (loading) return (
+    <div className="empty-state">
+      <div style={{ fontSize: 48, marginBottom: 16 }}>⏳</div>
+      加载中…
+    </div>
+  )
 
   const todaySession = overview?.today_sessions?.[0]
   const recentSessions = overview?.recent_sessions || []
 
-  // 新的数据结构：weekData = { labels, thisWeek, lastWeek }
   const chartLabels = weekData.labels || []
   const thisWeekValues = weekData.thisWeek || []
   const lastWeekValues = weekData.lastWeek || []
@@ -37,45 +48,57 @@ export default function Overview() {
   return (
     <div>
       <div className="page-header">
-        <div className="page-title">总览</div>
+        <div className="page-title">
+          <span style={{ fontSize: 32, marginRight: 10 }}>📊</span>
+          总览
+        </div>
         <div className="page-subtitle">你的游戏数据一览</div>
       </div>
 
       {todaySession && (
         <div className="today-banner">
-          <div className="today-dot" />
+          <div style={{ fontSize: 20, marginRight: 4 }}>🎮</div>
+          <span className="today-dot" />
           <span className="today-text">今日有游玩记录</span>
           <span className="today-sub">{todaySession.game_name} · {fmtDuration(todaySession.total_seconds)}</span>
         </div>
       )}
 
+      {/* 统计卡片 */}
       <div className="metric-grid">
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{METRIC_ICONS.games}</div>
           <div className="metric-label">游戏总数</div>
           <div className="metric-value">{overview?.total_games ?? 0}</div>
-          <div className="metric-sub">跨 {overview?.total_platforms ?? 0} 个平台</div>
+          <div className="metric-sub">跨 {overview?.total_platforms ?? 0} 个平台 🎯</div>
         </div>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{METRIC_ICONS.playtime}</div>
           <div className="metric-label">累计游玩</div>
           <div className="metric-value">{fmtDuration((overview?.total_seconds) || 0)}</div>
-          <div className="metric-sub">共 {overview?.total_sessions ?? 0} 次记录</div>
+          <div className="metric-sub">共 {overview?.total_sessions ?? 0} 次记录 📝</div>
         </div>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{METRIC_ICONS.week}</div>
           <div className="metric-label">本周时长</div>
           <div className="metric-value">{fmtDuration((overview?.week_seconds) || 0)}</div>
-          <div className="metric-sub">日均 {fmtDuration(Math.round((overview?.week_seconds || 0) / 7))}</div>
+          <div className="metric-sub">日均 {fmtDuration(Math.round((overview?.week_seconds || 0) / 7))} ⭐</div>
         </div>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{METRIC_ICONS.month}</div>
           <div className="metric-label">本月时长</div>
           <div className="metric-value">{fmtDuration((overview?.month_seconds) || 0)}</div>
-          <div className="metric-sub">{overview?.month_days_played ?? 0} 天有游玩记录</div>
+          <div className="metric-sub">{overview?.month_days_played ?? 0} 天有游玩记录 🔥</div>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-        <div className="card">
-          <div className="section-label">本周每日时长</div>
-          <div style={{ position: 'relative', height: 180 }}>
+      {/* 图表和最近记录 */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        <div className="card" style={{ minHeight: 320 }}>
+          <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 18 }}>📈</span> 本周每日时长
+          </div>
+          <div style={{ position: 'relative', height: 240 }}>
             <Bar
               data={{
                 labels: chartLabels,
@@ -85,9 +108,10 @@ export default function Overview() {
                     label: '本周',
                     data: thisWeekValues,
                     backgroundColor: '#afa9ec',
-                    borderRadius: 4,
+                    borderRadius: 6,
                     borderSkipped: false,
                     order: 2,
+                    barThickness: 24,
                   },
                   {
                     type: 'line',
@@ -97,7 +121,7 @@ export default function Overview() {
                     backgroundColor: 'transparent',
                     borderWidth: 2,
                     borderDash: [5, 5],
-                    pointRadius: 3,
+                    pointRadius: 4,
                     pointBackgroundColor: '#b4b2a9',
                     pointBorderColor: '#fff',
                     pointBorderWidth: 2,
@@ -116,8 +140,8 @@ export default function Overview() {
                     align: 'end',
                     labels: {
                       usePointStyle: true,
-                      boxWidth: 8,
-                      font: { size: 11 }
+                      boxWidth: 10,
+                      font: { size: 13, weight: 500 }
                     }
                   },
                   tooltip: {
@@ -135,7 +159,7 @@ export default function Overview() {
                   }
                 },
                 scales: {
-                  x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#888780' } },
+                  x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#888780' } },
                   y: { display: false, beginAtZero: true },
                 }
               }}
@@ -143,24 +167,35 @@ export default function Overview() {
           </div>
         </div>
 
-        <div className="card">
-          <div className="section-label">最近游玩</div>
+        <div className="card" style={{ minHeight: 320 }}>
+          <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 18 }}>🕐</span> 最近游玩
+          </div>
           {recentSessions.length === 0
-            ? <div className="empty-state">暂无记录</div>
+            ? (
+              <div className="empty-state">
+                <div style={{ fontSize: 48, marginBottom: 12 }}>🎮</div>
+                暂无记录
+              </div>
+            )
             : recentSessions.map((s) => {
                 const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
                 return (
-                  <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', borderBottom: '0.5px solid #f1efe8' }}>
+                  <div key={s.id} style={{ 
+                    display: 'flex', alignItems: 'center', gap: 14, 
+                    padding: '12px 0', 
+                    borderBottom: '0.5px solid #f1efe8' 
+                  }}>
                     <div className="game-avatar" style={{ background: colors.bg, color: colors.color }}>
                       {gameInitial(s.game_name)}
                     </div>
                     <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 500 }}>{s.game_name}</div>
-                      <div style={{ fontSize: 11, color: '#b4b2a9', marginTop: 1 }}>
+                      <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
+                      <div style={{ fontSize: 13, color: '#888780', marginTop: 3 }}>
                         {s.played_at} · <span className={`badge badge-platform`}>{s.platform_code}</span>
                       </div>
                     </div>
-                    <div style={{ fontSize: 12, fontWeight: 500, color: '#534ab7' }}>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: '#534ab7' }}>
                       {fmtDuration(s.duration_seconds)}
                     </div>
                   </div>

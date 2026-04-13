@@ -3,6 +3,13 @@ import { getGames, addManualSession, getRecentSessions } from '../api'
 import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS } from '../utils'
 import dayjs from 'dayjs'
 
+const STAT_ICONS = {
+  total: '📋',
+  duration: '⏱️',
+  timer: '⏲️',
+  manual: '✏️',
+}
+
 export default function Stats() {
   const [allGames, setAllGames] = useState([])
   const [recent, setRecent] = useState([])
@@ -41,7 +48,6 @@ export default function Stats() {
       payload.duration_seconds = totalSec
     }
     await addManualSession(payload)
-    // 重置表单
     setManualForm({
       game_id: '', start_time: '', end_time: '',
       date: dayjs().format('YYYY-MM-DD'), hours: '', minutes: '',
@@ -49,7 +55,6 @@ export default function Stats() {
     loadRecent()
   }
 
-  // 计算统计数据
   const totalSessions = recent.length
   const totalDuration = recent.reduce((sum, s) => sum + (s.duration_seconds || 0), 0)
   const timerSessions = recent.filter(s => s.source === 'timer').length
@@ -58,54 +63,68 @@ export default function Stats() {
   return (
     <div>
       <div className="page-header">
-        <div className="page-title">记录统计</div>
+        <div className="page-title">
+          <span style={{ fontSize: 32, marginRight: 10 }}>📈</span>
+          记录统计
+        </div>
         <div className="page-subtitle">查看记录历史，手动补录游玩时长</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
+      {/* 统计卡片 */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20 }}>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{STAT_ICONS.total}</div>
           <div className="metric-label">总记录数</div>
           <div className="metric-value">{totalSessions}</div>
-          <div className="metric-sub">条游玩记录</div>
+          <div className="metric-sub">条游玩记录 📝</div>
         </div>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{STAT_ICONS.duration}</div>
           <div className="metric-label">累计时长</div>
           <div className="metric-value">{fmtDuration(totalDuration)}</div>
-          <div className="metric-sub">最近10条统计</div>
+          <div className="metric-sub">最近10条统计 📊</div>
         </div>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{STAT_ICONS.timer}</div>
           <div className="metric-label">计时记录</div>
           <div className="metric-value">{timerSessions}</div>
-          <div className="metric-sub">通过计时器</div>
+          <div className="metric-sub">通过计时器 ⏱️</div>
         </div>
         <div className="metric-card">
+          <div style={{ fontSize: 28, marginBottom: 8 }}>{STAT_ICONS.manual}</div>
           <div className="metric-label">补录记录</div>
           <div className="metric-value">{manualSessions}</div>
-          <div className="metric-sub">手动添加</div>
+          <div className="metric-sub">手动添加 ✍️</div>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+      {/* 补录表单和记录列表 */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         {/* 补录表单 */}
         <div className="card">
-          <div className="section-label">补录记录</div>
-          <div style={{ display: 'flex', borderBottom: '0.5px solid #e8e6df', marginBottom: '1rem' }}>
-            {['timerange', 'duration'].map(t => (
-              <button key={t} onClick={() => setTab(t)}
+          <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 18 }}>➕</span> 补录记录
+          </div>
+          <div style={{ display: 'flex', borderBottom: '0.5px solid #e8e6df', marginBottom: '1.25rem' }}>
+            {[
+              { key: 'timerange', label: '⏰ 填写时间段' },
+              { key: 'duration', label: '📝 直接填时长' }
+            ].map(t => (
+              <button key={t.key} onClick={() => setTab(t.key)}
                 style={{ 
-                  padding: '7px 14px', fontSize: 13, background: 'none', border: 'none', 
+                  padding: '10px 18px', fontSize: 14, background: 'none', border: 'none', 
                   cursor: 'pointer', 
-                  borderBottom: `2px solid ${tab === t ? '#7f77dd' : 'transparent'}`, 
-                  color: tab === t ? '#534ab7' : '#888780', 
-                  fontWeight: tab === t ? 500 : 400 
+                  borderBottom: `3px solid ${tab === t.key ? '#7f77dd' : 'transparent'}`, 
+                  color: tab === t.key ? '#534ab7' : '#888780', 
+                  fontWeight: tab === t.key ? 600 : 500 
                 }}>
-                {t === 'timerange' ? '填写时间段' : '直接填时长'}
+                {t.label}
               </button>
             ))}
           </div>
 
           <div className="field">
-            <label>选择游戏</label>
+            <label><span>🎮</span> 选择游戏</label>
             <select value={manualForm.game_id} onChange={e => setM('game_id', e.target.value)}>
               <option value="">请选择游戏</option>
               {allGames.map(g => <option key={g.id} value={g.id}>{g.name} ({g.platform_code})</option>)}
@@ -115,27 +134,27 @@ export default function Stats() {
           {tab === 'timerange' ? (
             <div className="field-row">
               <div className="field">
-                <label>开始时间</label>
+                <label><span>🚀</span> 开始时间</label>
                 <input type="datetime-local" value={manualForm.start_time} onChange={e => setM('start_time', e.target.value)} />
               </div>
               <div className="field">
-                <label>结束时间</label>
+                <label><span>🏁</span> 结束时间</label>
                 <input type="datetime-local" value={manualForm.end_time} onChange={e => setM('end_time', e.target.value)} />
               </div>
             </div>
           ) : (
             <>
               <div className="field">
-                <label>日期</label>
+                <label><span>📅</span> 日期</label>
                 <input type="date" value={manualForm.date} onChange={e => setM('date', e.target.value)} />
               </div>
               <div className="field-row">
                 <div className="field">
-                  <label>小时</label>
+                  <label><span>🕐</span> 小时</label>
                   <input type="number" min="0" max="23" placeholder="0" value={manualForm.hours} onChange={e => setM('hours', e.target.value)} />
                 </div>
                 <div className="field">
-                  <label>分钟</label>
+                  <label><span>⏱️</span> 分钟</label>
                   <input type="number" min="0" max="59" placeholder="0" value={manualForm.minutes} onChange={e => setM('minutes', e.target.value)} />
                 </div>
               </div>
@@ -143,47 +162,61 @@ export default function Stats() {
           )}
           <button 
             className="btn btn-primary" 
-            style={{ width: '100%', marginTop: 4 }}
+            style={{ 
+              width: '100%', marginTop: 8, padding: '14px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+            }}
             onClick={handleManual}
             disabled={!manualForm.game_id}
           >
-            确认补录
+            <span style={{ fontSize: 18 }}>✅</span> 确认补录
           </button>
         </div>
 
         {/* 最近记录 */}
         <div className="card">
-          <div className="section-label">最近记录</div>
+          <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 18 }}>📋</span> 最近记录
+          </div>
           {loading ? (
-            <div className="empty-state">加载中...</div>
+            <div className="empty-state">
+              <div style={{ fontSize: 48, marginBottom: 12 }}>⏳</div>
+              加载中...
+            </div>
           ) : recent.length === 0 ? (
-            <div className="empty-state">暂无记录</div>
+            <div className="empty-state">
+              <div style={{ fontSize: 48, marginBottom: 12 }}>📭</div>
+              暂无记录
+            </div>
           ) : (
             recent.map(s => {
               const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
               return (
                 <div key={s.id} style={{ 
-                  display: 'flex', alignItems: 'center', gap: 8, 
-                  padding: '10px 0', borderBottom: '0.5px solid #f1efe8', fontSize: 13 
+                  display: 'flex', alignItems: 'center', gap: 12, 
+                  padding: '14px 0', borderBottom: '0.5px solid #f1efe8', fontSize: 15 
                 }}>
-                  <div className="game-avatar" style={{ ...colors, width: 32, height: 32, fontSize: 12 }}>
+                  <div className="game-avatar" style={{ ...colors, width: 44, height: 44, fontSize: 14 }}>
                     {gameInitial(s.game_name)}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 500 }}>{s.game_name}</div>
-                    <div style={{ fontSize: 11, color: '#b4b2a9', marginTop: 2 }}>
+                    <div style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
+                    <div style={{ fontSize: 13, color: '#888780', marginTop: 3 }}>
                       {dayjs(s.start_time).format('MM/DD HH:mm')} · {s.platform_code}
                     </div>
                   </div>
                   <span style={{ 
-                    fontSize: 10, padding: '2px 6px', borderRadius: 3, 
+                    fontSize: 12, padding: '4px 10px', borderRadius: 4, 
                     background: s.source === 'timer' ? '#e1f5ee' : '#faeeda',
                     color: s.source === 'timer' ? '#0f6e56' : '#854f0b',
-                    marginRight: 8
+                    marginRight: 8,
+                    display: 'flex', alignItems: 'center', gap: 4,
+                    fontWeight: 600
                   }}>
+                    {s.source === 'timer' ? '⏱️' : '✏️'}
                     {s.source === 'timer' ? '计时' : '补录'}
                   </span>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: '#534ab7' }}>
+                  <span style={{ fontSize: 15, fontWeight: 700, color: '#534ab7', minWidth: 60, textAlign: 'right' }}>
                     {fmtDuration(s.duration_seconds)}
                   </span>
                 </div>

@@ -1,23 +1,35 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ============================================
+   基础样式 & 全局设置
+   ============================================ */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+html {
+  /* 增大基础字体 */
+  font-size: 15px;
+}
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   background: #f5f5f3;
   color: #2c2c2a;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
+  overflow: hidden; /* 防止 body 滚动，由内部区域控制 */
 }
 
 a { text-decoration: none; color: inherit; }
-
 button { font-family: inherit; cursor: pointer; }
 
 input, select, textarea {
   font-family: inherit;
-  font-size: 13px;
+  font-size: 14px;
   border: 0.5px solid #d3d1c7;
-  border-radius: 8px;
-  padding: 7px 10px;
+  border-radius: 10px;
+  padding: 10px 14px;
   background: #fff;
   color: #2c2c2a;
   outline: none;
@@ -28,77 +40,226 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(127,119,221,0.12);
 }
 
-/* Layout */
-.layout { display: flex; min-height: 100vh; }
+/* ============================================
+   布局系统 - 全屏布局 + 统一滚动
+   ============================================ */
+.layout { 
+  display: flex; 
+  height: 100vh; /* 视口高度 */
+  width: 100vw;
+  overflow: hidden;
+}
 
-/* Sidebar */
+/* 侧边栏 - 固定不滚动 */
 .sidebar {
-  width: 200px;
+  width: 220px;
+  min-width: 220px;
+  height: 100vh;
   background: #fff;
   border-right: 0.5px solid #e8e6df;
   display: flex;
   flex-direction: column;
   padding: 1.5rem 0;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
+  flex-shrink: 0;
 }
 .sidebar-logo {
-  font-size: 17px;
-  font-weight: 600;
-  color: #7f77dd;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #534ab7;
   padding: 0 1.25rem 1.5rem;
   border-bottom: 0.5px solid #e8e6df;
 }
+.sidebar-logo-icon { font-size: 24px; }
+.sidebar-logo-text { letter-spacing: -0.3px; }
 
-/* Nav */
-.sidebar-nav { padding: 0.75rem 0; display: flex; flex-direction: column; }
-.nav-link {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 1.25rem;
-  font-size: 13px; color: #888780;
-  transition: all .12s;
+/* 导航 */
+.sidebar-nav { 
+  padding: 1rem 0; 
+  display: flex; 
+  flex-direction: column;
+  flex: 1;
 }
-.nav-link:hover { color: #534ab7; background: #fafaf8; }
-.nav-link.active { color: #534ab7; background: #eeedfe; font-weight: 500; }
-.nav-icon { font-size: 14px; width: 20px; text-align: center; }
+.nav-link {
+  display: flex; 
+  align-items: center; 
+  gap: 12px;
+  padding: 12px 1.25rem;
+  font-size: 15px; 
+  color: #888780;
+  transition: all .15s;
+  margin: 2px 8px;
+  border-radius: 10px;
+}
+.nav-link:hover { 
+  color: #534ab7; 
+  background: #fafaf8; 
+}
+.nav-link.active { 
+  color: #534ab7; 
+  background: #eeedfe; 
+  font-weight: 600; 
+}
+.nav-icon { 
+  font-size: 18px; 
+  width: 24px; 
+  text-align: center; 
+}
+.nav-label { letter-spacing: 0.2px; }
 
-/* Main content */
-.main { flex: 1; margin-left: 200px; padding: 1.5rem 2rem; }
+/* 侧边栏底部 */
+.sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 0.5px solid #e8e6df;
+}
+.sidebar-footer-text {
+  font-size: 12px;
+  color: #b4b2a9;
+  text-align: center;
+}
 
-/* Page header */
-.page-header { margin-bottom: 1.25rem; }
-.page-title { font-size: 18px; font-weight: 600; color: #2c2c2a; }
-.page-subtitle { font-size: 12px; color: #888780; margin-top: 3px; }
+/* 主内容区包装 - 可滚动 */
+.main-wrapper {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* 统一滚动条样式 */
+  scrollbar-width: thin;
+  scrollbar-color: #d3d1c7 transparent;
+}
+.main-wrapper::-webkit-scrollbar { 
+  width: 8px; 
+  height: 8px; 
+}
+.main-wrapper::-webkit-scrollbar-track { 
+  background: transparent; 
+}
+.main-wrapper::-webkit-scrollbar-thumb { 
+  background: #d3d1c7; 
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.main-wrapper::-webkit-scrollbar-thumb:hover { 
+  background: #b4b2a9; 
+}
 
-/* Cards */
+/* 主内容 */
+.main { 
+  padding: 2rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100%;
+}
+
+/* ============================================
+   页面头部 - 增大字号
+   ============================================ */
+.page-header { margin-bottom: 1.75rem; }
+.page-title { 
+  font-size: 26px; 
+  font-weight: 700; 
+  color: #2c2c2a;
+  letter-spacing: -0.3px;
+}
+.page-title [style*="font-size"] {
+  font-size: 28px !important;
+}
+.page-subtitle { 
+  font-size: 15px; 
+  color: #888780; 
+  margin-top: 6px;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================
+   卡片组件 - 更大更饱满
+   ============================================ */
 .card {
   background: #fff;
-  border-radius: 12px;
+  border-radius: 16px;
   border: 0.5px solid #e8e6df;
-  padding: 1rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  transition: all 0.2s ease;
 }
-.section-label { font-size: 13px; font-weight: 600; color: #888780; margin-bottom: 0.875rem; }
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.section-label { 
+  font-size: 15px; 
+  font-weight: 600; 
+  color: #888780; 
+  margin-bottom: 1rem;
+  letter-spacing: 0.3px;
+}
 
-/* Buttons */
+/* ============================================
+   按钮组件 - 更大更易点击
+   ============================================ */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 7px 14px; font-size: 13px; border-radius: 8px;
-  border: 0.5px solid #d3d1c7; background: #fff; color: #2c2c2a;
-  transition: all .12s;
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px; 
+  font-size: 14px; 
+  border-radius: 10px;
+  border: 0.5px solid #d3d1c7; 
+  background: #fff; 
+  color: #2c2c2a;
+  transition: all .15s;
+  font-weight: 500;
 }
-.btn:hover { border-color: #888780; background: #fafaf8; }
-.btn-primary { background: #534ab7; color: #fff; border-color: #534ab7; }
-.btn-primary:hover { background: #433a9e; border-color: #433a9e; }
-.btn-danger { color: #e24b4a; border-color: #e24b4a; }
-.btn-danger:hover { background: #fdf2f2; }
-.btn-ghost { border-color: transparent; background: transparent; color: #888780; }
-.btn-ghost:hover { color: #2c2c2a; background: #f1efe8; }
+.btn:hover { 
+  border-color: #888780; 
+  background: #fafaf8; 
+}
+.btn-primary { 
+  background: #534ab7; 
+  color: #fff; 
+  border-color: #534ab7; 
+}
+.btn-primary:hover { 
+  background: #433a9e; 
+  border-color: #433a9e; 
+}
+.btn-danger { 
+  color: #e24b4a; 
+  border-color: #e24b4a; 
+}
+.btn-danger:hover { 
+  background: #fdf2f2; 
+}
+.btn-ghost { 
+  border-color: transparent; 
+  background: transparent; 
+  color: #888780; 
+}
+.btn-ghost:hover { 
+  color: #2c2c2a; 
+  background: #f1efe8; 
+}
+.btn-sm {
+  padding: 7px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+}
 
-/* Badges */
+/* ============================================
+   徽章组件
+   ============================================ */
 .badge {
-  font-size: 11px; padding: 2px 6px; border-radius: 4px;
-  font-weight: 500; display: inline-block;
+  font-size: 12px; 
+  padding: 3px 8px; 
+  border-radius: 6px;
+  font-weight: 600; 
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 .badge-platform { background: #f1efe8; color: #5f5e5a; }
 .badge-RPG { background: #eeedfe; color: #534ab7; }
@@ -108,95 +269,340 @@ input:focus, select:focus, textarea:focus {
 .badge-ADV { background: #faeeda; color: #854f0b; }
 .badge-OTHER { background: #f1efe8; color: #5f5e5a; }
 
-/* Game avatar */
+/* ============================================
+   游戏头像 - 更大
+   ============================================ */
 .game-avatar {
-  width: 40px; height: 40px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 600; flex-shrink: 0;
+  width: 48px; 
+  height: 48px; 
+  border-radius: 12px;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 15px; 
+  font-weight: 700; 
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.game-avatar:hover {
+  transform: scale(1.05);
 }
 
-/* Metric cards */
+/* ============================================
+   统计卡片 - 增大尺寸
+   ============================================ */
 .metric-grid {
-  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
-  margin-bottom: 1.25rem;
+  display: grid; 
+  grid-template-columns: repeat(4, minmax(0,1fr)); 
+  gap: 16px;
+  margin-bottom: 1.75rem;
 }
 .metric-card {
-  background: #fff; border: 0.5px solid #e8e6df; border-radius: 10px;
-  padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  background: #fff; 
+  border: 0.5px solid #e8e6df; 
+  border-radius: 14px;
+  padding: 1.25rem; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  transition: all 0.2s ease;
 }
-.metric-label { font-size: 11px; color: #888780; letter-spacing: .4px; }
-.metric-value { font-size: 22px; font-weight: 600; color: #2c2c2a; margin: 6px 0 2px; }
-.metric-sub { font-size: 11px; color: #b4b2a9; }
+.metric-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+.metric-label { 
+  font-size: 13px; 
+  color: #888780; 
+  letter-spacing: .3px; 
+}
+.metric-value { 
+  font-size: 32px; 
+  font-weight: 700; 
+  color: #2c2c2a; 
+  margin: 10px 0 4px;
+  letter-spacing: -0.5px;
+}
+.metric-sub { 
+  font-size: 13px; 
+  color: #b4b2a9; 
+}
 
-/* Form fields */
-.field { margin-bottom: 12px; }
-.field label { display: block; font-size: 12px; color: #888780; margin-bottom: 5px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* ============================================
+   表单字段
+   ============================================ */
+.field { margin-bottom: 16px; }
+.field label { 
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px; 
+  color: #666; 
+  margin-bottom: 7px;
+  font-weight: 500;
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-/* Modal */
+/* ============================================
+   弹窗 - 更大
+   ============================================ */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 100; padding: 1rem;
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.45);
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  z-index: 100; 
+  padding: 1.5rem;
 }
 .modal {
-  background: #fff; border-radius: 12px; border: 0.5px solid #e8e6df;
-  width: 100%; max-width: 420px; padding: 1.25rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background: #fff; 
+  border-radius: 16px; 
+  border: 0.5px solid #e8e6df;
+  width: 100%; 
+  max-width: 480px; 
+  padding: 1.75rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
-.modal-title { font-size: 15px; font-weight: 600; margin-bottom: 1rem; }
-.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+.modal-title { 
+  font-size: 18px; 
+  font-weight: 700; 
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-footer { 
+  display: flex; 
+  gap: 10px; 
+  justify-content: flex-end; 
+  margin-top: 1.25rem; 
+}
 
-/* Calendar */
+/* ============================================
+   日历
+   ============================================ */
 .cal-day {
-  aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  border-radius: 8px; font-size: 12px; cursor: pointer; position: relative;
+  aspect-ratio: 1; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  border-radius: 10px; 
+  font-size: 14px; 
+  cursor: pointer; 
+  position: relative;
+  min-height: 60px;
 }
-.cal-day:hover { background: #fafaf8; }
-.cal-day.is-today { background: #eeedfe; color: #534ab7; font-weight: 500; }
-.cal-day.is-active { outline: 1.5px solid #afa9ec; }
-.cal-day.empty { pointer-events: none; }
+.cal-day:hover { 
+  background: #fafaf8; 
+}
+.cal-day.is-today { 
+  background: #eeedfe; 
+  color: #534ab7; 
+  font-weight: 600; 
+}
+.cal-day.is-active { 
+  outline: 2px solid #afa9ec; 
+}
+.cal-day.empty { 
+  pointer-events: none; 
+}
 
-/* Today banner */
+/* ============================================
+   今日横幅
+   ============================================ */
 .today-banner {
-  display: flex; align-items: center; gap: 8px;
-  background: #eeedfe; border: 0.5px solid #afa9ec; border-radius: 8px;
-  padding: 10px 14px; margin-bottom: 1.5rem;
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+  background: #eeedfe; 
+  border: 0.5px solid #afa9ec; 
+  border-radius: 12px;
+  padding: 14px 18px; 
+  margin-bottom: 1.75rem;
 }
 .today-dot { 
-  width: 8px; height: 8px; border-radius: 50%; background: #7f77dd; 
+  width: 10px; 
+  height: 10px; 
+  border-radius: 50%; 
+  background: #7f77dd; 
   flex-shrink: 0;
 }
-.today-text { font-size: 13px; color: #534ab7; font-weight: 500; }
-.today-sub { font-size: 12px; color: #7f77dd; margin-left: auto; }
-
-/* Empty state */
-.empty-state { text-align: center; padding: 3rem 1rem; color: #b4b2a9; font-size: 13px; }
-
-/* Chip filter */
-.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip {
-  padding: 5px 12px; font-size: 12px; border-radius: 999px;
-  border: 0.5px solid #d3d1c7; background: none; cursor: pointer;
-  color: #888780; transition: all .12s;
+.today-text { 
+  font-size: 15px; 
+  color: #534ab7; 
+  font-weight: 600; 
 }
-.chip:hover { border-color: #888780; color: #2c2c2a; }
-.chip.active { background: #eeedfe; color: #534ab7; border-color: #afa9ec; font-weight: 500; }
+.today-sub { 
+  font-size: 14px; 
+  color: #7f77dd; 
+  margin-left: auto; 
+}
 
-/* Table */
-.table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600; color: #888780; letter-spacing: .4px; border-bottom: 0.5px solid #e8e6df; }
-.table td { padding: 10px 12px; border-bottom: 0.5px solid #f1efe8; color: #2c2c2a; }
-.table tr:last-child td { border-bottom: none; }
-.table tr:hover td { background: #fafaf8; }
+/* ============================================
+   空状态
+   ============================================ */
+.empty-state { 
+  text-align: center; 
+  padding: 4rem 1.5rem; 
+  color: #b4b2a9; 
+  font-size: 15px;
+}
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d3d1c7; border-radius: 2px; }
+/* ============================================
+   筛选芯片 - 更大
+   ============================================ */
+.chip-group { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap; 
+}
+.chip {
+  padding: 8px 16px; 
+  font-size: 14px; 
+  border-radius: 999px;
+  border: 0.5px solid #d3d1c7; 
+  background: none; 
+  cursor: pointer;
+  color: #888780; 
+  transition: all .12s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.chip:hover { 
+  border-color: #888780; 
+  color: #2c2c2a; 
+}
+.chip.active { 
+  background: #eeedfe; 
+  color: #534ab7; 
+  border-color: #afa9ec; 
+  font-weight: 600; 
+}
 
-/* Animations */
+/* ============================================
+   表格
+   ============================================ */
+.table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  font-size: 14px; 
+}
+.table th { 
+  text-align: left; 
+  padding: 12px 14px; 
+  font-size: 12px; 
+  font-weight: 600; 
+  color: #888780; 
+  letter-spacing: .3px; 
+  border-bottom: 0.5px solid #e8e6df; 
+}
+.table td { 
+  padding: 14px; 
+  border-bottom: 0.5px solid #f1efe8; 
+  color: #2c2c2a; 
+}
+.table tr:last-child td { 
+  border-bottom: none; 
+}
+.table tr:hover td { 
+  background: #fafaf8; 
+}
+
+/* ============================================
+   全局滚动条样式（备用）
+   ============================================ */
+::-webkit-scrollbar { 
+  width: 8px; 
+  height: 8px; 
+}
+::-webkit-scrollbar-track { 
+  background: transparent; 
+}
+::-webkit-scrollbar-thumb { 
+  background: #d3d1c7; 
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { 
+  background: #b4b2a9; 
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d3d1c7 transparent;
+}
+
+/* ============================================
+   动画
+   ============================================ */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes timer-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ============================================
+   按钮交互增强
+   ============================================ */
+.btn:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+.btn:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   响应式调整
+   ============================================ */
+@media (max-width: 1200px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 64px;
+    min-width: 64px;
+  }
+  .sidebar-logo-text,
+  .nav-label,
+  .sidebar-footer {
+    display: none;
+  }
+  .main {
+    padding: 1.25rem;
+  }
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
 }
