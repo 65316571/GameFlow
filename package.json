@@ -1,0 +1,16 @@
+{
+  "name": "gameflow",
+  "version": "1.0.0",
+  "description": "GameFlow - 游戏时间追踪系统",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:client": "cd gametracker-client && npm run dev",
+    "dev:server": "cd gametracker-server && npm run dev",
+    "init-db": "cd gametracker-server && npm run init-db",
+    "install:all": "npm install && cd gametracker-client && npm install && cd ../gametracker-server && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
