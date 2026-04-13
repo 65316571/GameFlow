@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
+import { useSettings } from '../contexts/SettingsContext'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
   BarElement, LineElement, PointElement, Tooltip,
@@ -17,9 +18,16 @@ const METRIC_ICONS = {
 }
 
 export default function Overview() {
+  const { settings } = useSettings()
   const [overview, setOverview] = useState(null)
   const [weekData, setWeekData] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const isDark = settings.themeMode === 'dark'
+  const primaryBarColor = isDark ? '#7f77dd' : '#afa9ec'
+  const lastWeekLineColor = isDark ? '#666' : '#b4b2a9'
+  const xTickColor = isDark ? '#888' : '#888780'
+  const pointBorderColor = isDark ? '#242424' : '#fff'
 
   useEffect(() => {
     Promise.all([getOverview(), getPlaytimeStats('week')])
@@ -107,7 +115,7 @@ export default function Overview() {
                     type: 'bar',
                     label: '本周',
                     data: thisWeekValues,
-                    backgroundColor: '#afa9ec',
+                    backgroundColor: primaryBarColor,
                     borderRadius: 6,
                     borderSkipped: false,
                     order: 2,
@@ -117,13 +125,13 @@ export default function Overview() {
                     type: 'line',
                     label: '上周',
                     data: lastWeekValues,
-                    borderColor: '#b4b2a9',
+                    borderColor: lastWeekLineColor,
                     backgroundColor: 'transparent',
                     borderWidth: 2,
                     borderDash: [5, 5],
                     pointRadius: 4,
-                    pointBackgroundColor: '#b4b2a9',
-                    pointBorderColor: '#fff',
+                    pointBackgroundColor: lastWeekLineColor,
+                    pointBorderColor: pointBorderColor,
                     pointBorderWidth: 2,
                     tension: 0.3,
                     order: 1,
@@ -141,6 +149,7 @@ export default function Overview() {
                     labels: {
                       usePointStyle: true,
                       boxWidth: 10,
+                      color: isDark ? '#b0b0b0' : '#666',
                       font: { size: 13, weight: 500 }
                     }
                   },
@@ -159,7 +168,7 @@ export default function Overview() {
                   }
                 },
                 scales: {
-                  x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#888780' } },
+                  x: { grid: { display: false }, ticks: { font: { size: 12 }, color: xTickColor } },
                   y: { display: false, beginAtZero: true },
                 }
               }}
@@ -184,18 +193,18 @@ export default function Overview() {
                   <div key={s.id} style={{ 
                     display: 'flex', alignItems: 'center', gap: 14, 
                     padding: '12px 0', 
-                    borderBottom: '0.5px solid #f1efe8' 
+                    borderBottom: '0.5px solid var(--border-light)' 
                   }}>
                     <div className="game-avatar" style={{ background: colors.bg, color: colors.color }}>
                       {gameInitial(s.game_name)}
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
-                      <div style={{ fontSize: 13, color: '#888780', marginTop: 3 }}>
+                      <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
                         {s.played_at} · <span className={`badge badge-platform`}>{s.platform_code}</span>
                       </div>
                     </div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: '#534ab7' }}>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--primary-color)' }}>
                       {fmtDuration(s.duration_seconds)}
                     </div>
                   </div>

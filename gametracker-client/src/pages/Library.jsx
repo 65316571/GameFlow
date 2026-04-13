@@ -147,24 +147,14 @@ export default function Library() {
 
       {/* 沉浸模式提示 */}
       {settings.immersiveMode && immersiveGame && (
-        <div style={{
-          marginBottom: '1.5rem',
-          padding: '16px 20px',
-          background: '#e1f5ee',
-          borderRadius: 14,
-          border: '0.5px solid #0f6e56',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: 16
-        }}>
+        <div className="alert-success" style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ fontSize: 28 }}>🧘</span>
             <div>
-              <div style={{ fontSize: 15, fontWeight: 700, color: '#0f6e56' }}>
+              <div style={{ fontSize: 15, fontWeight: 700 }}>
                 沉浸模式已开启
               </div>
-              <div style={{ fontSize: 14, color: '#0f6e56', marginTop: 2 }}>
+              <div style={{ fontSize: 14, marginTop: 2 }}>
                 当前限定游戏：<strong>{immersiveGame.name}</strong>
               </div>
             </div>
@@ -172,13 +162,7 @@ export default function Library() {
           <button 
             className="btn"
             onClick={disableImmersiveMode}
-            style={{
-              background: 'rgba(15,110,86,0.1)',
-              color: '#0f6e56',
-              borderColor: '#0f6e56',
-              fontSize: 13,
-              padding: '8px 16px'
-            }}
+            style={{ fontSize: 13, padding: '8px 16px' }}
           >
             退出沉浸模式
           </button>
@@ -228,14 +212,11 @@ export default function Library() {
               const isOtherGameBlocked = settings.immersiveMode && !isImmersiveGame
               
               return (
-                <div key={game.id} className="card" style={{ 
+                <div key={game.id} className={`card ${isImmersiveGame ? 'immersive' : ''} ${isOtherGameBlocked ? 'blocked' : ''}`} style={{ 
                   display: 'flex', 
                   flexDirection: 'column', 
                   gap: 12,
                   position: 'relative',
-                  border: isImmersiveGame ? '2px solid #0f6e56' : undefined,
-                  background: isImmersiveGame ? '#f0faf7' : undefined,
-                  opacity: isOtherGameBlocked ? 0.6 : 1
                 }}>
                   {/* 沉浸模式标签 */}
                   {isImmersiveGame && (
@@ -243,7 +224,7 @@ export default function Library() {
                       position: 'absolute',
                       top: -1,
                       right: 12,
-                      background: '#0f6e56',
+                      background: 'var(--status-moba-text)',
                       color: '#fff',
                       fontSize: 11,
                       fontWeight: 700,
@@ -288,20 +269,13 @@ export default function Library() {
                     </span>
                   </div>
                   {game.note && (
-                    <div style={{ fontSize: 14, color: '#888780', borderTop: '0.5px solid #f1efe8', paddingTop: 12 }}>
+                    <div className="card-divider card-note">
                       📝 {game.note}
                     </div>
                   )}
-                  <div style={{ 
-                    fontSize: 14, color: '#666', 
-                    borderTop: '0.5px solid #f1efe8', 
-                    paddingTop: 12, 
-                    display: 'flex', 
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
+                  <div className="card-divider card-stats">
                     <span>⏱️ 累计时长</span>
-                    <span style={{ color: '#534ab7', fontWeight: 700, fontSize: 16 }}>
+                    <span className="card-stats-value">
                       {game.total_hours ? `${game.total_hours}h` : '暂无记录'}
                     </span>
                   </div>
@@ -310,23 +284,9 @@ export default function Library() {
             })}
 
             {/* 添加卡片 */}
-            <div className="card" style={{ 
-              display: 'flex', flexDirection: 'column', alignItems: 'center', 
-              justifyContent: 'center', minHeight: 160, 
-              border: '0.5px dashed #d3d1c7', cursor: 'pointer', color: '#b4b2a9',
-              transition: 'all 0.2s ease'
-            }}
+            <div 
+              className="card card-add"
               onClick={() => setModal('add')}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#afa9ec'
-                e.currentTarget.style.color = '#534ab7'
-                e.currentTarget.style.background = '#fafaf8'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#d3d1c7'
-                e.currentTarget.style.color = '#b4b2a9'
-                e.currentTarget.style.background = '#fff'
-              }}
             >
               <div style={{ fontSize: 40, marginBottom: 10 }}>➕</div>
               <div style={{ fontSize: 15, fontWeight: 500 }}>添加新游戏</div>

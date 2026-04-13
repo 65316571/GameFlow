@@ -105,19 +105,16 @@ export default function Stats() {
           <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 18 }}>➕</span> 补录记录
           </div>
-          <div style={{ display: 'flex', borderBottom: '0.5px solid #e8e6df', marginBottom: '1.25rem' }}>
+          <div className="tabs">
             {[
               { key: 'timerange', label: '⏰ 填写时间段' },
               { key: 'duration', label: '📝 直接填时长' }
             ].map(t => (
-              <button key={t.key} onClick={() => setTab(t.key)}
-                style={{ 
-                  padding: '10px 18px', fontSize: 14, background: 'none', border: 'none', 
-                  cursor: 'pointer', 
-                  borderBottom: `3px solid ${tab === t.key ? '#7f77dd' : 'transparent'}`, 
-                  color: tab === t.key ? '#534ab7' : '#888780', 
-                  fontWeight: tab === t.key ? 600 : 500 
-                }}>
+              <button 
+                key={t.key} 
+                className={`tab-btn ${tab === t.key ? 'active' : ''}`}
+                onClick={() => setTab(t.key)}
+              >
                 {t.label}
               </button>
             ))}
@@ -192,31 +189,21 @@ export default function Stats() {
             recent.map(s => {
               const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
               return (
-                <div key={s.id} style={{ 
-                  display: 'flex', alignItems: 'center', gap: 12, 
-                  padding: '14px 0', borderBottom: '0.5px solid #f1efe8', fontSize: 15 
-                }}>
-                  <div className="game-avatar" style={{ ...colors, width: 44, height: 44, fontSize: 14 }}>
+                <div key={s.id} className="record-item">
+                  <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 44, height: 44, fontSize: 14 }}>
                     {gameInitial(s.game_name)}
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
-                    <div style={{ fontSize: 13, color: '#888780', marginTop: 3 }}>
+                    <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
                       {dayjs(s.start_time).format('MM/DD HH:mm')} · {s.platform_code}
                     </div>
                   </div>
-                  <span style={{ 
-                    fontSize: 12, padding: '4px 10px', borderRadius: 4, 
-                    background: s.source === 'timer' ? '#e1f5ee' : '#faeeda',
-                    color: s.source === 'timer' ? '#0f6e56' : '#854f0b',
-                    marginRight: 8,
-                    display: 'flex', alignItems: 'center', gap: 4,
-                    fontWeight: 600
-                  }}>
+                  <span className={`record-source-tag ${s.source}`}>
                     {s.source === 'timer' ? '⏱️' : '✏️'}
                     {s.source === 'timer' ? '计时' : '补录'}
                   </span>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: '#534ab7', minWidth: 60, textAlign: 'right' }}>
+                  <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary-color)', minWidth: 60, textAlign: 'right' }}>
                     {fmtDuration(s.duration_seconds)}
                   </span>
                 </div>

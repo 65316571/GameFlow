@@ -53,11 +53,11 @@ function PulseCircle() {
     <span style={{ position: 'relative', display: 'inline-block', width: 10, height: 10 }}>
       <span style={{
         position: 'absolute', inset: 0, borderRadius: '50%',
-        background: '#0f6e56', animation: 'pulse-ring 1.5s ease-out infinite'
+        background: 'var(--status-moba-text)', animation: 'pulse-ring 1.5s ease-out infinite'
       }} />
       <span style={{
         position: 'absolute', inset: 0, borderRadius: '50%',
-        background: '#0f6e56'
+        background: 'var(--status-moba-text)'
       }} />
     </span>
   )
@@ -181,25 +181,14 @@ export default function Timer() {
           {active ? (
             <div style={{ textAlign: 'center', padding: '2rem 0' }}>
               {/* 状态指示器 */}
-              <div style={{ 
-                display: 'inline-flex', alignItems: 'center', gap: 10,
-                padding: '10px 20px', borderRadius: 24,
-                background: '#e1f5ee', color: '#0f6e56', fontSize: 15, fontWeight: 600,
-                marginBottom: 32
-              }}>
+              <div className="timer-status-badge" style={{ marginBottom: 32 }}>
                 <PulseCircle />
                 <span>正在游玩</span>
                 <span style={{ fontSize: 20 }}>🎮</span>
               </div>
               
               {/* 游戏信息 */}
-              <div style={{
-                background: 'linear-gradient(135deg, #eeedfe 0%, #f8f8fc 100%)',
-                borderRadius: 20,
-                padding: '2rem',
-                marginBottom: 36,
-                border: '0.5px solid #afa9ec',
-              }}>
+              <div className="timer-game-card" style={{ marginBottom: 36 }}>
                 <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 16 }}>
                   {active.game_name}
                 </div>
@@ -214,19 +203,13 @@ export default function Timer() {
               </div>
               
               {/* 计时器 */}
-              <div style={{ 
-                fontSize: 88, fontWeight: 700, color: '#2c2c2a', 
-                letterSpacing: 6, fontVariantNumeric: 'tabular-nums', 
-                margin: '2.5rem 0', fontFamily: 'monospace',
-                textShadow: '0 2px 12px rgba(127,119,221,0.15)',
-                animation: 'timer-pulse 1s ease-in-out infinite'
-              }}>
+              <div className="timer-display" style={{ margin: '2.5rem 0' }}>
                 {fmtElapsed(elapsed)}
               </div>
               
               {/* 开始时间 */}
               <div style={{ 
-                fontSize: 16, color: '#888780', marginBottom: 32,
+                fontSize: 16, color: 'var(--text-tertiary)', marginBottom: 32,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
               }}>
                 <span style={{ fontSize: 18 }}>🕐</span>
@@ -235,24 +218,14 @@ export default function Timer() {
               
               {/* 停止按钮 */}
               <button 
-                className="btn" 
+                className="btn btn-danger" 
                 style={{ 
-                  background: '#e24b4a', color: '#fff', borderColor: '#e24b4a', 
                   width: '100%', maxWidth: 320, padding: '18px', fontSize: 17,
                   borderRadius: 14,
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                  boxShadow: '0 4px 16px rgba(226,75,74,0.35)',
-                  transition: 'all 0.2s ease'
+                  boxShadow: 'var(--shadow-md)',
                 }}
                 onClick={handleStop}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(226,75,74,0.45)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(226,75,74,0.35)'
-                }}
               >
                 <span style={{ fontSize: 22 }}>⏹️</span>
                 停止计时
@@ -262,17 +235,10 @@ export default function Timer() {
             <>
               {/* 步骤 1 */}
               <div style={{ marginBottom: 32, opacity: isPlatformDisabled ? 0.5 : 1 }}>
-                <div style={{ 
-                  fontSize: 15, color: '#666', marginBottom: 16, fontWeight: 600,
-                  display: 'flex', alignItems: 'center', gap: 8
-                }}>
-                  <span style={{ 
-                    width: 28, height: 28, borderRadius: '50%', background: '#eeedfe',
-                    color: '#534ab7', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 14, fontWeight: 700
-                  }}>1</span>
+                <div className="step-item">
+                  <span className="step-number">1</span>
                   选择平台
-                  {isPlatformDisabled && <span style={{ color: '#0f6e56', fontSize: 13 }}>(沉浸模式已限定)</span>}
+                  {isPlatformDisabled && <span style={{ color: 'var(--status-moba-text)', fontSize: 13 }}>(沉浸模式已限定)</span>}
                 </div>
                 <div className="chip-group" style={{ gap: 12 }}>
                   {platforms.map(p => (
@@ -288,8 +254,6 @@ export default function Timer() {
                       style={{ 
                         fontSize: 15, padding: '12px 22px',
                         display: 'flex', alignItems: 'center', gap: 8,
-                        transform: selPlatform === p.code ? 'scale(1.02)' : 'scale(1)',
-                        transition: 'all 0.15s ease',
                         cursor: isPlatformDisabled ? 'not-allowed' : 'pointer'
                       }}
                     >
@@ -303,23 +267,16 @@ export default function Timer() {
               {/* 步骤 2 */}
               {selPlatform && (
                 <div style={{ marginBottom: 32 }}>
-                  <div style={{ 
-                    fontSize: 15, color: '#666', marginBottom: 16, fontWeight: 600,
-                    display: 'flex', alignItems: 'center', gap: 8
-                  }}>
-                    <span style={{ 
-                      width: 28, height: 28, borderRadius: '50%', background: '#eeedfe',
-                      color: '#534ab7', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 14, fontWeight: 700
-                    }}>2</span>
+                  <div className="step-item">
+                    <span className="step-number">2</span>
                     选择游戏（{selPlatform}）
-                    {settings.immersiveMode && <span style={{ color: '#0f6e56', fontSize: 13 }}>(已自动选择限定游戏)</span>}
+                    {settings.immersiveMode && <span style={{ color: 'var(--status-moba-text)', fontSize: 13 }}>(已自动选择限定游戏)</span>}
                   </div>
                   {filteredGames.length === 0 ? (
-                    <div style={{ 
-                      padding: '3rem', textAlign: 'center',
-                      background: '#fafaf9', borderRadius: 14, color: '#b4b2a9',
-                      border: '0.5px dashed #d3d1c7'
+                    <div className="empty-state" style={{ 
+                      padding: '3rem',
+                      background: 'var(--bg-tertiary)', borderRadius: 14,
+                      border: '1px dashed var(--border-color)'
                     }}>
                       <div style={{ fontSize: 40, marginBottom: 12 }}>📦</div>
                       该平台暂无游戏，请先前往游戏库添加
@@ -340,23 +297,12 @@ export default function Timer() {
                         return (
                           <div 
                             key={g.id}
+                            className={`selection-card ${isSelected ? 'active' : ''}`}
                             onClick={() => setSelGame(g)}
-                            style={{
-                              display: 'flex', alignItems: 'center', gap: 12, 
-                              padding: '14px 16px',
-                              borderRadius: 12, 
-                              border: `2px solid ${isSelected ? '#afa9ec' : '#e8e6df'}`,
-                              background: isSelected ? '#eeedfe' : '#fff',
-                              cursor: 'pointer', fontSize: 15,
-                              color: isSelected ? '#534ab7' : '#2c2c2a',
-                              transition: 'all 0.15s ease',
-                              transform: isSelected ? 'translateY(-2px)' : 'translateY(0)',
-                              boxShadow: isSelected ? '0 4px 12px rgba(127,119,221,0.15)' : 'none'
-                            }}
                           >
                             <div 
                               className="game-avatar" 
-                              style={{ ...colors, width: 44, height: 44, fontSize: 14 }}
+                              style={{ background: colors.bg, color: colors.color, width: 44, height: 44, fontSize: 14 }}
                             >
                               {gameInitial(g.name)}
                             </div>
@@ -387,21 +333,10 @@ export default function Timer() {
                   opacity: selGame ? 1 : 0.5,
                   cursor: selGame ? 'pointer' : 'not-allowed',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                  boxShadow: selGame ? '0 4px 16px rgba(83,74,183,0.35)' : 'none',
-                  transition: 'all 0.2s ease'
+                  boxShadow: selGame ? 'var(--shadow-md)' : 'none',
                 }}
                 onClick={handleStart}
                 disabled={!selGame}
-                onMouseEnter={(e) => {
-                  if (selGame) {
-                    e.currentTarget.style.transform = 'translateY(-2px)'
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(83,74,183,0.45)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = selGame ? '0 4px 16px rgba(83,74,183,0.35)' : 'none'
-                }}
               >
                 {selGame ? (
                   <>
@@ -421,18 +356,7 @@ export default function Timer() {
         
         {/* 提示 */}
         {!active && (
-          <div style={{
-            marginTop: 20,
-            padding: '18px 22px',
-            background: settings.immersiveMode ? '#e1f5ee' : '#fff',
-            borderRadius: 14,
-            border: `0.5px solid ${settings.immersiveMode ? '#0f6e56' : '#e8e6df'}`,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            fontSize: 14,
-            color: settings.immersiveMode ? '#0f6e56' : '#888780'
-          }}>
+          <div className={`timer-info-box ${settings.immersiveMode ? 'immersive' : ''}`} style={{ marginTop: 20 }}>
             <span style={{ fontSize: 20 }}>{settings.immersiveMode ? '🧘' : '💡'}</span>
             <span>
               {settings.immersiveMode 

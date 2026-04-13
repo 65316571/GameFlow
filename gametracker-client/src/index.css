@@ -21,9 +21,33 @@
   --primary-color: #534ab7;
   --primary-light: #eeedfe;
   --primary-hover: #433a9e;
+  --primary-border: #afa9ec;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.03);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+  
+  /* 状态色变量 - 浅色 */
+  --status-rpg-bg: #eeedfe;
+  --status-rpg-text: #534ab7;
+  --status-fps-bg: #faece7;
+  --status-fps-text: #993c1d;
+  --status-moba-bg: #e1f5ee;
+  --status-moba-text: #0f6e56;
+  --status-sim-bg: #e6f1fb;
+  --status-sim-text: #185fa5;
+  --status-adv-bg: #faeeda;
+  --status-adv-text: #854f0b;
+  --status-other-bg: var(--border-light);
+  --status-other-text: var(--text-secondary);
+
+  /* 日历等级颜色 */
+  --cal-level-0: transparent;
+  --cal-level-1: #eeedfe;
+  --cal-level-1-text: #534ab7;
+  --cal-level-2: #cecbf6;
+  --cal-level-2-text: #3c3489;
+  --cal-level-3: #7f77dd;
+  --cal-level-3-text: #fff;
 }
 
 /* 深色主题 */
@@ -40,9 +64,33 @@
   --primary-color: #7f77dd;
   --primary-light: #3a3480;
   --primary-hover: #9b94e9;
+  --primary-border: #4a448d;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.3);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+
+  /* 状态色变量 - 深色 */
+  --status-rpg-bg: rgba(83, 74, 183, 0.2);
+  --status-rpg-text: #afa9ec;
+  --status-fps-bg: rgba(153, 60, 29, 0.2);
+  --status-fps-text: #f3a891;
+  --status-moba-bg: rgba(15, 110, 86, 0.2);
+  --status-moba-text: #5ec4a8;
+  --status-sim-bg: rgba(24, 95, 165, 0.2);
+  --status-sim-text: #8fc2f3;
+  --status-adv-bg: rgba(133, 79, 11, 0.2);
+  --status-adv-text: #f3cc8f;
+  --status-other-bg: rgba(255, 255, 255, 0.05);
+  --status-other-text: #888;
+
+  /* 日历等级颜色 - 深色 */
+  --cal-level-0: transparent;
+  --cal-level-1: rgba(127, 119, 221, 0.15);
+  --cal-level-1-text: #afa9ec;
+  --cal-level-2: rgba(127, 119, 221, 0.4);
+  --cal-level-2-text: #eeedfe;
+  --cal-level-3: #7f77dd;
+  --cal-level-3-text: #fff;
 }
 
 html {
@@ -227,7 +275,7 @@ input:focus, select:focus, textarea:focus {
   width: 24px; 
   text-align: center; 
 }
-.nav-label { letter-spacing: 0.2px; }
+.nav-label { letter-spacing: 0.2px; white-space: nowrap; }
 
 /* 侧边栏底部 */
 .sidebar-footer {
@@ -361,12 +409,287 @@ input:focus, select:focus, textarea:focus {
 .card:hover {
   box-shadow: var(--shadow-md);
 }
+.card.immersive {
+  border: 2px solid var(--status-moba-text) !important;
+  background: var(--status-moba-bg) !important;
+}
+.card.blocked {
+  opacity: 0.6;
+}
+.card-divider {
+  border-top: 0.5px solid var(--border-light);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+.card-note {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+.card-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.card-stats-value {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 16px;
+}
+.card-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  border: 1px dashed var(--border-color) !important;
+  cursor: pointer;
+  color: var(--text-muted);
+  background: transparent !important;
+}
+.card-add:hover {
+  border-color: var(--primary-border) !important;
+  color: var(--primary-color);
+  background: var(--bg-tertiary) !important;
+}
 .section-label { 
   font-size: 15px; 
   font-weight: 600; 
   color: var(--text-tertiary); 
   margin-bottom: 1rem;
   letter-spacing: 0.3px;
+}
+
+/* ============================================
+   计时器页面专用
+   ============================================ */
+.timer-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 24px;
+  background: var(--status-moba-bg);
+  color: var(--status-moba-text);
+  font-size: 15px;
+  font-weight: 600;
+}
+.timer-game-card {
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-tertiary) 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 0.5px solid var(--primary-border);
+}
+.timer-display {
+  font-size: 88px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 6px;
+  font-variant-numeric: tabular-nums;
+  font-family: monospace;
+  text-shadow: 0 2px 12px rgba(127,119,221,0.15);
+  animation: timer-pulse 1s ease-in-out infinite;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+.selection-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--text-primary);
+}
+.selection-card.active {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.selection-card:hover:not(.active) {
+  border-color: var(--text-muted);
+  background: var(--bg-tertiary);
+}
+.timer-info-box {
+  padding: 18px 22px;
+  background: var(--bg-secondary);
+  border-radius: 14px;
+  border: 0.5px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+.timer-info-box.immersive {
+  background: var(--status-moba-bg);
+  border-color: var(--status-moba-text);
+  color: var(--status-moba-text);
+}
+
+/* ============================================
+   设计页专用
+   ============================================ */
+.design-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+.design-card-icon.active-immersive {
+  background: var(--status-moba-bg);
+}
+.design-card-icon.active-theme {
+  background: var(--status-adv-bg);
+}
+.design-card-icon.active-mobile {
+  background: var(--status-sim-bg);
+}
+.design-card-icon.active-float {
+  background: var(--primary-light);
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.option-item {
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid var(--border-light);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  color: var(--text-primary);
+}
+.option-item:hover {
+  border-color: var(--text-muted);
+  background: var(--bg-tertiary);
+}
+.option-item.active {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.info-box {
+  padding: 14px 18px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  border: 0.5px solid var(--border-color);
+}
+
+.reset-card {
+  background: var(--bg-tertiary) !important;
+  border: 1px dashed var(--border-color) !important;
+}
+
+/* ============================================
+   选项卡组件
+   ============================================ */
+.tabs {
+  display: flex;
+  border-bottom: 0.5px solid var(--border-color);
+  margin-bottom: 1.25rem;
+}
+.tab-btn {
+  padding: 10px 18px;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+.tab-btn.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* ============================================
+   记录列表项
+   ============================================ */
+.record-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--border-light);
+  font-size: 15px;
+}
+.record-source-tag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.record-source-tag.timer {
+  background: var(--status-moba-bg);
+  color: var(--status-moba-text);
+}
+.record-source-tag.manual {
+  background: var(--status-adv-bg);
+  color: var(--status-adv-text);
+}
+
+/* ============================================
+   进度条
+   ============================================ */
+.progress-bar {
+  height: 6px;
+  background: var(--border-light);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 3px;
+  transition: width 0.3s ease;
 }
 
 /* ============================================
@@ -441,12 +764,32 @@ input:focus, select:focus, textarea:focus {
   gap: 4px;
 }
 .badge-platform { background: var(--border-light); color: var(--text-secondary); }
-.badge-RPG { background: #eeedfe; color: #534ab7; }
-.badge-FPS { background: #faece7; color: #993c1d; }
-.badge-MOBA { background: #e1f5ee; color: #0f6e56; }
-.badge-SIM { background: #e6f1fb; color: #185fa5; }
-.badge-ADV { background: #faeeda; color: #854f0b; }
-.badge-OTHER { background: var(--border-light); color: var(--text-secondary); }
+.badge-RPG { background: var(--status-rpg-bg); color: var(--status-rpg-text); }
+.badge-FPS { background: var(--status-fps-bg); color: var(--status-fps-text); }
+.badge-MOBA { background: var(--status-moba-bg); color: var(--status-moba-text); }
+.badge-SIM { background: var(--status-sim-bg); color: var(--status-sim-text); }
+.badge-ADV { background: var(--status-adv-bg); color: var(--status-adv-text); }
+.badge-OTHER { background: var(--status-other-bg); color: var(--status-other-text); }
+
+/* ============================================
+   状态提醒类
+   ============================================ */
+.alert-success {
+  background: var(--status-moba-bg);
+  border: 0.5px solid var(--status-moba-text);
+  color: var(--status-moba-text);
+  border-radius: 14px;
+  padding: 16px 20px;
+}
+.alert-success strong { color: var(--status-moba-text); }
+.alert-success .btn {
+  background: rgba(15, 110, 86, 0.1);
+  color: var(--status-moba-text);
+  border-color: var(--status-moba-text);
+}
+[data-theme="dark"] .alert-success .btn {
+  background: rgba(94, 196, 168, 0.1);
+}
 
 /* ============================================
    游戏头像
@@ -596,7 +939,7 @@ input:focus, select:focus, textarea:focus {
   align-items: center; 
   gap: 10px;
   background: var(--primary-light); 
-  border: 0.5px solid #afa9ec; 
+  border: 0.5px solid var(--primary-border); 
   border-radius: 12px;
   padding: 14px 18px; 
   margin-bottom: 1.75rem;
@@ -605,7 +948,7 @@ input:focus, select:focus, textarea:focus {
   width: 10px; 
   height: 10px; 
   border-radius: 50%; 
-  background: #7f77dd; 
+  background: var(--primary-color); 
   flex-shrink: 0;
 }
 .today-text { 
@@ -615,7 +958,7 @@ input:focus, select:focus, textarea:focus {
 }
 .today-sub { 
   font-size: 14px; 
-  color: #7f77dd; 
+  color: var(--primary-color); 
   margin-left: auto; 
 }
 
@@ -661,7 +1004,7 @@ input:focus, select:focus, textarea:focus {
 .chip.active { 
   background: var(--primary-light); 
   color: var(--primary-color); 
-  border-color: #afa9ec; 
+  border-color: var(--primary-border); 
   font-weight: 600; 
 }
 

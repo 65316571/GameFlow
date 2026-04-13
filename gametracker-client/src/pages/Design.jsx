@@ -59,36 +59,26 @@ export default function Design() {
       <div style={{ display: 'grid', gap: 20 }}>
         
         {/* 沉浸模式 */}
-        <div className="card" style={{ border: settings.immersiveMode ? '2px solid #0f6e56' : undefined }}>
+        <div className={`card ${settings.immersiveMode ? 'immersive' : ''}`}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-            <div style={{ 
-              width: 56, height: 56, borderRadius: 14,
-              background: settings.immersiveMode ? '#e1f5ee' : '#f1efe8',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 28,
-              flexShrink: 0
-            }}>
+            <div className={`design-card-icon ${settings.immersiveMode ? 'active-immersive' : ''}`}>
               {settings.immersiveMode ? '🧘' : '🎯'}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
                   <div style={{ fontSize: 18, fontWeight: 700 }}>沉浸模式</div>
-                  <div style={{ fontSize: 14, color: '#888780', marginTop: 4 }}>
+                  <div style={{ fontSize: 14, color: 'var(--text-tertiary)', marginTop: 4 }}>
                     限定只玩一款游戏，专注体验不被打扰
                   </div>
                 </div>
                 <button 
-                  className="btn"
+                  className={`btn ${settings.immersiveMode ? '' : 'btn-primary'}`}
                   onClick={handleImmersiveToggle}
                   disabled={!settings.immersiveMode && !selectedGame}
                   style={{
-                    background: settings.immersiveMode ? '#0f6e56' : '#534ab7',
-                    color: '#fff',
-                    borderColor: settings.immersiveMode ? '#0f6e56' : '#534ab7',
                     padding: '10px 24px',
                     fontSize: 15,
-                    opacity: !settings.immersiveMode && !selectedGame ? 0.5 : 1
                   }}
                 >
                   {settings.immersiveMode ? '退出沉浸' : '开启沉浸'}
@@ -96,21 +86,13 @@ export default function Design() {
               </div>
 
               {settings.immersiveMode && (
-                <div style={{ 
-                  marginTop: 16, 
-                  padding: '14px 18px', 
-                  background: '#e1f5ee', 
-                  borderRadius: 12,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12
-                }}>
+                <div className="alert-success" style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ fontSize: 24 }}>🔒</span>
                   <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: '#0f6e56' }}>
+                    <div style={{ fontSize: 14, fontWeight: 600 }}>
                       沉浸模式已开启
                     </div>
-                    <div style={{ fontSize: 13, color: '#0f6e56', marginTop: 2 }}>
+                    <div style={{ fontSize: 13, marginTop: 2 }}>
                       当前限定游戏：{games.find(g => g.id === settings.immersiveGameId)?.name || '未选择'}
                     </div>
                   </div>
@@ -119,42 +101,29 @@ export default function Design() {
 
               <div style={{ marginTop: 16 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>选择限定游戏：</div>
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
-                  gap: 10,
-                  maxHeight: settings.immersiveMode ? 'none' : 200,
-                  overflow: settings.immersiveMode ? 'visible' : 'auto',
-                  padding: 4
-                }}>
+                <div 
+                  className="option-grid"
+                  style={{ 
+                    maxHeight: settings.immersiveMode ? 'none' : 200,
+                    overflow: settings.immersiveMode ? 'visible' : 'auto',
+                    padding: 4
+                  }}
+                >
                   {games.map(game => (
                     <div
                       key={game.id}
                       onClick={() => handleGameSelect(game.id)}
-                      style={{
-                        padding: '12px 16px',
-                        borderRadius: 10,
-                        border: `2px solid ${selectedGame === game.id ? '#534ab7' : '#e8e6df'}`,
-                        background: selectedGame === game.id ? '#eeedfe' : '#fff',
-                        cursor: 'pointer',
-                        fontSize: 14,
-                        fontWeight: selectedGame === game.id ? 600 : 500,
-                        color: selectedGame === game.id ? '#534ab7' : '#2c2c2a',
-                        transition: 'all 0.15s ease',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 8
-                      }}
+                      className={`selection-card ${selectedGame === game.id ? 'active' : ''}`}
                     >
                       <span>🎮</span>
-                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
                         {game.name}
                       </span>
                       {selectedGame === game.id && <span style={{ marginLeft: 'auto' }}>✓</span>}
                     </div>
                   ))}
                   {games.length === 0 && (
-                    <div style={{ color: '#888780', fontSize: 14, padding: '20px 0' }}>
+                    <div className="empty-state" style={{ padding: '20px 0' }}>
                       游戏库为空，请先添加游戏
                     </div>
                   )}
@@ -167,18 +136,12 @@ export default function Design() {
         {/* 开灯模式 */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-            <div style={{ 
-              width: 56, height: 56, borderRadius: 14,
-              background: '#faeeda',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 28,
-              flexShrink: 0
-            }}>
+            <div className="design-card-icon active-theme">
               💡
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 18, fontWeight: 700 }}>开灯模式</div>
-              <div style={{ fontSize: 14, color: '#888780', marginTop: 4, marginBottom: 16 }}>
+              <div style={{ fontSize: 14, color: 'var(--text-tertiary)', marginTop: 4, marginBottom: 16 }}>
                 当前：{currentTheme?.icon} {currentTheme?.label}
               </div>
 
@@ -187,27 +150,14 @@ export default function Design() {
                   <button
                     key={option.key}
                     onClick={() => updateSettings({ themeMode: option.key })}
-                    style={{
-                      flex: 1,
-                      padding: '16px',
-                      borderRadius: 12,
-                      border: `2px solid ${settings.themeMode === option.key ? '#534ab7' : '#e8e6df'}`,
-                      background: settings.themeMode === option.key ? '#eeedfe' : '#fff',
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease',
-                      textAlign: 'left'
-                    }}
+                    className={`option-item ${settings.themeMode === option.key ? 'active' : ''}`}
+                    style={{ flex: 1 }}
                   >
                     <div style={{ fontSize: 28, marginBottom: 8 }}>{option.icon}</div>
-                    <div style={{ 
-                      fontSize: 15, 
-                      fontWeight: 600, 
-                      color: settings.themeMode === option.key ? '#534ab7' : '#2c2c2a',
-                      marginBottom: 4
-                    }}>
+                    <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>
                       {option.label}
                     </div>
-                    <div style={{ fontSize: 12, color: '#888780' }}>{option.desc}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>{option.desc}</div>
                   </button>
                 ))}
               </div>
@@ -218,21 +168,15 @@ export default function Design() {
         {/* 手机模式 */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-            <div style={{ 
-              width: 56, height: 56, borderRadius: 14,
-              background: '#e6f1fb',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 28,
-              flexShrink: 0
-            }}>
+            <div className="design-card-icon active-mobile">
               📱
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 18, fontWeight: 700 }}>手机模式</div>
-              <div style={{ fontSize: 14, color: '#888780', marginTop: 4, marginBottom: 16 }}>
+              <div style={{ fontSize: 14, color: 'var(--text-tertiary)', marginTop: 4, marginBottom: 16 }}>
                 当前：{currentMobile?.icon} {currentMobile?.label}
                 {settings.mobileMode === 'auto' && (
-                  <span style={{ marginLeft: 8, color: '#534ab7' }}>
+                  <span style={{ marginLeft: 8, color: 'var(--primary-color)' }}>
                     ({settings.isMobileView ? '📱 手机视图' : '💻 桌面视图'})
                   </span>
                 )}
@@ -243,40 +187,20 @@ export default function Design() {
                   <button
                     key={option.key}
                     onClick={() => updateSettings({ mobileMode: option.key })}
-                    style={{
-                      flex: 1,
-                      padding: '16px',
-                      borderRadius: 12,
-                      border: `2px solid ${settings.mobileMode === option.key ? '#534ab7' : '#e8e6df'}`,
-                      background: settings.mobileMode === option.key ? '#eeedfe' : '#fff',
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease',
-                      textAlign: 'left'
-                    }}
+                    className={`option-item ${settings.mobileMode === option.key ? 'active' : ''}`}
+                    style={{ flex: 1 }}
                   >
                     <div style={{ fontSize: 28, marginBottom: 8 }}>{option.icon}</div>
-                    <div style={{ 
-                      fontSize: 15, 
-                      fontWeight: 600, 
-                      color: settings.mobileMode === option.key ? '#534ab7' : '#2c2c2a',
-                      marginBottom: 4
-                    }}>
+                    <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>
                       {option.label}
                     </div>
-                    <div style={{ fontSize: 12, color: '#888780' }}>{option.desc}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>{option.desc}</div>
                   </button>
                 ))}
               </div>
 
               {/* 设备信息 */}
-              <div style={{ 
-                marginTop: 16, 
-                padding: '14px 18px', 
-                background: '#fafaf9', 
-                borderRadius: 10,
-                fontSize: 13,
-                color: '#666'
-              }}>
+              <div className="info-box" style={{ marginTop: 16 }}>
                 <div style={{ fontWeight: 600, marginBottom: 8 }}>📊 设备检测信息</div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                   <div>窗口宽度: {typeof window !== 'undefined' ? window.innerWidth : '-'}px</div>
@@ -292,18 +216,12 @@ export default function Design() {
         {/* 菜单悬浮开关 */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ 
-              width: 56, height: 56, borderRadius: 14,
-              background: settings.sidebarFloat ? '#eeedfe' : '#f1efe8',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 28,
-              flexShrink: 0
-            }}>
+            <div className={`design-card-icon ${settings.sidebarFloat ? 'active-float' : ''}`}>
               {settings.sidebarFloat ? '🔘' : '⬛'}
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 18, fontWeight: 700 }}>菜单窗口悬浮</div>
-              <div style={{ fontSize: 14, color: '#888780', marginTop: 4 }}>
+              <div style={{ fontSize: 14, color: 'var(--text-tertiary)', marginTop: 4 }}>
                 开启后侧边栏可以悬浮/缩放，关闭后固定显示
               </div>
             </div>
@@ -318,14 +236,9 @@ export default function Design() {
                 </button>
               )}
               <button 
-                className="btn"
+                className={`btn ${settings.sidebarFloat ? 'btn-primary' : ''}`}
                 onClick={() => updateSettings({ sidebarFloat: !settings.sidebarFloat })}
-                style={{
-                  background: settings.sidebarFloat ? '#534ab7' : '#f1efe8',
-                  color: settings.sidebarFloat ? '#fff' : '#666',
-                  borderColor: settings.sidebarFloat ? '#534ab7' : '#d3d1c7',
-                  padding: '10px 24px'
-                }}
+                style={{ padding: '10px 24px' }}
               >
                 {settings.sidebarFloat ? '✅ 已开启' : '⭕ 已关闭'}
               </button>
@@ -334,13 +247,13 @@ export default function Design() {
         </div>
 
         {/* 重置设置 */}
-        <div className="card" style={{ background: '#fafaf9', borderStyle: 'dashed' }}>
+        <div className="card reset-card">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <span style={{ fontSize: 24 }}>🔄</span>
               <div>
                 <div style={{ fontSize: 15, fontWeight: 600 }}>重置所有设置</div>
-                <div style={{ fontSize: 13, color: '#888780' }}>恢复到默认状态</div>
+                <div style={{ fontSize: 13, color: 'var(--text-tertiary)' }}>恢复到默认状态</div>
               </div>
             </div>
             <button 

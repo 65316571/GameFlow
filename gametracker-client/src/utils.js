@@ -13,12 +13,12 @@ export const GENRE_CODES = ['RPG', 'FPS', 'MOBA', 'SIM', 'ADV', 'OTHER']
 
 // 游戏名首字头像颜色映射（按类型）
 export const GENRE_AVATAR_COLORS = {
-  RPG:   { bg: '#eeedfe', color: '#534ab7' },
-  FPS:   { bg: '#faece7', color: '#993c1d' },
-  MOBA:  { bg: '#e1f5ee', color: '#0f6e56' },
-  SIM:   { bg: '#e6f1fb', color: '#185fa5' },
-  ADV:   { bg: '#faeeda', color: '#854f0b' },
-  OTHER: { bg: '#f1efe8', color: '#5f5e5a' },
+  RPG:   { bg: 'var(--status-rpg-bg)', color: 'var(--status-rpg-text)' },
+  FPS:   { bg: 'var(--status-fps-bg)', color: 'var(--status-fps-text)' },
+  MOBA:  { bg: 'var(--status-moba-bg)', color: 'var(--status-moba-text)' },
+  SIM:   { bg: 'var(--status-sim-bg)', color: 'var(--status-sim-text)' },
+  ADV:   { bg: 'var(--status-adv-bg)', color: 'var(--status-adv-text)' },
+  OTHER: { bg: 'var(--status-other-bg)', color: 'var(--status-other-text)' },
 }
 
 // 格式化时长（秒 → "1h 30m" 或 "45m"）
