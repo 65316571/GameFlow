@@ -58,7 +58,7 @@ export default function Layout({ children }) {
         }}
       >
         <div className="sidebar-logo">
-          <span className="sidebar-logo-icon">🎮</span>
+          <span className="sidebar-logo-icon">🟪</span>
           {!settings.sidebarCollapsed && <span className="sidebar-logo-text">GameTracker</span>}
         </div>
         
@@ -84,7 +84,7 @@ export default function Layout({ children }) {
         )}
 
         {/* 悬浮模式下的切换按钮 */}
-        {settings.sidebarFloat && !settings.isMobileView && (
+        {/* {settings.sidebarFloat && !settings.isMobileView && (
           <button 
             className="sidebar-toggle"
             onClick={() => updateSettings({ sidebarCollapsed: !settings.sidebarCollapsed })}
@@ -92,7 +92,7 @@ export default function Layout({ children }) {
           >
             {settings.sidebarCollapsed ? '▶' : '◀'}
           </button>
-        )}
+        )} */}
       </aside>
 
       {/* 移动端遮罩 */}
