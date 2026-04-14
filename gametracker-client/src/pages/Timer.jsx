@@ -168,7 +168,7 @@ export default function Timer() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 720, margin: '0 auto' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto' }}>
         <div className="card" style={{ padding: '2.5rem' }}>
           {active ? (
             <div style={{ textAlign: 'center', padding: '2rem 0' }}>
