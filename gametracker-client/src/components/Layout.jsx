@@ -1,5 +1,5 @@
-import { NavLink, useLocation } from 'react-router-dom'
-import { useSettings } from '../contexts/SettingsContext'
+import { NavLink } from 'react-router-dom'
+import { useSettings } from '../contexts/useSettings'
 
 const links = [
   { to: '/',        icon: '📊', label: '总览' },
@@ -13,7 +13,6 @@ const links = [
 
 export default function Layout({ children }) {
   const { settings, updateSettings, disableImmersiveMode } = useSettings()
-  const location = useLocation()
   
   // 沉浸模式下的游戏名称
   const immersiveGame = settings.immersiveMode ? 

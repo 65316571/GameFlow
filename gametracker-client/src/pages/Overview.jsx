@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
-import { useSettings } from '../contexts/SettingsContext'
+import { useSettings } from '../contexts/useSettings'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
   BarElement, LineElement, PointElement, Tooltip,

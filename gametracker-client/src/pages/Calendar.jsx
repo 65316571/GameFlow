@@ -25,20 +25,25 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState(dayjs().format('YYYY-MM-DD'))
   const [dayDetail, setDayDetail] = useState(null)
 
-  const loadMonth = async (d) => {
-    const res = await getCalendarMonth(d.year(), d.month() + 1)
-    const map = {}
-    res.data.forEach(item => { map[item.date] = item })
-    setMonthData(map)
-  }
+  useEffect(() => {
+    let cancelled = false
+    getCalendarMonth(current.year(), current.month() + 1).then(res => {
+      if (cancelled) return
+      const map = {}
+      res.data.forEach(item => { map[item.date] = item })
+      setMonthData(map)
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [current])
 
-  const loadDay = async (date) => {
-    const res = await getCalendarDay(date)
-    setDayDetail(res.data)
-  }
-
-  useEffect(() => { loadMonth(current) }, [current])
-  useEffect(() => { loadDay(selectedDate) }, [selectedDate])
+  useEffect(() => {
+    let cancelled = false
+    getCalendarDay(selectedDate).then(res => {
+      if (cancelled) return
+      setDayDetail(res.data)
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [selectedDate])
 
   const startOfMonth = current.startOf('month')
   const daysInMonth = current.daysInMonth()

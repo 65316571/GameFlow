@@ -1,24 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react'
-
-const SettingsContext = createContext(null)
-
-// 默认设置
-const defaultSettings = {
-  // 沉浸模式
-  immersiveMode: false,
-  immersiveGameId: null,
-  
-  // 主题模式: 'light' | 'dark' | 'auto'
-  themeMode: 'light',
-  
-  // 手机模式: 'auto' | 'desktop' | 'mobile'
-  mobileMode: 'auto',
-  isMobileView: false,
-  
-  // 侧边栏悬浮
-  sidebarFloat: true,
-  sidebarCollapsed: false,
-}
+import { useState, useEffect } from 'react'
+import { SettingsContext, defaultSettings } from './settingsStore'
 
 export function SettingsProvider({ children }) {
   // 从 localStorage 加载设置
@@ -126,12 +107,4 @@ export function SettingsProvider({ children }) {
       {children}
     </SettingsContext.Provider>
   )
-}
-
-export function useSettings() {
-  const context = useContext(SettingsContext)
-  if (!context) {
-    throw new Error('useSettings must be used within SettingsProvider')
-  }
-  return context
 }

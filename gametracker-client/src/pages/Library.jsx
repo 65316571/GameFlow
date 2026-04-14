@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSettings } from '../contexts/SettingsContext'
+import { useSettings } from '../contexts/useSettings'
 import { getGames, getGenres, getPlatforms, createGame, updateGame, deleteGame } from '../api'
 import { gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 
@@ -96,20 +96,17 @@ export default function Library() {
   const [filterGenre, setFilterGenre] = useState('')
   const [modal, setModal] = useState(null)
 
-  const load = async () => {
-    const params = {}
-    if (filterPlatform) params.platform_code = filterPlatform
-    if (filterGenre) params.genre_code = filterGenre
-    const res = await getGames(params)
-    setGames(res.data)
-  }
-
   useEffect(() => {
     getGenres().then(r => setGenres(r.data))
     getPlatforms().then(r => setPlatforms(r.data))
   }, [])
 
-  useEffect(() => { load() }, [filterPlatform, filterGenre])
+  useEffect(() => {
+    const params = {}
+    if (filterPlatform) params.platform_code = filterPlatform
+    if (filterGenre) params.genre_code = filterGenre
+    getGames(params).then(res => setGames(res.data))
+  }, [filterPlatform, filterGenre])
 
   const handleSave = async (form) => {
     if (modal && modal.id) {
@@ -117,13 +114,21 @@ export default function Library() {
     } else {
       await createGame(form)
     }
-    load()
+    const params = {}
+    if (filterPlatform) params.platform_code = filterPlatform
+    if (filterGenre) params.genre_code = filterGenre
+    const res = await getGames(params)
+    setGames(res.data)
   }
 
   const handleDelete = async (id) => {
     if (!confirm('确定删除这款游戏及其所有游玩记录吗？')) return
     await deleteGame(id)
-    load()
+    const params = {}
+    if (filterPlatform) params.platform_code = filterPlatform
+    if (filterGenre) params.genre_code = filterGenre
+    const res = await getGames(params)
+    setGames(res.data)
   }
 
   // 获取沉浸游戏信息
@@ -170,7 +175,7 @@ export default function Library() {
         </div>
       )}
 
-      {/* 筛选 -->
+      {/* 筛选 */}
       <div style={{ display: 'flex', gap: 16, marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
         <div className="chip-group">
           <button className={`chip ${!filterPlatform ? 'active' : ''}`} onClick={() => setFilterPlatform('')}>
@@ -193,7 +198,7 @@ export default function Library() {
             </button>
           ))}
         </div>
-        <div style={{ width: '0.5px', height: 24, background: '#e8e6df' }} />
+        <div style={{ width: '0.5px', height: 24, background: 'var(--border-color)' }} />
         <div className="chip-group">
           <button className={`chip ${!filterGenre ? 'active' : ''}`} onClick={() => setFilterGenre('')}>
             🏷️ 全部类型

@@ -1,4 +1,4 @@
-import { useSettings } from '../contexts/SettingsContext'
+import { useSettings } from '../contexts/useSettings'
 import { useState, useEffect } from 'react'
 import { getGames } from '../api'
 import { PLATFORM_ICONS } from '../utils'

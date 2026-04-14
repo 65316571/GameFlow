@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSettings } from '../contexts/SettingsContext'
+import { useSettings } from '../contexts/useSettings'
 import { getGames, getPlatforms, startSession, stopSession, getActiveSession } from '../api'
-import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
+import { gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 import dayjs from 'dayjs'
 
 const GENRE_ICONS = {
@@ -25,7 +25,6 @@ function useTimer(active) {
       ref.current = setInterval(tick, 1000)
     } else {
       clearInterval(ref.current)
-      setElapsed(0)
     }
     return () => clearInterval(ref.current)
   }, [active])
