@@ -92,12 +92,21 @@ export function SettingsProvider({ children }) {
     updateSettings({ sidebarFloat: !settings.sidebarFloat })
   }
 
+  // 切换移动端视图模式
+  const toggleMobileMode = () => {
+    const modes = ['auto', 'mobile', 'desktop']
+    const currentIndex = modes.indexOf(settings.mobileMode)
+    const nextMode = modes[(currentIndex + 1) % modes.length]
+    updateSettings({ mobileMode: nextMode })
+  }
+
   const value = {
     settings,
     updateSettings,
     enableImmersiveMode,
     disableImmersiveMode,
     toggleTheme,
+    toggleMobileMode,
     toggleSidebar,
     toggleSidebarFloat,
   }

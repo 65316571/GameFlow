@@ -208,39 +208,41 @@ export default function Calendar() {
                             </span>
                             <span style={{ fontSize: 15, color: 'var(--text-tertiary)' }}>今日总时长 ⏱️</span>
                           </div>
-                          {sessions.map(s => {
-                            const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
-                            const pct = totalSec > 0 ? Math.round(s.duration_seconds / totalSec * 100) : 0
-                            return (
-                              <div key={s.id} className="record-item">
-                                <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 48, height: 48, fontSize: 15 }}>
-                                  {gameInitial(s.game_name)}
-                                </div>
-                                <div style={{ flex: 1 }}>
-                                  <div style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    {s.game_name}
-                                    {PLATFORM_ICONS[s.platform_code] && (
-                                      <span 
-                                        className="platform-icon" 
-                                        data-platform={s.platform_code}
-                                        style={{ 
-                                          width: 14, height: 14,
-                                          maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
-                                          WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
-                                        }}
-                                      />
-                                    )}
+                          <div className="calendar-day-scroll">
+                            {sessions.map(s => {
+                              const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
+                              const pct = totalSec > 0 ? Math.round(s.duration_seconds / totalSec * 100) : 0
+                              return (
+                                <div key={s.id} className="record-item">
+                                  <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 48, height: 48, fontSize: 15 }}>
+                                    {gameInitial(s.game_name)}
                                   </div>
-                                  <div className="progress-bar">
-                                    <div className="progress-fill" style={{ width: `${pct}%` }} />
+                                  <div style={{ flex: 1 }}>
+                                    <div style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                      {s.game_name}
+                                      {PLATFORM_ICONS[s.platform_code] && (
+                                        <span 
+                                          className="platform-icon" 
+                                          data-platform={s.platform_code}
+                                          style={{ 
+                                            width: 14, height: 14,
+                                            maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
+                                            WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
+                                          }}
+                                        />
+                                      )}
+                                    </div>
+                                    <div className="progress-bar">
+                                      <div className="progress-fill" style={{ width: `${pct}%` }} />
+                                    </div>
                                   </div>
+                                  <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary-color)', minWidth: 60, textAlign: 'right' }}>
+                                    {fmtDuration(s.duration_seconds)}
+                                  </span>
                                 </div>
-                                <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary-color)', minWidth: 60, textAlign: 'right' }}>
-                                  {fmtDuration(s.duration_seconds)}
-                                </span>
-                              </div>
-                            )
-                          })}
+                              )
+                            })}
+                          </div>
                         </>
                       )
                     }

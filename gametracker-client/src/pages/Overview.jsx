@@ -52,6 +52,7 @@ export default function Overview() {
   const chartLabels = weekData.labels || []
   const thisWeekValues = weekData.thisWeek || []
   const lastWeekValues = weekData.lastWeek || []
+  const chartKey = `${settings.mobileMode || 'auto'}-${settings.isMobileView ? 'm' : 'd'}-${settings.themeMode}`
 
   return (
     <div>
@@ -101,13 +102,14 @@ export default function Overview() {
       </div>
 
       {/* 图表和最近记录 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-        <div className="card" style={{ minHeight: 320 }}>
+      <div className="overview-bottom-grid">
+        <div className="card overview-panel">
           <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 18 }}>📈</span> 本周每日时长
           </div>
-          <div style={{ position: 'relative', height: 240 }}>
+          <div className="overview-chart-wrap">
             <Bar
+              key={chartKey}
               data={{
                 labels: chartLabels,
                 datasets: [
@@ -176,7 +178,7 @@ export default function Overview() {
           </div>
         </div>
 
-        <div className="card" style={{ minHeight: 320 }}>
+        <div className="card overview-panel">
           <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 18 }}>🕐</span> 最近游玩
           </div>
@@ -187,41 +189,45 @@ export default function Overview() {
                 暂无记录
               </div>
             )
-            : recentSessions.map((s) => {
-                const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
-                return (
-                  <div key={s.id} style={{ 
-                    display: 'flex', alignItems: 'center', gap: 14, 
-                    padding: '12px 0', 
-                    borderBottom: '0.5px solid var(--border-light)' 
-                  }}>
-                    <div className="game-avatar" style={{ background: colors.bg, color: colors.color }}>
-                      {gameInitial(s.game_name)}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
-                      <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
-                        {s.played_at} · <span className={`badge badge-platform`}>
-                          {PLATFORM_ICONS[s.platform_code] && (
-                            <span 
-                              className="platform-icon" 
-                              data-platform={s.platform_code}
-                              style={{ 
-                                maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
-                                WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
-                              }}
-                            />
-                          )}
-                          {s.platform_code}
-                        </span>
+            : (
+              <div className="overview-recent-scroll">
+                {recentSessions.map((s) => {
+                  const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
+                  return (
+                    <div key={s.id} style={{ 
+                      display: 'flex', alignItems: 'center', gap: 14, 
+                      padding: '12px 0', 
+                      borderBottom: '0.5px solid var(--border-light)' 
+                    }}>
+                      <div className="game-avatar" style={{ background: colors.bg, color: colors.color }}>
+                        {gameInitial(s.game_name)}
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
+                        <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
+                          {s.played_at} · <span className={`badge badge-platform`}>
+                            {PLATFORM_ICONS[s.platform_code] && (
+                              <span 
+                                className="platform-icon" 
+                                data-platform={s.platform_code}
+                                style={{ 
+                                  maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
+                                  WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
+                                }}
+                              />
+                            )}
+                            {s.platform_code}
+                          </span>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--primary-color)' }}>
+                        {fmtDuration(s.duration_seconds)}
                       </div>
                     </div>
-                    <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--primary-color)' }}>
-                      {fmtDuration(s.duration_seconds)}
-                    </div>
-                  </div>
-                )
-              })
+                  )
+                })}
+              </div>
+            )
           }
         </div>
       </div>

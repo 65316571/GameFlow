@@ -27,6 +27,10 @@ function GameModal({ game, genres, platforms, onClose, onSave }) {
     genre_id: game?.genre_id || '',
     platform_id: game?.platform_id || '',
     note: game?.note || '',
+    cover_url: game?.cover_url || '',
+    official_url: game?.official_url || '',
+    publisher: game?.publisher || '',
+    wiki_intro: game?.wiki_intro || '',
   })
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
@@ -75,6 +79,26 @@ function GameModal({ game, genres, platforms, onClose, onSave }) {
         <div className="field">
           <label><span>📝</span> 备注（可选）</label>
           <textarea value={form.note} onChange={e => set('note', e.target.value)} placeholder="版本、购买来源等" />
+        </div>
+
+        <div className="field">
+          <label><span>🏢</span> 游戏厂商（百科）</label>
+          <input value={form.publisher} onChange={e => set('publisher', e.target.value)} placeholder="例如：FromSoftware" />
+        </div>
+
+        <div className="field">
+          <label><span>🔗</span> 游戏官网（百科）</label>
+          <input value={form.official_url} onChange={e => set('official_url', e.target.value)} placeholder="https://..." />
+        </div>
+
+        <div className="field">
+          <label><span>🖼️</span> 游戏封面/图标 URL（百科）</label>
+          <input value={form.cover_url} onChange={e => set('cover_url', e.target.value)} placeholder="https://... 或 http://localhost:3001/uploads/..." />
+        </div>
+
+        <div className="field">
+          <label><span>📖</span> 游戏介绍（百科）</label>
+          <textarea value={form.wiki_intro} onChange={e => set('wiki_intro', e.target.value)} placeholder="客观介绍（不包含个人评价）" />
         </div>
         <div className="modal-footer">
           <button className="btn" onClick={onClose}>取消</button>
@@ -221,7 +245,7 @@ export default function Library() {
           </div>
         )
         : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+          <div className="library-grid-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
             {games.map(game => {
               const colors = GENRE_AVATAR_COLORS[game.genre_code] || GENRE_AVATAR_COLORS.OTHER
               const isImmersiveGame = settings.immersiveMode && settings.immersiveGameId === game.id
@@ -251,11 +275,25 @@ export default function Library() {
                     </div>
                   )}
                   <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                    <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 56, height: 56, fontSize: 18 }}>
-                      {gameInitial(game.name)}
-                    </div>
+                    {game.cover_url ? (
+                      <img
+                        src={game.cover_url}
+                        alt={game.name}
+                        style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover', flexShrink: 0, border: '0.5px solid var(--border-color)' }}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 56, height: 56, fontSize: 18 }}>
+                        {gameInitial(game.name)}
+                      </div>
+                    )}
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.4 }}>{game.name}</div>
+                      {game.publisher && (
+                        <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 4 }}>
+                          {game.publisher}
+                        </div>
+                      )}
                     </div>
                     <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
                       <button 

@@ -49,17 +49,26 @@ router.get('/', async (req, res) => {
 // POST /api/games - 创建游戏
 router.post('/', async (req, res) => {
   try {
-    const { name, genre_id, platform_id, note } = req.body
+    const { name, genre_id, platform_id, note, cover_url, official_url, publisher, wiki_intro } = req.body
     
     if (!name || !genre_id || !platform_id) {
       return res.status(400).json({ error: 'name, genre_id and platform_id are required' })
     }
 
     const result = await query(
-      `INSERT INTO games (name, genre_id, platform_id, note) 
-       VALUES ($1, $2, $3, $4) 
+      `INSERT INTO games (name, genre_id, platform_id, note, cover_url, official_url, publisher, wiki_intro) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
        RETURNING *`,
-      [name, genre_id, platform_id, note || null]
+      [
+        name,
+        genre_id,
+        platform_id,
+        note || null,
+        cover_url || null,
+        official_url || null,
+        publisher || null,
+        wiki_intro || null,
+      ]
     )
 
     res.status(201).json(result.rows[0])
@@ -73,14 +82,26 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const { name, genre_id, platform_id, note } = req.body
+    const { name, genre_id, platform_id, note, cover_url, official_url, publisher, wiki_intro } = req.body
 
     const result = await query(
       `UPDATE games 
-       SET name = $1, genre_id = $2, platform_id = $3, note = $4, updated_at = NOW()
-       WHERE id = $5
+       SET name = $1, genre_id = $2, platform_id = $3, note = $4,
+           cover_url = $5, official_url = $6, publisher = $7, wiki_intro = $8,
+           updated_at = NOW()
+       WHERE id = $9
        RETURNING *`,
-      [name, genre_id, platform_id, note || null, id]
+      [
+        name,
+        genre_id,
+        platform_id,
+        note || null,
+        cover_url || null,
+        official_url || null,
+        publisher || null,
+        wiki_intro || null,
+        id,
+      ]
     )
 
     if (result.rows.length === 0) {

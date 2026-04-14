@@ -1,6 +1,12 @@
-import { useMemo, useState } from 'react'
-
-const STORAGE_KEY = 'gametracker-wiki-v1'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  createWikiGenre,
+  deleteWikiGenre,
+  getWikiGenres,
+  updateWikiGenre,
+  uploadWikiImage,
+} from '../api'
+import { createGame, deleteGame, getGames, getPlatforms, updateGame } from '../api'
 
 const THEME_PRESETS = [
   { key: 'RPG', label: '紫色', bg: 'var(--status-rpg-bg)', color: 'var(--status-rpg-text)' },
@@ -11,163 +17,8 @@ const THEME_PRESETS = [
   { key: 'OTHER', label: '中性', bg: 'var(--status-other-bg)', color: 'var(--status-other-text)' },
 ]
 
-const DEFAULT_GENRES = [
-  {
-    code: 'RPG',
-    name: '角色扮演',
-    full: 'Role-Playing Game',
-    theme: 'RPG',
-    icon: '⚔️',
-    desc: '玩家扮演一个或多个角色，在虚构世界中完成故事任务，通过战斗和成长提升角色能力。强调叙事、世界观构建与角色养成，通常拥有庞大的剧情和丰富的支线任务。',
-    wikiUrl: 'https://zh.wikipedia.org/wiki/角色扮演游戏',
-    wikiLabel: '维基百科 · 角色扮演游戏',
-    games: [
-      { id: 'rpg-ff', name: '最终幻想系列', publisher: '', intro: '', imageUrl: '' },
-      { id: 'rpg-ys', name: '原神', publisher: '', intro: '', imageUrl: '' },
-      { id: 'rpg-er', name: '艾尔登法环', publisher: '', intro: '', imageUrl: '' },
-      { id: 'rpg-p5', name: '女神异闻录5', publisher: '', intro: '', imageUrl: '' },
-      { id: 'rpg-dq', name: '勇者斗恶龙', publisher: '', intro: '', imageUrl: '' },
-      { id: 'rpg-tales', name: '破晓传说', publisher: '', intro: '', imageUrl: '' },
-    ],
-  },
-  {
-    code: 'FPS',
-    name: '第一人称射击',
-    full: 'First-Person Shooter',
-    theme: 'FPS',
-    icon: '🔫',
-    desc: '以第一人称视角操控角色进行射击对抗，玩家直接看到角色的武器和手部。强调反应速度、瞄准精度和团队配合，竞技性强，是电竞赛场的主流品类之一。',
-    wikiUrl: 'https://zh.wikipedia.org/wiki/第一人称射击游戏',
-    wikiLabel: '维基百科 · 第一人称射击游戏',
-    games: [
-      { id: 'fps-val', name: 'Valorant', publisher: '', intro: '', imageUrl: '' },
-      { id: 'fps-cs2', name: 'CS2', publisher: '', intro: '', imageUrl: '' },
-      { id: 'fps-cod', name: '使命召唤', publisher: '', intro: '', imageUrl: '' },
-      { id: 'fps-halo', name: '光环', publisher: '', intro: '', imageUrl: '' },
-      { id: 'fps-r6', name: '彩虹六号：围攻', publisher: '', intro: '', imageUrl: '' },
-      { id: 'fps-bf', name: '战地系列', publisher: '', intro: '', imageUrl: '' },
-    ],
-  },
-  {
-    code: 'MOBA',
-    name: '多人在线战术',
-    full: 'Multiplayer Online Battle Arena',
-    theme: 'MOBA',
-    icon: '⚡',
-    desc: '两队玩家各自操控英雄角色，目标是摧毁对方基地。强调团队协作、英雄搭配与实时策略决策，每局游戏通常持续 30~60 分钟，拥有极高的竞技深度。',
-    wikiUrl: 'https://zh.wikipedia.org/wiki/多人在线战术竞技游戏',
-    wikiLabel: '维基百科 · MOBA',
-    games: [
-      { id: 'moba-lol', name: '英雄联盟', publisher: '', intro: '', imageUrl: '' },
-      { id: 'moba-hok', name: '王者荣耀', publisher: '', intro: '', imageUrl: '' },
-      { id: 'moba-dota2', name: 'Dota 2', publisher: '', intro: '', imageUrl: '' },
-      { id: 'moba-hots', name: '风暴英雄', publisher: '', intro: '', imageUrl: '' },
-      { id: 'moba-smite', name: 'Smite', publisher: '', intro: '', imageUrl: '' },
-    ],
-  },
-  {
-    code: 'SIM',
-    name: '模拟经营',
-    full: 'Simulation Game',
-    theme: 'SIM',
-    icon: '🏗️',
-    desc: '模拟现实或虚构场景中的经营、建设、管理活动，节奏较慢，强调规划与资源调配，通常无明确胜负压力。涵盖城市建设、农场经营、交通模拟等多个子类型项。',
-    wikiUrl: 'https://zh.wikipedia.org/wiki/模拟游戏',
-    wikiLabel: '维基百科 · 模拟游戏',
-    games: [
-      { id: 'sim-cs', name: '城市：天际线', publisher: '', intro: '', imageUrl: '' },
-      { id: 'sim-sv', name: '星露谷物语', publisher: '', intro: '', imageUrl: '' },
-      { id: 'sim-ts', name: '模拟人生', publisher: '', intro: '', imageUrl: '' },
-      { id: 'sim-rc', name: '过山车之星', publisher: '', intro: '', imageUrl: '' },
-      { id: 'sim-ac', name: '动物森友会', publisher: '', intro: '', imageUrl: '' },
-      { id: 'sim-dsp', name: '戴森球计划', publisher: '', intro: '', imageUrl: '' },
-    ],
-  },
-  {
-    code: 'ADV',
-    name: '冒险解谜',
-    full: 'Adventure Game',
-    theme: 'ADV',
-    icon: '🗺️',
-    desc: '玩家在广阔世界中探索、收集线索、解开谜题，并推进剧情发展。注重世界探索的自由度与叙事沉浸感，部分作品融合了动作元素形成动作冒险子类型。',
-    wikiUrl: 'https://zh.wikipedia.org/wiki/冒险游戏',
-    wikiLabel: '维基百科 · 冒险游戏',
-    games: [
-      { id: 'adv-zelda', name: '塞尔达传说：王国之泪', publisher: '', intro: '', imageUrl: '' },
-      { id: 'adv-rdr2', name: '荒野大镖客2', publisher: '', intro: '', imageUrl: '' },
-      { id: 'adv-detroit', name: '底特律：变人', publisher: '', intro: '', imageUrl: '' },
-      { id: 'adv-disco', name: '极乐迪斯科', publisher: '', intro: '', imageUrl: '' },
-      { id: 'adv-ori', name: '奥日系列', publisher: '', intro: '', imageUrl: '' },
-    ],
-  },
-  {
-    code: 'OTHER',
-    name: '其他类型',
-    full: 'Other / Miscellaneous',
-    theme: 'OTHER',
-    icon: '🎯',
-    desc: '不属于以上类型的游戏，涵盖音乐节奏、体育竞技、格斗、益智、卡牌、恐怖生存等多元品类。每个子类型都有自己独特的玩法逻辑和受众群体。',
-    wikiUrl: 'https://zh.wikipedia.org/wiki/电子游戏类型',
-    wikiLabel: '维基百科 · 电子游戏类型总览',
-    games: [
-      { id: 'other-taiko', name: '太鼓达人', publisher: '', intro: '', imageUrl: '' },
-      { id: 'other-fifa', name: 'FIFA', publisher: '', intro: '', imageUrl: '' },
-      { id: 'other-sf6', name: '街头霸王6', publisher: '', intro: '', imageUrl: '' },
-      { id: 'other-hs', name: '炉石传说', publisher: '', intro: '', imageUrl: '' },
-      { id: 'other-sekiro', name: '只狼', publisher: '', intro: '', imageUrl: '' },
-    ],
-  },
-]
-
 function getTheme(themeKey) {
-  return THEME_PRESETS.find(t => t.key === themeKey) || THEME_PRESETS[0]
-}
-
-function loadWiki() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return null
-    const parsed = JSON.parse(raw)
-    if (!Array.isArray(parsed)) return null
-    return parsed
-  } catch {
-    return null
-  }
-}
-
-function saveWiki(genres) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(genres))
-}
-
-function genId(prefix) {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) return `${prefix}-${crypto.randomUUID()}`
-  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`
-}
-
-function normGenre(g) {
-  const code = typeof g?.code === 'string' ? g.code.trim() : ''
-  if (!code) return null
-  return {
-    code,
-    name: typeof g?.name === 'string' ? g.name : code,
-    full: typeof g?.full === 'string' ? g.full : '',
-    theme: typeof g?.theme === 'string' ? g.theme : 'OTHER',
-    icon: typeof g?.icon === 'string' ? g.icon : '🎮',
-    desc: typeof g?.desc === 'string' ? g.desc : '',
-    wikiUrl: typeof g?.wikiUrl === 'string' ? g.wikiUrl : '',
-    wikiLabel: typeof g?.wikiLabel === 'string' ? g.wikiLabel : '查看链接',
-    games: Array.isArray(g?.games)
-      ? g.games
-          .map(x => ({
-            id: typeof x?.id === 'string' ? x.id : `${code}-${Math.random().toString(16).slice(2)}`,
-            name: typeof x?.name === 'string' ? x.name : '',
-            publisher: typeof x?.publisher === 'string' ? x.publisher : '',
-            intro: typeof x?.intro === 'string' ? x.intro : '',
-            imageUrl: typeof x?.imageUrl === 'string' ? x.imageUrl : '',
-          }))
-          .filter(x => x.name.trim())
-      : [],
-  }
+  return THEME_PRESETS.find(t => t.key === themeKey) || THEME_PRESETS[THEME_PRESETS.length - 1]
 }
 
 function GenreModal({ mode, initial, onClose, onSave }) {
@@ -186,11 +37,11 @@ function GenreModal({ mode, initial, onClose, onSave }) {
 
   const handleSubmit = () => {
     const code = form.code.trim()
-    if (!code) return
+    const name = form.name.trim()
+    if (!code || !name) return
     onSave({
-      ...initial,
       code,
-      name: form.name.trim() || code,
+      name,
       full: form.full.trim(),
       icon: form.icon.trim() || '🎮',
       theme: form.theme,
@@ -200,14 +51,12 @@ function GenreModal({ mode, initial, onClose, onSave }) {
     })
   }
 
-  const title = mode === 'add' ? '新增类型' : '编辑类型'
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 560 }}>
         <div className="modal-title">
           <span style={{ fontSize: 22 }}>{mode === 'add' ? '➕' : '✏️'}</span>
-          {title}
+          {mode === 'add' ? '新增类型' : '编辑类型'}
         </div>
 
         <div className="field-row">
@@ -270,39 +119,83 @@ function GenreModal({ mode, initial, onClose, onSave }) {
 
 function GameModal({ mode, initial, onClose, onSave }) {
   const [form, setForm] = useState(() => ({
+    id: initial?.id,
     name: initial?.name || '',
     publisher: initial?.publisher || '',
-    intro: initial?.intro || '',
-    imageUrl: initial?.imageUrl || '',
+    official_url: initial?.official_url || '',
+    cover_url: initial?.cover_url || '',
+    wiki_intro: initial?.wiki_intro || '',
+    genre_id: initial?.genre_id || '',
+    platform_id: initial?.platform_id || '',
   }))
+  const [uploading, setUploading] = useState(false)
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
-  const handleSubmit = () => {
-    const name = form.name.trim()
-    if (!name) return
-    onSave({
-      ...initial,
-      name,
-      publisher: form.publisher.trim(),
-      intro: form.intro.trim(),
-      imageUrl: form.imageUrl.trim(),
-    })
+  const handleUpload = async (file) => {
+    if (!file) return
+    setUploading(true)
+    try {
+      const res = await uploadWikiImage(file)
+      set('cover_url', res.data?.url || '')
+    } catch {
+      alert('图片上传失败，请重试')
+    } finally {
+      setUploading(false)
+    }
   }
 
-  const title = mode === 'add' ? '新增游戏' : '编辑游戏'
+  const handleSubmit = () => {
+    const name = form.name.trim()
+    if (!name || !form.genre_id || !form.platform_id) return
+    onSave({
+      id: form.id,
+      name,
+      publisher: form.publisher.trim(),
+      official_url: form.official_url.trim(),
+      cover_url: form.cover_url.trim(),
+      wiki_intro: form.wiki_intro.trim(),
+      genre_id: form.genre_id,
+      platform_id: form.platform_id,
+    })
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 560 }}>
         <div className="modal-title">
           <span style={{ fontSize: 22 }}>{mode === 'add' ? '➕' : '✏️'}</span>
-          {title}
+          {mode === 'add' ? '新增游戏' : '编辑游戏'}
         </div>
 
         <div className="field">
           <label><span>🎮</span> 游戏名称</label>
           <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="例如：艾尔登法环" />
+        </div>
+
+        <div className="field-row">
+          <div className="field">
+            <label><span>🏷️</span> 类型</label>
+            <select value={form.genre_id} onChange={e => set('genre_id', e.target.value)}>
+              <option value="">请选择</option>
+              {(initial?.genres || []).map(g => (
+                <option key={g.id} value={g.id}>
+                  {g.code} · {g.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label><span>🖥️</span> 平台</label>
+            <select value={form.platform_id} onChange={e => set('platform_id', e.target.value)}>
+              <option value="">请选择</option>
+              {(initial?.platforms || []).map(p => (
+                <option key={p.id} value={p.id}>
+                  {p.code}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="field">
@@ -311,18 +204,40 @@ function GameModal({ mode, initial, onClose, onSave }) {
         </div>
 
         <div className="field">
-          <label><span>🖼️</span> 图片地址</label>
-          <input value={form.imageUrl} onChange={e => set('imageUrl', e.target.value)} placeholder="https://... 或 /xxx.png" />
+          <label><span>🔗</span> 游戏官网</label>
+          <input value={form.official_url} onChange={e => set('official_url', e.target.value)} placeholder="https://..." />
         </div>
 
         <div className="field">
-          <label><span>📖</span> 游戏介绍</label>
-          <textarea value={form.intro} onChange={e => set('intro', e.target.value)} placeholder="写一段简短介绍（可选）" />
+          <label><span>🖼️</span> 封面/图标</label>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <input
+              value={form.cover_url}
+              onChange={e => set('cover_url', e.target.value)}
+              placeholder="上传后自动填充，或手填外链"
+              style={{ flex: 1 }}
+            />
+            <label className="btn" style={{ padding: '10px 14px', cursor: uploading ? 'not-allowed' : 'pointer', opacity: uploading ? 0.6 : 1 }}>
+              {uploading ? '上传中...' : '上传'}
+              <input
+                type="file"
+                accept="image/*"
+                disabled={uploading}
+                style={{ display: 'none' }}
+                onChange={(e) => handleUpload(e.target.files?.[0])}
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className="field">
+          <label><span>📖</span> 游戏介绍（客观）</label>
+          <textarea value={form.wiki_intro} onChange={e => set('wiki_intro', e.target.value)} placeholder="客观介绍（不包含个人评价）" />
         </div>
 
         <div className="modal-footer">
           <button className="btn" onClick={onClose}>取消</button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
+          <button className="btn btn-primary" onClick={handleSubmit} disabled={uploading}>
             <span>✅</span> 保存
           </button>
         </div>
@@ -333,14 +248,57 @@ function GameModal({ mode, initial, onClose, onSave }) {
 
 export default function Wiki() {
   const [expanded, setExpanded] = useState(() => new Set(['RPG']))
-  const [genres, setGenres] = useState(() => {
-    if (typeof window === 'undefined') return DEFAULT_GENRES
-    const saved = loadWiki()
-    if (!saved) return DEFAULT_GENRES
-    const next = saved.map(normGenre).filter(Boolean)
-    return next.length ? next : DEFAULT_GENRES
-  })
+  const [genres, setGenres] = useState([])
+  const [platforms, setPlatforms] = useState([])
+  const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState(null)
+  const [games, setGames] = useState([])
+
+  const reload = () => {
+    setLoading(true)
+    return Promise.all([getWikiGenres(), getPlatforms(), getGames()])
+      .then(([gr, pr, ga]) => {
+        const genreList = Array.isArray(gr.data) ? gr.data : []
+        const platformList = Array.isArray(pr.data) ? pr.data : []
+        const gameList = Array.isArray(ga.data) ? ga.data : []
+        setGenres(genreList)
+        setPlatforms(platformList)
+        setGames(gameList)
+      })
+      .catch(() => {
+        setGenres([])
+        setPlatforms([])
+        setGames([])
+      })
+      .finally(() => setLoading(false))
+  }
+
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([getWikiGenres(), getPlatforms(), getGames()])
+      .then(([gr, pr, ga]) => {
+        if (cancelled) return
+        const genreList = Array.isArray(gr.data) ? gr.data : []
+        const platformList = Array.isArray(pr.data) ? pr.data : []
+        const gameList = Array.isArray(ga.data) ? ga.data : []
+        setGenres(genreList)
+        setPlatforms(platformList)
+        setGames(gameList)
+      })
+      .catch(() => {
+        if (cancelled) return
+        setGenres([])
+        setPlatforms([])
+        setGames([])
+      })
+      .finally(() => {
+        if (cancelled) return
+        setLoading(false)
+      })
+    return () => { cancelled = true }
+  }, [])
+
+  const genresByCode = useMemo(() => new Map(genres.map(g => [g.code, g])), [genres])
 
   const toggle = (code) => {
     setExpanded(prev => {
@@ -350,36 +308,34 @@ export default function Wiki() {
     })
   }
 
-  const genresByCode = useMemo(() => new Map(genres.map(g => [g.code, g])), [genres])
-
-  const updateGenres = (updater) => {
-    setGenres(prev => {
-      const next = updater(prev)
-      saveWiki(next)
-      return next
-    })
-  }
-
   const openAddGenre = () => setModal({ type: 'genre', mode: 'add' })
   const openEditGenre = (code) => setModal({ type: 'genre', mode: 'edit', code })
-  const openAddGame = (code) => setModal({ type: 'game', mode: 'add', code, gameId: genId(code) })
+  const openAddGame = (code) => setModal({ type: 'game', mode: 'add', code })
   const openEditGame = (code, gameId) => setModal({ type: 'game', mode: 'edit', code, gameId })
 
-  const removeGame = (code, gameId) => {
-    if (!confirm('确定要删除这条游戏百科信息吗？')) return
-    updateGenres(prev => prev.map(g => (
-      g.code !== code ? g : { ...g, games: (g.games || []).filter(x => x.id !== gameId) }
-    )))
+  const removeGenre = async (code) => {
+    if (!confirm('确定要删除这个类型及其所有游戏百科信息吗？')) return
+    try {
+      await deleteWikiGenre(code)
+      await reload()
+      setExpanded(prev => {
+        const next = new Set(prev)
+        next.delete(code)
+        return next
+      })
+    } catch {
+      alert('删除失败，请重试')
+    }
   }
 
-  const removeGenre = (code) => {
-    if (!confirm('确定要删除这个类型及其所有游戏百科信息吗？')) return
-    updateGenres(prev => prev.filter(g => g.code !== code))
-    setExpanded(prev => {
-      const next = new Set(prev)
-      next.delete(code)
-      return next
-    })
+  const removeGame = async (id) => {
+    if (!confirm('确定要删除这款游戏吗？')) return
+    try {
+      await deleteGame(id)
+      await reload()
+    } catch {
+      alert('删除失败，请重试')
+    }
   }
 
   return (
@@ -390,147 +346,161 @@ export default function Wiki() {
             <span style={{ fontSize: 32, marginRight: 10 }}>📚</span>
             游戏百科
           </div>
-          <div className="page-subtitle">支持维护类型与代表游戏：介绍、厂商、图片，点击卡片展开详情</div>
+          <div className="page-subtitle">百科内容已迁移到后端数据库，支持统一维护（类型 + 代表游戏）</div>
         </div>
         <button className="btn btn-primary" onClick={openAddGenre} style={{ padding: '12px 22px', fontSize: 14 }}>
           <span style={{ marginRight: 6 }}>➕</span> 新增类型
         </button>
       </div>
 
-      <div className="wiki-genre-grid">
-        {genres.map(g => {
-          const open = expanded.has(g.code)
-          const theme = getTheme(g.theme)
-          return (
-            <div key={g.code} className="card"
-              style={{
-                cursor: 'pointer',
-                border: `2px solid ${open ? 'var(--primary-border)' : 'var(--border-color)'}`,
-                transition: 'all 0.2s ease',
-                transform: open ? 'translateY(-3px)' : 'translateY(0)',
-                boxShadow: open ? 'var(--shadow-md)' : 'none',
-              }}
-              onClick={() => toggle(g.code)}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 14 }}>
-                <div style={{
-                  width: 60, height: 60, borderRadius: 14, flexShrink: 0,
-                  background: theme.bg, color: theme.color,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 28,
-                }}>
-                  {g.icon}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.name}</span>
-                    <span className="badge badge-platform" style={{ padding: '4px 10px' }}>{g.code}</span>
+      {loading ? (
+        <div className="empty-state">
+          <div style={{ fontSize: 52, marginBottom: 12 }}>⏳</div>
+          正在加载百科...
+        </div>
+      ) : (
+        <div className="wiki-genre-grid">
+          {genres.map(g => {
+            const open = expanded.has(g.code)
+            const theme = getTheme(g.theme)
+            const genreGames = games.filter(x => x.genre_id === g.id)
+            return (
+              <div key={g.code} className="card"
+                style={{
+                  cursor: 'pointer',
+                  border: `2px solid ${open ? 'var(--primary-border)' : 'var(--border-color)'}`,
+                  transition: 'all 0.2s ease',
+                  transform: open ? 'translateY(-3px)' : 'translateY(0)',
+                  boxShadow: open ? 'var(--shadow-md)' : 'none',
+                }}
+                onClick={() => toggle(g.code)}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 14 }}>
+                  <div style={{
+                    width: 60, height: 60, borderRadius: 14, flexShrink: 0,
+                    background: theme.bg, color: theme.color,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 28,
+                  }}>
+                    {g.icon || '🎮'}
                   </div>
-                  <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.full}</div>
-                </div>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                  {open && (
-                    <>
-                      <button className="btn btn-sm btn-ghost" onClick={(e) => { e.stopPropagation(); openEditGenre(g.code) }}>✏️</button>
-                      <button className="btn btn-sm btn-danger" onClick={(e) => { e.stopPropagation(); removeGenre(g.code) }}>🗑️</button>
-                    </>
-                  )}
-                  <div style={{ fontSize: 16, color: 'var(--text-muted)' }}>{open ? '🔼' : '🔽'}</div>
-                </div>
-              </div>
-
-              <div style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.8 }}>{g.desc}</div>
-
-              {open && (
-                <div onClick={e => e.stopPropagation()}>
-                  <div style={{ marginTop: 18, paddingTop: 18, borderTop: '0.5px solid var(--border-color)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                      <div className="section-label" style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span style={{ fontSize: 18 }}>🎮</span> 代表游戏
-                        <span style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 500 }}>({(g.games || []).length})</span>
-                      </div>
-                      <button className="btn btn-primary" onClick={() => openAddGame(g.code)} style={{ padding: '8px 14px', fontSize: 13 }}>
-                        <span style={{ marginRight: 6 }}>➕</span> 新增游戏
-                      </button>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.name}</span>
+                      <span className="badge badge-platform" style={{ padding: '4px 10px' }}>{g.code}</span>
                     </div>
-
-                    {(g.games || []).length === 0 ? (
-                      <div className="empty-state" style={{ padding: '26px 0' }}>
-                        <div style={{ fontSize: 44, marginBottom: 10 }}>📦</div>
-                        还没有游戏条目，点击右侧新增
-                      </div>
-                    ) : (
-                      <div className="wiki-game-grid">
-                        {(g.games || []).map(game => (
-                          <div key={game.id} className="wiki-game-card">
-                            {game.imageUrl ? (
-                              <img className="wiki-game-img" src={game.imageUrl} alt={game.name} loading="lazy" />
-                            ) : (
-                              <div className="wiki-game-img wiki-game-placeholder" style={{ background: theme.bg, color: theme.color }}>
-                                🎮
-                              </div>
-                            )}
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
-                                <div style={{ minWidth: 0 }}>
-                                  <div className="wiki-game-title">{game.name}</div>
-                                  <div className="wiki-game-meta">{game.publisher ? `厂商：${game.publisher}` : '厂商：未填写'}</div>
-                                </div>
-                                <div className="wiki-game-actions">
-                                  <button className="btn btn-sm btn-ghost" onClick={() => openEditGame(g.code, game.id)}>✏️</button>
-                                  <button className="btn btn-sm btn-danger" onClick={() => removeGame(g.code, game.id)}>🗑️</button>
-                                </div>
-                              </div>
-                              <div className="wiki-game-intro">{game.intro || '暂无介绍'}</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                    <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{g.full}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    {open && (
+                      <>
+                        <button className="btn btn-sm btn-ghost" onClick={(e) => { e.stopPropagation(); openEditGenre(g.code) }}>✏️</button>
+                        <button className="btn btn-sm btn-danger" onClick={(e) => { e.stopPropagation(); removeGenre(g.code) }}>🗑️</button>
+                      </>
                     )}
-
-                    {g.wikiUrl && (
-                      <a href={g.wikiUrl} target="_blank" rel="noreferrer"
-                        className="btn btn-primary"
-                        style={{
-                          marginTop: 16,
-                          padding: '10px 16px',
-                          borderRadius: 10,
-                          textDecoration: 'none',
-                          fontWeight: 600,
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: 8,
-                        }}
-                      >
-                        <span style={{ fontSize: 16 }}>🔗</span> {g.wikiLabel || '查看链接'}
-                      </a>
-                    )}
+                    <div style={{ fontSize: 16, color: 'var(--text-muted)' }}>{open ? '🔼' : '🔽'}</div>
                   </div>
                 </div>
-              )}
-            </div>
-          )
-        })}
-      </div>
+
+                <div style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.8 }}>{g.desc}</div>
+
+                {open && (
+                  <div onClick={e => e.stopPropagation()}>
+                    <div style={{ marginTop: 18, paddingTop: 18, borderTop: '0.5px solid var(--border-color)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                        <div className="section-label" style={{ marginBottom: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span style={{ fontSize: 18 }}>🎮</span> 代表游戏
+                          <span style={{ fontSize: 13, color: 'var(--text-muted)', fontWeight: 500 }}>({genreGames.length})</span>
+                        </div>
+                        <button className="btn btn-primary" onClick={() => openAddGame(g.code)} style={{ padding: '8px 14px', fontSize: 13 }}>
+                          <span style={{ marginRight: 6 }}>➕</span> 新增游戏
+                        </button>
+                      </div>
+
+                      {genreGames.length === 0 ? (
+                        <div className="empty-state" style={{ padding: '26px 0' }}>
+                          <div style={{ fontSize: 44, marginBottom: 10 }}>📦</div>
+                          还没有游戏条目，点击右侧新增
+                        </div>
+                      ) : (
+                        <div className="wiki-games-scroll">
+                          <div className="wiki-game-grid">
+                            {genreGames.map(game => (
+                              <div key={game.id} className="wiki-game-card">
+                                {game.cover_url ? (
+                                  <img className="wiki-game-img" src={game.cover_url} alt={game.name} loading="lazy" />
+                                ) : (
+                                  <div className="wiki-game-img wiki-game-placeholder" style={{ background: theme.bg, color: theme.color }}>
+                                    🎮
+                                  </div>
+                                )}
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
+                                    <div style={{ minWidth: 0 }}>
+                                      <div className="wiki-game-title">{game.name}</div>
+                                      <div className="wiki-game-meta">{game.publisher ? `厂商：${game.publisher}` : '厂商：未填写'}</div>
+                                    </div>
+                                    <div className="wiki-game-actions">
+                                      <button className="btn btn-sm btn-ghost" onClick={() => openEditGame(g.code, game.id)}>✏️</button>
+                                      <button className="btn btn-sm btn-danger" onClick={() => removeGame(game.id)}>🗑️</button>
+                                    </div>
+                                  </div>
+                                  <div className="wiki-game-intro">{game.wiki_intro || '暂无介绍'}</div>
+                                  {game.official_url && (
+                                    <a href={game.official_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, marginTop: 8, display: 'inline-block', color: 'var(--primary-color)' }}>
+                                      🔗 官网
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {g.wikiUrl && (
+                        <a href={g.wikiUrl} target="_blank" rel="noreferrer"
+                          className="btn btn-primary"
+                          style={{
+                            marginTop: 16,
+                            padding: '10px 16px',
+                            borderRadius: 10,
+                            textDecoration: 'none',
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 8,
+                          }}
+                        >
+                          <span style={{ fontSize: 16 }}>🔗</span> {g.wikiLabel || '查看链接'}
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       {modal?.type === 'genre' && (
         <GenreModal
           mode={modal.mode}
           initial={modal.mode === 'edit' ? genresByCode.get(modal.code) : null}
           onClose={() => setModal(null)}
-          onSave={(genre) => {
-            const normalized = normGenre({ ...genre, games: genre.games || [] }) || null
-            if (!normalized) return
-            if (modal.mode === 'add') {
-              if (genresByCode.has(normalized.code)) {
-                alert('类型代码已存在，请更换')
-                return
+          onSave={async (genre) => {
+            try {
+              if (modal.mode === 'add') {
+                await createWikiGenre(genre)
+                setExpanded(prev => new Set(prev).add(genre.code))
+              } else {
+                await updateWikiGenre(modal.code, genre)
               }
-              updateGenres(prev => [...prev, normalized])
-              setExpanded(prev => new Set(prev).add(normalized.code))
-            } else {
-              updateGenres(prev => prev.map(g => (g.code === normalized.code ? { ...g, ...normalized } : g)))
+              await reload()
+              setModal(null)
+            } catch {
+              alert('保存失败，请检查类型代码是否重复，或稍后重试')
             }
-            setModal(null)
           }}
         />
       )}
@@ -539,22 +509,27 @@ export default function Wiki() {
         <GameModal
           mode={modal.mode}
           initial={(() => {
+            if (modal.mode === 'edit') {
+              const found = games.find(x => x.id === modal.gameId) || null
+              if (!found) return null
+              return { ...found, genres, platforms }
+            }
             const genre = genresByCode.get(modal.code)
-            if (!genre) return null
-            if (modal.mode === 'edit') return (genre.games || []).find(x => x.id === modal.gameId) || null
-            return { id: modal.gameId }
+            return { id: undefined, name: '', publisher: '', official_url: '', cover_url: '', wiki_intro: '', genre_id: genre?.id || '', platform_id: '', genres, platforms }
           })()}
           onClose={() => setModal(null)}
-          onSave={(game) => {
-            const code = modal.code
-            if (!code) return
-            updateGenres(prev => prev.map(g => {
-              if (g.code !== code) return g
-              const games = g.games || []
-              if (modal.mode === 'add') return { ...g, games: [...games, game] }
-              return { ...g, games: games.map(x => (x.id === game.id ? game : x)) }
-            }))
-            setModal(null)
+          onSave={async (game) => {
+            try {
+              if (modal.mode === 'add') {
+                await createGame(game)
+              } else {
+                await updateGame(game.id, game)
+              }
+              await reload()
+              setModal(null)
+            } catch {
+              alert('保存失败，请重试')
+            }
           }}
         />
       )}

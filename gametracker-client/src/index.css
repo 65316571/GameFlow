@@ -367,6 +367,24 @@ input:focus, select:focus, textarea:focus {
   scrollbar-color: #d3d1c7 transparent;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.main-wrapper.is-timer {
+  overflow-y: hidden;
+}
+.main-wrapper.is-timer .main {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-view .main-wrapper.is-timer {
+  overflow-y: auto;
+}
+@media (min-width: 1024px) {
+  .main-wrapper.desktop-zoom-120 .main {
+    zoom: 1.18;
+    transform-origin: top center;
+  }
+}
 .main-wrapper::-webkit-scrollbar { 
   width: 8px; 
   height: 8px; 
@@ -498,7 +516,7 @@ input:focus, select:focus, textarea:focus {
   border: 0.5px solid var(--primary-border);
 }
 .timer-display {
-  font-size: 88px;
+  font-size: 55px;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 6px;
@@ -673,11 +691,151 @@ input:focus, select:focus, textarea:focus {
   border-bottom: 0.5px solid var(--border-light);
   font-size: 15px;
 }
+
+.stats-recent-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .stats-recent-scroll {
+    max-height: 280px;
+  }
+}
+
+.overview-recent-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .overview-recent-scroll {
+    max-height: 180px;
+  }
+}
+
+.library-grid-scroll {
+  max-height: calc(100vh - 320px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .library-grid-scroll {
+    max-height: calc(100vh - 360px);
+  }
+}
+
+.calendar-day-scroll {
+  max-height: 340px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .calendar-day-scroll {
+    max-height: 300px;
+  }
+}
+
+.wiki-games-scroll {
+  max-height: 360px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .wiki-games-scroll {
+    max-height: 320px;
+  }
+}
+
+.timer-game-scroll {
+  max-height: 360px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  padding-right: 6px;
+}
+.timer-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.timer-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.timer-card-center {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.timer-card-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.timer-card-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.timer-select-flow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.timer-step2 {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.timer-step2 .timer-game-scroll {
+  flex: 1;
+  min-height: 0;
+  max-height: min(336px, 100%);
+}
+
+@media (max-width: 768px) {
+  .timer-game-scroll {
+    max-height: 320px;
+  }
+  .timer-step2 .timer-game-scroll {
+    max-height: min(320px, 100%);
+  }
+}
+
 .record-source-tag {
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 6px;
-  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -1274,6 +1432,156 @@ input:focus, select:focus, textarea:focus {
   overflow: hidden;
 }
 
+.mobile-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 120;
+  background: var(--bg-secondary);
+  border-bottom: 0.5px solid var(--border-color);
+}
+
+.mobile-topbar-inner {
+  height: 56px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mobile-brand-icon {
+  font-size: 20px;
+}
+
+.mobile-brand-text {
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+
+.mobile-nav {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-nav::-webkit-scrollbar {
+  height: 0;
+}
+
+.mobile-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  text-decoration: none;
+  flex: 0 0 auto;
+}
+
+.mobile-nav-link.active {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.mobile-nav-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.mobile-nav-label {
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mobile-view .main-wrapper {
+  margin-left: 0 !important;
+  padding-top: 112px;
+}
+
+.mobile-view.sidebar-float .main-wrapper {
+  padding-top: 64px;
+}
+
+.mobile-float-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 119;
+}
+
+[data-theme="dark"] .mobile-float-overlay {
+  background: rgba(0,0,0,0.45);
+}
+
+.mobile-float-menu {
+  position: fixed;
+  top: 70px;
+  right: 12px;
+  width: 220px;
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  padding: 10px;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mobile-float-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  transition: all 0.15s ease;
+}
+
+.mobile-float-link.active {
+  border-color: var(--primary-border);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.mobile-float-icon {
+  width: 22px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mobile-float-label {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ============================================
    响应式调整
    ============================================ */
@@ -1307,14 +1615,73 @@ input:focus, select:focus, textarea:focus {
   padding: 1.25rem;
 }
 .mobile-view .metric-grid {
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 .mobile-view .metric-card {
-  padding: 1rem;
+  min-width: 0;
+  padding: 0.65rem 0.6rem;
+}
+.mobile-view .metric-label {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mobile-view .metric-sub {
+  display: none;
+}
+.mobile-view .metric-card > div:first-child {
+  font-size: 18px !important;
+  margin-bottom: 4px !important;
 }
 .mobile-view .metric-value {
-  font-size: 24px;
+  font-size: 16px;
+  margin: 6px 0 0;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.overview-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.overview-panel {
+  min-height: 320px;
+}
+@media (max-width: 768px) {
+  .overview-bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .overview-panel {
+    min-height: auto;
+  }
+  .overview-chart-wrap {
+    height: 150px;
+  }
+}
+.mobile-view .overview-bottom-grid {
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.mobile-view .overview-panel {
+  min-height: auto;
+  padding: 0.9rem;
+}
+.overview-chart-wrap {
+  position: relative;
+  height: 240px;
+}
+.mobile-view .overview-chart-wrap {
+  height: 150px;
+}
+.mobile-view .overview-panel .section-label {
+  font-size: 13px;
+  margin-bottom: 0.6rem;
 }
 .mobile-view .card {
   padding: 1.25rem;

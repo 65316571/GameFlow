@@ -186,42 +186,44 @@ export default function Stats() {
               暂无记录
             </div>
           ) : (
-            recent.map(s => {
-              const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
-              return (
-                <div key={s.id} className="record-item">
-                  <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 44, height: 44, fontSize: 14 }}>
-                    {gameInitial(s.game_name)}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
-                    <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
-                      {dayjs(s.start_time).format('MM/DD HH:mm')} · <span className="badge badge-platform" style={{ padding: '2px 6px', fontSize: 11 }}>
-                        {PLATFORM_ICONS[s.platform_code] && (
-                          <span 
-                            className="platform-icon" 
-                            data-platform={s.platform_code}
-                            style={{ 
-                              width: 12, height: 12,
-                              maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
-                              WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
-                            }}
-                          />
-                        )}
-                        {s.platform_code}
-                      </span>
+            <div className="stats-recent-scroll">
+              {recent.map(s => {
+                const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
+                return (
+                  <div key={s.id} className="record-item">
+                    <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 44, height: 44, fontSize: 14 }}>
+                      {gameInitial(s.game_name)}
                     </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
+                      <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
+                        {dayjs(s.start_time).format('MM/DD HH:mm')} · <span className="badge badge-platform" style={{ padding: '2px 6px', fontSize: 11 }}>
+                          {PLATFORM_ICONS[s.platform_code] && (
+                            <span
+                              className="platform-icon"
+                              data-platform={s.platform_code}
+                              style={{
+                                width: 12, height: 12,
+                                maskImage: `url(${PLATFORM_ICONS[s.platform_code]})`,
+                                WebkitMaskImage: `url(${PLATFORM_ICONS[s.platform_code]})`
+                              }}
+                            />
+                          )}
+                          {s.platform_code}
+                        </span>
+                      </div>
+                    </div>
+                    <span className={`record-source-tag ${s.source}`}>
+                      {s.source === 'timer' ? '⏱️' : '✏️'}
+                      {s.source === 'timer' ? '计时' : '补录'}
+                    </span>
+                    <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary-color)', minWidth: 60, textAlign: 'right' }}>
+                      {fmtDuration(s.duration_seconds)}
+                    </span>
                   </div>
-                  <span className={`record-source-tag ${s.source}`}>
-                    {s.source === 'timer' ? '⏱️' : '✏️'}
-                    {s.source === 'timer' ? '计时' : '补录'}
-                  </span>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--primary-color)', minWidth: 60, textAlign: 'right' }}>
-                    {fmtDuration(s.duration_seconds)}
-                  </span>
-                </div>
-              )
-            })
+                )
+              })}
+            </div>
           )}
         </div>
       </div>

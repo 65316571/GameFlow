@@ -1,20 +1,27 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
 import gamesRouter from './routes/games.js'
 import sessionsRouter from './routes/sessions.js'
 import statsRouter from './routes/stats.js'
 import calendarRouter from './routes/calendar.js'
+import wikiRouter from './routes/wiki.js'
 
 dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3001
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 // Middleware
 app.use(cors())
 app.use(express.json())
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')))
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -28,6 +35,7 @@ app.use('/api/games', gamesRouter)
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/stats', statsRouter)
 app.use('/api/calendar', calendarRouter)
+app.use('/api/wiki', wikiRouter)
 
 // Overview endpoint (使用 stats router 中的逻辑)
 app.get('/api/overview', async (req, res) => {

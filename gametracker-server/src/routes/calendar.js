@@ -22,9 +22,9 @@ router.get('/', async (req, res) => {
     // 获取该月每天的游玩总时长
     const result = await query(
       `SELECT 
-        DATE(start_time) as date,
-        SUM(duration) as total_duration,
-        COUNT(*) as session_count
+        DATE(start_time)::text as date,
+        COALESCE(ROUND(SUM(duration) / 60.0), 0)::int as total_minutes,
+        COUNT(*)::int as session_count
        FROM play_sessions
        WHERE start_time >= $1 AND start_time <= $2
        GROUP BY DATE(start_time)
@@ -56,7 +56,8 @@ router.get('/day', async (req, res) => {
 
     // 获取当天的所有游玩记录
     const result = await query(
-      `SELECT ps.*, g.name as game_name, gen.code as genre_code,
+      `SELECT ps.*, ps.duration as duration_seconds,
+        g.name as game_name, gen.code as genre_code,
         plat.code as platform_code, plat.name as platform_name
        FROM play_sessions ps
        JOIN games g ON ps.game_id = g.id
