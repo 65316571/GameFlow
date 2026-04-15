@@ -4,11 +4,12 @@ import { useSettings } from '../contexts/useSettings'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
   BarElement, LineElement, PointElement, Tooltip,
+  BarController, LineController, Legend,
 } from 'chart.js'
 import { getOverview, getPlaytimeStats } from '../api'
 import { fmtDuration, gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip)
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, BarController, LineController, Legend)
 
 const METRIC_ICONS = {
   games: '🎲',

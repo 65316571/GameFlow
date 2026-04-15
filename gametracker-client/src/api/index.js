@@ -1,8 +1,10 @@
 import axios from 'axios'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
+
 const api = axios.create({
-  baseURL: 'http://localhost:3003/api',
-  timeout: 8000,
+  baseURL: API_BASE_URL,
+  timeout: 8808,
 })
 
 // ── 总览 ──
