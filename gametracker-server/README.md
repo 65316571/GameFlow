@@ -21,7 +21,7 @@ DB_PORT=5432
 DB_NAME=GameFlow
 DB_USER=hao
 DB_PASSWORD=@Aa65316571
-PORT=3001
+PORT=3003
 ```
 
 ### 3. 初始化数据库
@@ -44,7 +44,7 @@ npm run dev
 npm start
 ```
 
-服务将运行在 `http://localhost:3001`
+服务将运行在 `http://localhost:3003`
 
 ## API 端点
 
@@ -96,7 +96,7 @@ npm start
 
 ### 创建游戏
 ```bash
-curl -X POST http://localhost:3001/api/games \
+curl -X POST http://localhost:3003/api/games \
   -H "Content-Type: application/json" \
   -d '{
     "name": "塞尔达传说：王国之泪",
@@ -108,20 +108,20 @@ curl -X POST http://localhost:3001/api/games \
 
 ### 开始计时
 ```bash
-curl -X POST http://localhost:3001/api/sessions/start \
+curl -X POST http://localhost:3003/api/sessions/start \
   -H "Content-Type: application/json" \
   -d '{"game_id": 1}'
 ```
 
 ### 停止计时
 ```bash
-curl -X POST http://localhost:3001/api/sessions/1/stop
+curl -X POST http://localhost:3003/api/sessions/1/stop
 ```
 
 ### 手动补录
 ```bash
 # 方式一：指定开始结束时间
-curl -X POST http://localhost:3001/api/sessions/manual \
+curl -X POST http://localhost:3003/api/sessions/manual \
   -H "Content-Type: application/json" \
   -d '{
     "game_id": 1,
@@ -131,7 +131,7 @@ curl -X POST http://localhost:3001/api/sessions/manual \
   }'
 
 # 方式二：直接指定时长（秒）
-curl -X POST http://localhost:3001/api/sessions/manual \
+curl -X POST http://localhost:3003/api/sessions/manual \
   -H "Content-Type: application/json" \
   -d '{
     "game_id": 1,

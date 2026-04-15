@@ -93,7 +93,7 @@ function GameModal({ game, genres, platforms, onClose, onSave }) {
 
         <div className="field">
           <label><span>🖼️</span> 游戏封面/图标 URL（百科）</label>
-          <input value={form.cover_url} onChange={e => set('cover_url', e.target.value)} placeholder="https://... 或 http://localhost:3001/uploads/..." />
+          <input value={form.cover_url} onChange={e => set('cover_url', e.target.value)} placeholder="https://... 或 http://localhost:3003/uploads/..." />
         </div>
 
         <div className="field">

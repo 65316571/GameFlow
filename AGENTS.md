@@ -110,7 +110,7 @@ npm install
 # 初始化数据库（创建表+插入初始数据）
 npm run init-db
 
-# 启动开发服务器（自动重启）(http://localhost:3001)
+# 启动开发服务器（自动重启）(http://localhost:3003)
 npm run dev
 
 # 生产模式启动
@@ -138,7 +138,7 @@ npm run dev
 
 ```javascript
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api',
+  baseURL: 'http://localhost:3003/api',
   timeout: 8000,
 })
 ```
@@ -250,4 +250,4 @@ const api = axios.create({
 
 - Node.js 18+
 - npm 或 yarn
-- 后端服务运行在 `http://localhost:3001`
+- 后端服务运行在 `http://localhost:3003`
