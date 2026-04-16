@@ -1036,7 +1036,7 @@ input:focus, select:focus, textarea:focus {
 .platform-icon[data-platform="Xbox"]  { background-color: var(--plat-xbox); }
 .platform-icon[data-platform="Steam"] { background-color: var(--plat-steam); }
 .platform-icon[data-platform="APP"]   { background-color: var(--plat-app); }
-.platform-icon[data-platform="网站"] { background-color: var(--plat-web); }
+.platform-icon[data-platform="Web"] { background-color: var(--plat-web); }
 
 .badge:hover .platform-icon {
   transform: scale(1.1);

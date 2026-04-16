@@ -32,7 +32,7 @@ const PLATFORM_EMOJIS = {
   'Xbox': '❎',
   'Steam': '♨️',
   'APP': '📱',
-  '网站': '🌐',
+  'Web': '🌐',
 }
 
 function GameModal({ game, genres, platforms, onClose, onSave }) {

@@ -7,7 +7,7 @@
 GameFlow（前端项目名为 GameTracker）是一个游戏时间追踪和游戏资产管理系统，采用前后端分离架构。核心功能包括：
 
 - **总览页 (`/`)**: 游戏数据统计、本周每日时长柱状图（含上周对比折线图）、最近游玩记录
-- **游戏库 (`/library`)**: 游戏管理（增删改查），支持按平台（NS / PS4 / Xbox / Steam / APP / 网站）和类型（RPG / FPS / MOBA / SIM / ADV / OTHER）筛选
+- **游戏库 (`/library`)**: 游戏管理（增删改查），支持按平台（NS / PS4 / Xbox / Steam / APP / Web）和类型（RPG / FPS / MOBA / SIM / ADV / OTHER）筛选
 - **开始游玩 (`/timer`)**: 实时计时器，选择平台 → 选择游戏 → 开始/暂停/继续/停止计时，支持沉浸模式限定单款游戏
 - **记录统计 (`/stats`)**: 展示最近 10 条游玩记录列表，支持手动补录（填时间段或直接填时长）
 - **日历 (`/calendar`)**: 按日历视图查看每日游玩时长和点击日期查看当天明细记录
@@ -217,7 +217,7 @@ node src/db/migrate-wiki.js
 
 ### 关键常量
 - **游戏类型代码**: `RPG`, `FPS`, `MOBA`, `SIM`, `ADV`, `OTHER`
-- **平台代码**: `NS`, `PS4`, `Xbox`, `Steam`, `APP`, `网站`
+- **平台代码**: `NS`, `PS4`, `Xbox`, `Steam`, `APP`, `Web`
 - 类型配色映射和平台图标映射定义在 `src/utils.js`
 
 ## 前端状态管理

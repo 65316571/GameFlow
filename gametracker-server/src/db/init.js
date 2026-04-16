@@ -180,7 +180,8 @@ const initDatabase = async () => {
         ('Xbox', 'Xbox Series X/S', '微软出品的游戏主机', 3),
         ('Steam', 'Steam 平台', 'Steam 游戏平台 (Windows/Mac/Linux)', 4),
         ('APP', '手机游戏', 'iOS/Android 移动设备', 5),
-        ('网站', '网页游戏', '浏览器可直接游玩的游戏', 6)
+        ('Web', '网页游戏', '浏览器可直接游玩的游戏')
+        ('PC', '电脑游戏', '除去Steam平台的电脑游戏')
       `)
       console.log('✓ platforms data inserted')
     }
