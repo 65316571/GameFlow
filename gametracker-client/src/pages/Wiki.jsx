@@ -10,10 +10,24 @@ import { createGame, deleteGame, getGames, getPlatforms, updateGame } from '../a
 
 const THEME_PRESETS = [
   { key: 'RPG', label: '紫色', bg: 'var(--status-rpg-bg)', color: 'var(--status-rpg-text)' },
+  { key: 'ARPG', label: '洋红', bg: 'var(--status-arpg-bg)', color: 'var(--status-arpg-text)' },
+  { key: 'MMORPG', label: '靛蓝', bg: 'var(--status-mmorpg-bg)', color: 'var(--status-mmorpg-text)' },
   { key: 'FPS', label: '橙红', bg: 'var(--status-fps-bg)', color: 'var(--status-fps-text)' },
+  { key: 'TPS', label: '深橙', bg: 'var(--status-tps-bg)', color: 'var(--status-tps-text)' },
+  { key: 'ACT', label: '红色', bg: 'var(--status-act-bg)', color: 'var(--status-act-text)' },
   { key: 'MOBA', label: '绿色', bg: 'var(--status-moba-bg)', color: 'var(--status-moba-text)' },
+  { key: 'RTS', label: '草绿', bg: 'var(--status-rts-bg)', color: 'var(--status-rts-text)' },
+  { key: 'SLG', label: '青绿', bg: 'var(--status-slg-bg)', color: 'var(--status-slg-text)' },
   { key: 'SIM', label: '蓝色', bg: 'var(--status-sim-bg)', color: 'var(--status-sim-text)' },
+  { key: 'RAC', label: '天蓝', bg: 'var(--status-rac-bg)', color: 'var(--status-rac-text)' },
+  { key: 'SPG', label: '橄榄', bg: 'var(--status-spg-bg)', color: 'var(--status-spg-text)' },
+  { key: 'FTG', label: '紫罗兰', bg: 'var(--status-ftg-bg)', color: 'var(--status-ftg-text)' },
   { key: 'ADV', label: '金色', bg: 'var(--status-adv-bg)', color: 'var(--status-adv-text)' },
+  { key: 'PUZ', label: '粉红', bg: 'var(--status-puz-bg)', color: 'var(--status-puz-text)' },
+  { key: 'Roguelike', label: '琥珀', bg: 'var(--status-rogue-bg)', color: 'var(--status-rogue-text)' },
+  { key: 'Horror', label: '灰蓝', bg: 'var(--status-horror-bg)', color: 'var(--status-horror-text)' },
+  { key: 'Sandbox', label: '橘黄', bg: 'var(--status-sandbox-bg)', color: 'var(--status-sandbox-text)' },
+  { key: 'Rhythm', label: ' cyan', bg: 'var(--status-rhythm-bg)', color: 'var(--status-rhythm-text)' },
   { key: 'OTHER', label: '中性', bg: 'var(--status-other-bg)', color: 'var(--status-other-text)' },
 ]
 

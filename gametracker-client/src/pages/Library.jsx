@@ -5,11 +5,25 @@ import { gameInitial, GENRE_AVATAR_COLORS, PLATFORM_ICONS } from '../utils'
 
 const GENRE_ICONS = {
   'RPG': '⚔️',
+  'ARPG': '⚔️',
+  'MMORPG': '👥',
   'FPS': '🔫',
+  'TPS': '🎯',
+  'ACT': '👊',
   'MOBA': '⚡',
+  'RTS': '♟️',
+  'SLG': '🏛️',
   'SIM': '🏗️',
+  'RAC': '🏎️',
+  'SPG': '⚽',
+  'FTG': '🥊',
   'ADV': '🗺️',
-  'OTHER': '🎯',
+  'PUZ': '🧩',
+  'Roguelike': '🎲',
+  'Horror': '💀',
+  'Sandbox': '⛏️',
+  'Rhythm': '🎵',
+  'OTHER': '📌',
 }
 
 const PLATFORM_EMOJIS = {

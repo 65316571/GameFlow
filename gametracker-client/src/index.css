@@ -29,14 +29,42 @@
   /* 状态色变量 - 浅色 */
   --status-rpg-bg: #eeedfe;
   --status-rpg-text: #534ab7;
+  --status-arpg-bg: #f3e5f5;
+  --status-arpg-text: #7b1fa2;
+  --status-mmorpg-bg: #e8eaf6;
+  --status-mmorpg-text: #3949ab;
   --status-fps-bg: #faece7;
   --status-fps-text: #993c1d;
+  --status-tps-bg: #fbe9e7;
+  --status-tps-text: #bf360c;
+  --status-act-bg: #ffebee;
+  --status-act-text: #c62828;
   --status-moba-bg: #e1f5ee;
   --status-moba-text: #0f6e56;
+  --status-rts-bg: #e8f5e9;
+  --status-rts-text: #2e7d32;
+  --status-slg-bg: #e0f2f1;
+  --status-slg-text: #00695c;
   --status-sim-bg: #e6f1fb;
   --status-sim-text: #185fa5;
+  --status-rac-bg: #e3f2fd;
+  --status-rac-text: #1565c0;
+  --status-spg-bg: #f9fbe7;
+  --status-spg-text: #827717;
+  --status-ftg-bg: #ede7f6;
+  --status-ftg-text: #5e35b1;
   --status-adv-bg: #faeeda;
   --status-adv-text: #854f0b;
+  --status-puz-bg: #fce4ec;
+  --status-puz-text: #ad1457;
+  --status-rogue-bg: #fff8e1;
+  --status-rogue-text: #ff8f00;
+  --status-horror-bg: #eceff1;
+  --status-horror-text: #37474f;
+  --status-sandbox-bg: #fff3e0;
+  --status-sandbox-text: #e65100;
+  --status-rhythm-bg: #e0f7fa;
+  --status-rhythm-text: #00838f;
   --status-other-bg: var(--border-light);
   --status-other-text: var(--text-secondary);
 
@@ -80,14 +108,42 @@
   /* 状态色变量 - 深色 */
   --status-rpg-bg: rgba(83, 74, 183, 0.2);
   --status-rpg-text: #afa9ec;
+  --status-arpg-bg: rgba(123, 31, 162, 0.2);
+  --status-arpg-text: #ce93d8;
+  --status-mmorpg-bg: rgba(57, 73, 171, 0.2);
+  --status-mmorpg-text: #9fa8da;
   --status-fps-bg: rgba(153, 60, 29, 0.2);
   --status-fps-text: #f3a891;
+  --status-tps-bg: rgba(191, 54, 12, 0.2);
+  --status-tps-text: #ffab91;
+  --status-act-bg: rgba(198, 40, 40, 0.2);
+  --status-act-text: #ef9a9a;
   --status-moba-bg: rgba(15, 110, 86, 0.2);
   --status-moba-text: #5ec4a8;
+  --status-rts-bg: rgba(46, 125, 50, 0.2);
+  --status-rts-text: #a5d6a7;
+  --status-slg-bg: rgba(0, 105, 92, 0.2);
+  --status-slg-text: #80cbc4;
   --status-sim-bg: rgba(24, 95, 165, 0.2);
   --status-sim-text: #8fc2f3;
+  --status-rac-bg: rgba(21, 101, 192, 0.2);
+  --status-rac-text: #90caf9;
+  --status-spg-bg: rgba(130, 119, 23, 0.2);
+  --status-spg-text: #e6ee9c;
+  --status-ftg-bg: rgba(94, 53, 177, 0.2);
+  --status-ftg-text: #b39ddb;
   --status-adv-bg: rgba(133, 79, 11, 0.2);
   --status-adv-text: #f3cc8f;
+  --status-puz-bg: rgba(173, 20, 87, 0.2);
+  --status-puz-text: #f48fb1;
+  --status-rogue-bg: rgba(255, 143, 0, 0.2);
+  --status-rogue-text: #ffe082;
+  --status-horror-bg: rgba(55, 71, 79, 0.2);
+  --status-horror-text: #b0bec5;
+  --status-sandbox-bg: rgba(230, 81, 0, 0.2);
+  --status-sandbox-text: #ffcc80;
+  --status-rhythm-bg: rgba(0, 131, 143, 0.2);
+  --status-rhythm-text: #80deea;
   --status-other-bg: rgba(255, 255, 255, 0.05);
   --status-other-text: #888;
 
@@ -939,10 +995,24 @@ input:focus, select:focus, textarea:focus {
 }
 .badge-platform { background: var(--border-light); color: var(--text-secondary); }
 .badge-RPG { background: var(--status-rpg-bg); color: var(--status-rpg-text); }
+.badge-ARPG { background: var(--status-arpg-bg); color: var(--status-arpg-text); }
+.badge-MMORPG { background: var(--status-mmorpg-bg); color: var(--status-mmorpg-text); }
 .badge-FPS { background: var(--status-fps-bg); color: var(--status-fps-text); }
+.badge-TPS { background: var(--status-tps-bg); color: var(--status-tps-text); }
+.badge-ACT { background: var(--status-act-bg); color: var(--status-act-text); }
 .badge-MOBA { background: var(--status-moba-bg); color: var(--status-moba-text); }
+.badge-RTS { background: var(--status-rts-bg); color: var(--status-rts-text); }
+.badge-SLG { background: var(--status-slg-bg); color: var(--status-slg-text); }
 .badge-SIM { background: var(--status-sim-bg); color: var(--status-sim-text); }
+.badge-RAC { background: var(--status-rac-bg); color: var(--status-rac-text); }
+.badge-SPG { background: var(--status-spg-bg); color: var(--status-spg-text); }
+.badge-FTG { background: var(--status-ftg-bg); color: var(--status-ftg-text); }
 .badge-ADV { background: var(--status-adv-bg); color: var(--status-adv-text); }
+.badge-PUZ { background: var(--status-puz-bg); color: var(--status-puz-text); }
+.badge-Roguelike { background: var(--status-rogue-bg); color: var(--status-rogue-text); }
+.badge-Horror { background: var(--status-horror-bg); color: var(--status-horror-text); }
+.badge-Sandbox { background: var(--status-sandbox-bg); color: var(--status-sandbox-text); }
+.badge-Rhythm { background: var(--status-rhythm-bg); color: var(--status-rhythm-text); }
 .badge-OTHER { background: var(--status-other-bg); color: var(--status-other-text); }
 
 .platform-icon {
