@@ -132,6 +132,7 @@ export default function Library() {
   const [platforms, setPlatforms] = useState([])
   const [filterPlatform, setFilterPlatform] = useState('')
   const [filterGenre, setFilterGenre] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState('')
   const [modal, setModal] = useState(null)
 
   useEffect(() => {
@@ -169,6 +170,18 @@ export default function Library() {
     setGames(res.data)
   }
 
+  // 搜索过滤
+  const filteredGames = games.filter(game => {
+    if (!searchKeyword.trim()) return true
+    const kw = searchKeyword.trim().toLowerCase()
+    return (
+      game.name?.toLowerCase().includes(kw) ||
+      game.publisher?.toLowerCase().includes(kw) ||
+      game.genre_code?.toLowerCase().includes(kw) ||
+      game.platform_code?.toLowerCase().includes(kw)
+    )
+  })
+
   // 获取沉浸游戏信息
   const immersiveGame = settings.immersiveMode 
     ? games.find(g => g.id === settings.immersiveGameId)
@@ -182,7 +195,7 @@ export default function Library() {
             <span style={{ fontSize: 32, marginRight: 10 }}>🎮</span>
             游戏库
           </div>
-          <div className="page-subtitle">共 {games.length} 款游戏 🎯</div>
+          <div className="page-subtitle">共 {filteredGames.length} / {games.length} 款游戏 🎯</div>
         </div>
         <button className="btn btn-primary" onClick={() => setModal('add')} style={{ padding: '12px 24px', fontSize: 15 }}>
           <span style={{ marginRight: 6 }}>➕</span> 添加游戏
@@ -213,54 +226,75 @@ export default function Library() {
         </div>
       )}
 
-      {/* 筛选 */}
-      <div style={{ display: 'flex', gap: 16, marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-        <div className="chip-group">
-          <button className={`chip ${!filterPlatform ? 'active' : ''}`} onClick={() => setFilterPlatform('')}>
-            🎮 全部平台
-          </button>
-          {platforms.map(p => (
-            <button key={p.id} className={`chip ${filterPlatform === p.code ? 'active' : ''}`}
-              onClick={() => setFilterPlatform(filterPlatform === p.code ? '' : p.code)}>
-              {PLATFORM_ICONS[p.code] ? (
-                <span 
-                  className="platform-icon" 
-                  data-platform={p.code}
-                  style={{ 
-                    maskImage: `url(${PLATFORM_ICONS[p.code]})`,
-                    WebkitMaskImage: `url(${PLATFORM_ICONS[p.code]})`
-                  }}
-                />
-              ) : '🎮'}
-              {p.code}
-            </button>
-          ))}
+      {/* 工具栏：搜索 + 筛选 */}
+      <div className="library-toolbar">
+        <div className="library-search">
+          <span className="library-search-icon">🔍</span>
+          <input
+            type="text"
+            value={searchKeyword}
+            onChange={e => setSearchKeyword(e.target.value)}
+            placeholder="搜索游戏名称、厂商、类型或平台..."
+          />
+          {searchKeyword && (
+            <button className="library-search-clear" onClick={() => setSearchKeyword('')}>✕</button>
+          )}
         </div>
-        <div style={{ width: '0.5px', height: 24, background: 'var(--border-color)' }} />
-        <div className="chip-group">
-          <button className={`chip ${!filterGenre ? 'active' : ''}`} onClick={() => setFilterGenre('')}>
-            🏷️ 全部类型
-          </button>
-          {genres.map(g => (
-            <button key={g.id} className={`chip ${filterGenre === g.code ? 'active' : ''}`}
-              onClick={() => setFilterGenre(filterGenre === g.code ? '' : g.code)}>
-              {GENRE_ICONS[g.code] || '🎯'} {g.code}
+
+        <div className="library-filters">
+          <div className="chip-group">
+            <button className={`chip ${!filterPlatform ? 'active' : ''}`} onClick={() => setFilterPlatform('')}>
+              🎮 全部
             </button>
-          ))}
+            {platforms.map(p => (
+              <button key={p.id} className={`chip ${filterPlatform === p.code ? 'active' : ''}`}
+                onClick={() => setFilterPlatform(filterPlatform === p.code ? '' : p.code)}>
+                {PLATFORM_ICONS[p.code] ? (
+                  <span 
+                    className="platform-icon" 
+                    data-platform={p.code}
+                    style={{ 
+                      maskImage: `url(${PLATFORM_ICONS[p.code]})`,
+                      WebkitMaskImage: `url(${PLATFORM_ICONS[p.code]})`
+                    }}
+                  />
+                ) : '🎮'}
+                {p.code}
+              </button>
+            ))}
+          </div>
+
+          <div className="library-select-wrap">
+            <select
+              className="library-select"
+              value={filterGenre}
+              onChange={e => setFilterGenre(e.target.value)}
+            >
+              <option value="">🏷️ 全部类型</option>
+              {genres.map(g => (
+                <option key={g.id} value={g.code}>
+                  {GENRE_ICONS[g.code] || '🎯'} {g.code} · {g.name}
+                </option>
+              ))}
+            </select>
+            {filterGenre && (
+              <button className="library-select-clear" onClick={() => setFilterGenre('')} title="清除类型筛选">✕</button>
+            )}
+          </div>
         </div>
       </div>
 
       {/* 游戏列表 */}
-      {games.length === 0
+      {filteredGames.length === 0
         ? (
           <div className="empty-state">
             <div style={{ fontSize: 64, marginBottom: 16 }}>📦</div>
-            暂无游戏，点击右上角添加
+            {searchKeyword ? '没有找到匹配的游戏' : '暂无游戏，点击右上角添加'}
           </div>
         )
         : (
           <div className="library-grid-scroll" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
-            {games.map(game => {
+            {filteredGames.map(game => {
               const colors = GENRE_AVATAR_COLORS[game.genre_code] || GENRE_AVATAR_COLORS.OTHER
               const isImmersiveGame = settings.immersiveMode && settings.immersiveGameId === game.id
               const isOtherGameBlocked = settings.immersiveMode && !isImmersiveGame

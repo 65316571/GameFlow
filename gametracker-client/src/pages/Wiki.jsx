@@ -377,6 +377,7 @@ export default function Wiki() {
   const [loading, setLoading] = useState(true)
   const [modal, setModal] = useState(null)
   const [games, setGames] = useState([])
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   const reload = () => {
     setLoading(true)
@@ -428,6 +429,21 @@ export default function Wiki() {
   const activeGames = useMemo(() => activeGenre ? games.filter(x => x.genre_id === activeGenre.id) : [], [games, activeGenre])
   const activeTheme = useMemo(() => activeGenre ? getTheme(activeGenre.theme) : null, [activeGenre])
 
+  const filteredGenres = useMemo(() => {
+    if (!searchKeyword.trim()) return genres
+    const kw = searchKeyword.trim().toLowerCase()
+    return genres.filter(g => {
+      const genreMatch =
+        g.code?.toLowerCase().includes(kw) ||
+        g.name?.toLowerCase().includes(kw) ||
+        g.full?.toLowerCase().includes(kw) ||
+        g.desc?.toLowerCase().includes(kw)
+      if (genreMatch) return true
+      const genreGames = games.filter(x => x.genre_id === g.id)
+      return genreGames.some(game => game.name?.toLowerCase().includes(kw))
+    })
+  }, [genres, games, searchKeyword])
+
   const openAddGenre = () => setModal({ type: 'genre', mode: 'add' })
   const openEditGenre = (code) => setModal({ type: 'genre', mode: 'edit', code })
   const openAddGame = (code) => setModal({ type: 'game', mode: 'add', code })
@@ -469,14 +485,32 @@ export default function Wiki() {
         </button>
       </div>
 
+      <div className="wiki-search" style={{ marginBottom: 18 }}>
+        <span className="wiki-search-icon">🔍</span>
+        <input
+          type="text"
+          value={searchKeyword}
+          onChange={e => setSearchKeyword(e.target.value)}
+          placeholder="搜索类型名称、介绍或代表游戏..."
+        />
+        {searchKeyword && (
+          <button className="wiki-search-clear" onClick={() => setSearchKeyword('')}>✕</button>
+        )}
+      </div>
+
       {loading ? (
         <div className="empty-state">
           <div style={{ fontSize: 52, marginBottom: 12 }}>⏳</div>
           正在加载百科...
         </div>
+      ) : filteredGenres.length === 0 ? (
+        <div className="empty-state">
+          <div style={{ fontSize: 52, marginBottom: 12 }}>📦</div>
+          {searchKeyword ? '没有找到匹配的百科内容' : '暂无百科内容'}
+        </div>
       ) : (
         <div className="wiki-genre-grid">
-          {genres.map(g => {
+          {filteredGenres.map(g => {
             const theme = getTheme(g.theme)
             const genreGames = games.filter(x => x.genre_id === g.id)
             return (
