@@ -2179,3 +2179,79 @@ input:focus, select:focus, textarea:focus {
   background: var(--border-color);
   color: var(--text-primary);
 }
+
+/* ============================================
+   计时器页面 - 平板适配
+   ============================================ */
+.timer-start-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 0;
+  background: linear-gradient(to top, var(--bg-secondary) 60%, transparent);
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .timer-card-root {
+    padding: 1.25rem !important;
+  }
+  .timer-step-compact {
+    margin-bottom: 16px !important;
+  }
+  .timer-step-compact .step-item {
+    margin-bottom: 8px !important;
+  }
+  .timer-step-compact .chip-group {
+    gap: 6px !important;
+  }
+  .timer-step-compact .chip {
+    font-size: 13px !important;
+    padding: 8px 14px !important;
+  }
+  .timer-step2 {
+    margin-bottom: 16px !important;
+  }
+  .timer-step2 .step-item {
+    margin-bottom: 8px !important;
+  }
+  .timer-step2 .selection-card {
+    padding: 8px 10px !important;
+  }
+  .timer-step2 .game-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 11px !important;
+  }
+  .timer-game-scroll {
+    max-height: 220px;
+  }
+  .timer-step2 .timer-game-scroll {
+    max-height: min(220px, 100%);
+  }
+  .timer-start-bar {
+    padding: 8px 0;
+  }
+  .timer-display {
+    font-size: 42px;
+    letter-spacing: 4px;
+    margin: 1.5rem 0 !important;
+  }
+  .timer-game-card {
+    margin-bottom: 24px !important;
+  }
+  .timer-status-badge {
+    margin-bottom: 20px !important;
+  }
+}
+
+/* 针对平板/手机浏览器地址栏占空间的处理 */
+@supports (height: 100dvh) {
+  .mobile-view .main-wrapper.is-timer {
+    min-height: 100dvh;
+  }
+  .mobile-view .timer-body {
+    min-height: calc(100dvh - 180px);
+  }
+}

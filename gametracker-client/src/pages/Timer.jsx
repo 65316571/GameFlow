@@ -307,13 +307,13 @@ export default function Timer() {
             ) : (
               <div className="timer-select-flow">
                 {/* 步骤 1 */}
-                <div style={{ marginBottom: 32, opacity: isPlatformDisabled ? 0.5 : 1 }}>
-                  <div className="step-item">
+                <div className="timer-step-compact" style={{ marginBottom: 20, opacity: isPlatformDisabled ? 0.5 : 1 }}>
+                  <div className="step-item" style={{ marginBottom: 10 }}>
                     <span className="step-number">1</span>
                     选择平台
                     {isPlatformDisabled && <span style={{ color: 'var(--status-moba-text)', fontSize: 13 }}>(沉浸模式已限定)</span>}
                   </div>
-                  <div className="chip-group" style={{ gap: 12 }}>
+                  <div className="chip-group" style={{ gap: 8 }}>
                     {platforms.map(p => (
                       <button 
                         key={p.id} 
@@ -326,12 +326,12 @@ export default function Timer() {
                         }}
                         disabled={isPlatformDisabled}
                         style={{ 
-                          fontSize: 15, padding: '12px 22px',
-                          display: 'flex', alignItems: 'center', gap: 8,
+                          fontSize: 14, padding: '10px 16px',
+                          display: 'flex', alignItems: 'center', gap: 6,
                           cursor: isPlatformDisabled ? 'not-allowed' : 'pointer'
                         }}
                       >
-                        <span style={{ fontSize: 18 }}>
+                        <span style={{ fontSize: 16 }}>
                           {PLATFORM_ICONS[p.code] ? (
                             <span 
                               className="platform-icon lg" 
@@ -351,19 +351,19 @@ export default function Timer() {
 
                 {/* 步骤 2 */}
                 {selPlatform && (
-                  <div className="timer-step2" style={{ marginBottom: 32 }}>
-                    <div className="step-item">
+                  <div className="timer-step2" style={{ marginBottom: 20 }}>
+                    <div className="step-item" style={{ marginBottom: 10 }}>
                       <span className="step-number">2</span>
                       选择游戏（{selPlatform}）
                       {settings.immersiveMode && <span style={{ color: 'var(--status-moba-text)', fontSize: 13 }}>(已自动选择限定游戏)</span>}
                     </div>
                     {filteredGames.length === 0 ? (
                       <div className="empty-state" style={{ 
-                        padding: '3rem',
+                        padding: '2rem',
                         background: 'var(--bg-tertiary)', borderRadius: 14,
                         border: '1px dashed var(--border-color)'
                       }}>
-                        <div style={{ fontSize: 40, marginBottom: 12 }}>📦</div>
+                        <div style={{ fontSize: 36, marginBottom: 10 }}>📦</div>
                         该平台暂无游戏，请先前往游戏库添加
                       </div>
                     ) : (
@@ -371,7 +371,7 @@ export default function Timer() {
                         <div style={{ 
                           display: 'grid', 
                           gridTemplateColumns: 'repeat(2, 1fr)', 
-                          gap: 12 
+                          gap: 10 
                         }}>
                         {filteredGames.map(g => {
                           const colors = GENRE_AVATAR_COLORS[g.genre_code] || GENRE_AVATAR_COLORS.OTHER
@@ -384,22 +384,23 @@ export default function Timer() {
                               key={g.id}
                               className={`selection-card ${isSelected ? 'active' : ''}`}
                               onClick={() => setSelGame(g)}
+                              style={{ padding: '10px 12px' }}
                             >
                               <div 
                                 className="game-avatar" 
-                                style={{ background: colors.bg, color: colors.color, width: 44, height: 44, fontSize: 14 }}
+                                style={{ background: colors.bg, color: colors.color, width: 36, height: 36, fontSize: 12 }}
                               >
                                 {gameInitial(g.name)}
                               </div>
                               <span style={{ 
                                 overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                                 fontWeight: isSelected ? 600 : 500,
-                                flex: 1
+                                flex: 1, fontSize: 14
                               }}>
                                 {g.name}
                               </span>
                               {isSelected && (
-                                <span style={{ fontSize: 18, marginLeft: 'auto' }}>✓</span>
+                                <span style={{ fontSize: 16, marginLeft: 'auto' }}>✓</span>
                               )}
                             </div>
                           )
@@ -410,35 +411,36 @@ export default function Timer() {
                   </div>
                 )}
 
-                {/* 开始按钮 */}
-                <button
-                  className="btn btn-primary"
-                  style={{ 
-                    width: '100%',
-                    padding: selGame ? '18px' : '12px 16px',
-                    fontSize: selGame ? 16 : 14,
-                    marginTop: selGame ? 12 : 10,
-                    borderRadius: selGame ? 14 : 12,
-                    opacity: selGame ? 1 : 0.5,
-                    cursor: selGame ? 'pointer' : 'not-allowed',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                    boxShadow: selGame ? 'var(--shadow-md)' : 'none',
-                  }}
-                  onClick={handleStart}
-                  disabled={!selGame}
-                >
-                  {selGame ? (
-                    <>
-                      <span style={{ fontSize: 22 }}>▶️</span>
-                      游玩「{selGame.name}」
-                    </>
-                  ) : (
-                    <>
-                      <span style={{ fontSize: 18 }}>👆</span>
-                      请先选择游戏
-                    </>
-                  )}
-                </button>
+                {/* 开始按钮 - 固定底部 */}
+                <div className="timer-start-bar">
+                  <button
+                    className="btn btn-primary"
+                    style={{ 
+                      width: '100%',
+                      padding: selGame ? '16px' : '12px 16px',
+                      fontSize: selGame ? 15 : 14,
+                      borderRadius: 14,
+                      opacity: selGame ? 1 : 0.5,
+                      cursor: selGame ? 'pointer' : 'not-allowed',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                      boxShadow: selGame ? 'var(--shadow-md)' : 'none',
+                    }}
+                    onClick={handleStart}
+                    disabled={!selGame}
+                  >
+                    {selGame ? (
+                      <>
+                        <span style={{ fontSize: 20 }}>▶️</span>
+                        游玩「{selGame.name}」
+                      </>
+                    ) : (
+                      <>
+                        <span style={{ fontSize: 16 }}>👆</span>
+                        请先选择游戏
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             )}
           </div>

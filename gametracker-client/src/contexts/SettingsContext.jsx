@@ -75,11 +75,9 @@ export function SettingsProvider({ children }) {
     updateSettings({ immersiveMode: false, immersiveGameId: null })
   }
 
-  // 切换主题
+  // 切换主题（快捷按钮只在 light / dark 之间切换）
   const toggleTheme = () => {
-    const modes = ['light', 'dark', 'auto']
-    const currentIndex = modes.indexOf(settings.themeMode)
-    const nextMode = modes[(currentIndex + 1) % modes.length]
+    const nextMode = settings.themeMode === 'dark' ? 'light' : 'dark'
     updateSettings({ themeMode: nextMode })
   }
 

@@ -70,10 +70,10 @@ export default function Layout({ children }) {
                 style={{ padding: '8px 12px', width: 44, fontSize: 16 }}
                 title="切换视图模式"
               >
-                {settings.mobileMode === 'auto' ? '💻' : settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
+                {settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
               </button>
               <button className="btn btn-sm btn-ghost" onClick={toggleTheme} style={{ padding: '8px 12px', width: 44 }}>
-                {settings.themeMode === 'dark' ? '🌙' : settings.themeMode === 'light' ? '☀️' : '🌓'}
+                {settings.themeMode === 'dark' ? '🌙' : '☀️'}
               </button>
               {settings.sidebarFloat && (
                 <button
@@ -163,7 +163,7 @@ export default function Layout({ children }) {
                   style={{ padding: '8px 12px', width: 44, fontSize: 16 }}
                   title="切换视图模式"
                 >
-                  {settings.mobileMode === 'auto' ? '💻' : settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
+                  {settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
                 </button>
                 <button 
                   className="btn btn-sm btn-ghost" 
@@ -171,7 +171,7 @@ export default function Layout({ children }) {
                   style={{ padding: '8px 12px', width: 44 }}
                   title="切换主题"
                 >
-                  {settings.themeMode === 'dark' ? '🌙' : settings.themeMode === 'light' ? '☀️' : '🌓'}
+                  {settings.themeMode === 'dark' ? '🌙' : '☀️'}
                 </button>
               </div>
               <div className="sidebar-footer-text">🎯 追踪你的游戏时光</div>
