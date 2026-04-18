@@ -191,7 +191,7 @@ export default function Overview() {
               </div>
             )
             : (
-              <div className="overview-recent-list">
+              <div className="overview-recent-scroll">
                 {recentSessions.map((s) => {
                   const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
                   return (

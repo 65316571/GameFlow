@@ -186,7 +186,7 @@ export default function Stats() {
               暂无记录
             </div>
           ) : (
-            <div className="stats-recent-list">
+            <div className="stats-recent-scroll">
               {recent.map(s => {
                 const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
                 return (
