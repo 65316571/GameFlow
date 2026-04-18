@@ -64,7 +64,7 @@ export default function Calendar() {
         <div className="page-subtitle">查看每天的游玩时长 🎯</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 20, alignItems: 'start' }}>
+      <div className="calendar-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 20, alignItems: 'start' }}>
 
         {/* 日历 */}
         <div className="card" style={{ minHeight: 520 }}>
@@ -159,7 +159,7 @@ export default function Calendar() {
         </div>
 
         {/* 日期详情 */}
-        <div className="card" style={{ minHeight: 520 }}>
+        <div className="card calendar-day-card" style={{ minHeight: 520 }}>
           {!selectedDate
             ? (
               <div className="empty-state">

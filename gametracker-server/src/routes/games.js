@@ -32,8 +32,10 @@ router.get('/', async (req, res) => {
       params.push(genre_code)
     }
     if (platform_code) {
+      // Web 已合并到 Steam
+      const code = platform_code === 'Web' ? 'Steam' : platform_code
       sql += ` AND plat.code = $${paramIndex++}`
-      params.push(platform_code)
+      params.push(code)
     }
 
     sql += ` ORDER BY g.created_at DESC`

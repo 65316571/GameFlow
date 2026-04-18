@@ -92,9 +92,11 @@ export function SettingsProvider({ children }) {
     updateSettings({ sidebarFloat: !settings.sidebarFloat })
   }
 
-  // 切换移动端视图模式（快捷按钮只在 mobile / desktop 之间切换）
+  // 切换移动端视图模式
   const toggleMobileMode = () => {
-    const nextMode = settings.mobileMode === 'mobile' ? 'desktop' : 'mobile'
+    const modes = ['auto', 'mobile', 'desktop']
+    const currentIndex = modes.indexOf(settings.mobileMode)
+    const nextMode = modes[(currentIndex + 1) % modes.length]
     updateSettings({ mobileMode: nextMode })
   }
 

@@ -32,7 +32,7 @@ const PLATFORM_EMOJIS = {
   'Xbox': '❎',
   'Steam': '♨️',
   'APP': '📱',
-  'Web': '🌐',
+  // 'Web': '🌐',  // 已合并到 Steam
 }
 
 function GameModal({ game, genres, platforms, onClose, onSave }) {
@@ -234,7 +234,7 @@ export default function Library() {
             type="text"
             value={searchKeyword}
             onChange={e => setSearchKeyword(e.target.value)}
-            placeholder="搜索游戏名称、厂商、类型或平台..."
+            placeholder="搜索游戏..."
           />
           {searchKeyword && (
             <button className="library-search-clear" onClick={() => setSearchKeyword('')}>✕</button>

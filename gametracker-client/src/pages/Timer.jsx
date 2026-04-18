@@ -7,25 +7,11 @@ import dayjs from 'dayjs'
 
 const GENRE_ICONS = {
   'RPG': '⚔️',
-  'ARPG': '⚔️',
-  'MMORPG': '👥',
   'FPS': '🔫',
-  'TPS': '🎯',
-  'ACT': '👊',
   'MOBA': '⚡',
-  'RTS': '♟️',
-  'SLG': '🏛️',
   'SIM': '🏗️',
-  'RAC': '🏎️',
-  'SPG': '⚽',
-  'FTG': '🥊',
   'ADV': '🗺️',
-  'PUZ': '🧩',
-  'Roguelike': '🎲',
-  'Horror': '💀',
-  'Sandbox': '⛏️',
-  'Rhythm': '🎵',
-  'OTHER': '📌',
+  'OTHER': '🎯',
 }
 
 function useTimer(active) {

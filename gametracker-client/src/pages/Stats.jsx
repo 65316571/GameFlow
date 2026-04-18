@@ -99,7 +99,7 @@ export default function Stats() {
       </div>
 
       {/* 补录表单和记录列表 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="stats-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         {/* 补录表单 */}
         <div className="card">
           <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

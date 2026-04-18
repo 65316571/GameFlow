@@ -74,7 +74,7 @@
   --plat-xbox: #107c10;
   --plat-steam: #171a21;
   --plat-app: #f5a623;
-  --plat-web: #0088cc;
+  /* --plat-web: #0088cc;  // 已合并到 Steam */
 
   /* 日历等级颜色 */
   --cal-level-0: transparent;
@@ -153,7 +153,7 @@
   --plat-xbox: #27d427;
   --plat-steam: #f0f0f0;
   --plat-app: #ffcc00;
-  --plat-web: #33ccff;
+  /* --plat-web: #33ccff;  // 已合并到 Steam */
 
   /* 日历等级颜色 - 深色 */
   --cal-level-0: transparent;
@@ -759,7 +759,16 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 768px) {
   .stats-recent-scroll {
-    max-height: 280px;
+    max-height: none;
+  }
+  .stats-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .calendar-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .calendar-day-card {
+    min-height: auto !important;
   }
 }
 
@@ -774,7 +783,7 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 768px) {
   .overview-recent-scroll {
-    max-height: 180px;
+    max-height: none;
   }
 }
 
@@ -860,6 +869,7 @@ input:focus, select:focus, textarea:focus {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 .timer-select-flow {
   flex: 1;
@@ -881,10 +891,10 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 768px) {
   .timer-game-scroll {
-    max-height: 320px;
+    max-height: 260px;
   }
   .timer-step2 .timer-game-scroll {
-    max-height: min(320px, 100%);
+    max-height: min(260px, 100%);
   }
 }
 
@@ -1036,7 +1046,7 @@ input:focus, select:focus, textarea:focus {
 .platform-icon[data-platform="Xbox"]  { background-color: var(--plat-xbox); }
 .platform-icon[data-platform="Steam"] { background-color: var(--plat-steam); }
 .platform-icon[data-platform="APP"]   { background-color: var(--plat-app); }
-.platform-icon[data-platform="Web"] { background-color: var(--plat-web); }
+/* .platform-icon[data-platform="Web"] { background-color: var(--plat-web); }  // 已合并到 Steam */
 
 .badge:hover .platform-icon {
   transform: scale(1.1);
@@ -2075,14 +2085,42 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 768px) {
   .library-toolbar {
-    flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+    margin-bottom: 1rem;
   }
   .library-search {
     max-width: none;
+    width: 100%;
+  }
+  .library-search input {
+    padding: 8px 12px 8px 32px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  .library-search-icon {
+    left: 10px;
+    font-size: 14px;
   }
   .library-filters {
     justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .library-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .library-filters .chip-group {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .library-select {
+    padding: 8px 30px 8px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+    min-width: 120px;
   }
 }
 

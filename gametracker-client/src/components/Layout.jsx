@@ -70,7 +70,7 @@ export default function Layout({ children }) {
                 style={{ padding: '8px 12px', width: 44, fontSize: 16 }}
                 title="切换视图模式"
               >
-                {settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
+                {settings.mobileMode === 'auto' ? '💻' : settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
               </button>
               <button className="btn btn-sm btn-ghost" onClick={toggleTheme} style={{ padding: '8px 12px', width: 44 }}>
                 {settings.themeMode === 'dark' ? '🌙' : settings.themeMode === 'light' ? '☀️' : '🌓'}
@@ -163,7 +163,7 @@ export default function Layout({ children }) {
                   style={{ padding: '8px 12px', width: 44, fontSize: 16 }}
                   title="切换视图模式"
                 >
-                  {settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
+                  {settings.mobileMode === 'auto' ? '💻' : settings.mobileMode === 'mobile' ? '📱' : '🖥️'}
                 </button>
                 <button 
                   className="btn btn-sm btn-ghost" 
