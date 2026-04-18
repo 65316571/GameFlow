@@ -5,8 +5,8 @@ import { useSettings } from '../contexts/useSettings'
 const links = [
   { to: '/',        icon: '📊', label: '总览' },
   { to: '/library', icon: '🎮', label: '游戏库' },
-  { to: '/timer',   icon: '⏱️', label: '开始游玩' },
-  { to: '/stats',   icon: '📈', label: '记录统计' },
+  { to: '/timer',   icon: '⏱️', label: '游玩' },
+  { to: '/stats',   icon: '📈', label: '记录' },
   { to: '/calendar',icon: '📅', label: '日历' },
   { to: '/wiki',    icon: '📚', label: '百科' },
   { to: '/design',  icon: '🎨', label: '设计' },
@@ -25,7 +25,7 @@ export default function Layout({ children }) {
   
   // 沉浸模式下的游戏名称
   const immersiveGame = settings.immersiveMode ? 
-    JSON.parse(localStorage.getItem('gametracker-games') || '[]').find(g => g.id === settings.immersiveGameId)?.name 
+    JSON.parse(localStorage.getItem('GameTracker-games') || '[]').find(g => g.id === settings.immersiveGameId)?.name 
     : null
 
   // 计算侧边栏宽度
@@ -60,7 +60,7 @@ export default function Layout({ children }) {
         <header className="mobile-topbar">
           <div className="mobile-topbar-inner">
             <div className="mobile-brand">
-              <span className="mobile-brand-icon">🟪</span>
+              <img src="/logo.jpg" alt="GameTracker" className="mobile-brand-logo" />
               <span className="mobile-brand-text">GameTracker</span>
             </div>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -135,7 +135,7 @@ export default function Layout({ children }) {
           }}
         >
           <div className="sidebar-logo">
-            <span className="sidebar-logo-icon">🟪</span>
+            <img src="/logo.jpg" alt="GameTracker" className="sidebar-logo-img" />
             {!settings.sidebarCollapsed && <span className="sidebar-logo-text">GameTracker</span>}
           </div>
           

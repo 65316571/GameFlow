@@ -28,8 +28,9 @@ export const PLATFORM_ICONS = {
   'PS4': '/ps.svg',
   'Xbox': '/xbox.svg',
   'Steam': '/steam.svg',
+  // 'Web': '/web.svg',  // 已合并到 PC
   'APP': '/phone.svg',
-  // 'Web': '/web.svg',  // 已合并到 Steam
+  // 'Web': '/web.svg',  // 已合并到 PC
 }
 
 export const GENRE_CODES = ['RPG', 'ARPG', 'MMORPG', 'FPS', 'TPS', 'ACT', 'MOBA', 'RTS', 'SLG', 'SIM', 'RAC', 'SPG', 'FTG', 'ADV', 'PUZ', 'Roguelike', 'Horror', 'Sandbox', 'Rhythm', 'OTHER']

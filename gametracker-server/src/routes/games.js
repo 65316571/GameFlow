@@ -32,8 +32,8 @@ router.get('/', async (req, res) => {
       params.push(genre_code)
     }
     if (platform_code) {
-      // Web 已合并到 Steam
-      const code = platform_code === 'Web' ? 'Steam' : platform_code
+      // Web 已合并到 PC
+      const code = platform_code === 'Web' ? 'PC' : platform_code
       sql += ` AND plat.code = $${paramIndex++}`
       params.push(code)
     }

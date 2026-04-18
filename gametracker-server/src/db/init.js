@@ -178,7 +178,7 @@ const initDatabase = async () => {
         ('NS', 'Nintendo Switch', '任天堂出品的混合型游戏主机', 1),
         ('PS4', 'PlayStation 4', '索尼出品的游戏主机', 2),
         ('PC', '电脑游戏', '除去Steam平台的电脑游戏（拳头、暴雪等厂商）', 3),
-        ('Steam', 'Steam / 网页', 'Steam 平台及网页游戏 (Windows/Mac/Linux/浏览器)', 4),
+        ('Steam', 'Steam 平台', 'Steam 游戏平台 (Windows/Mac/Linux)', 4),
         ('Xbox', 'Xbox Series X/S', '微软出品的游戏主机', 5),
         ('APP', '手机游戏', 'iOS/Android 移动设备', 6)
       `)

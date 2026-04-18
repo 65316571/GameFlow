@@ -10,7 +10,7 @@
 端口：5432
 用户名：hao
 密码：@Aa65316571
-数据库：GameFlow
+数据库：GameTracker
 
 一、总览页
 

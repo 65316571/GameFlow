@@ -65,7 +65,7 @@ export default function Stats() {
       <div className="page-header">
         <div className="page-title">
           <span style={{ fontSize: 32, marginRight: 10 }}>📈</span>
-          记录统计
+          记录
         </div>
         <div className="page-subtitle">查看记录历史，手动补录游玩时长</div>
       </div>

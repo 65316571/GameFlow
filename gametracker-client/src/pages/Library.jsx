@@ -32,7 +32,7 @@ const PLATFORM_EMOJIS = {
   'Xbox': '❎',
   'Steam': '♨️',
   'APP': '📱',
-  // 'Web': '🌐',  // 已合并到 Steam
+  // 'Web': '🌐',  // 已合并到 PC
 }
 
 function GameModal({ game, genres, platforms, onClose, onSave }) {

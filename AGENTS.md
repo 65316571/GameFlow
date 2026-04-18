@@ -1,15 +1,15 @@
-# GameFlow / GameTracker
+# GameTracker / GameTracker
 
 一款用于记录游戏时间、管理游戏库的 Web 应用程序。
 
 ## 项目概述
 
-GameFlow（前端项目名为 GameTracker）是一个游戏时间追踪和游戏资产管理系统，采用前后端分离架构。核心功能包括：
+GameTracker（前端项目名为 GameTracker）是一个游戏时间追踪和游戏资产管理系统，采用前后端分离架构。核心功能包括：
 
 - **总览页 (`/`)**: 游戏数据统计、本周每日时长柱状图（含上周对比折线图）、最近游玩记录
 - **游戏库 (`/library`)**: 游戏管理（增删改查），支持按平台（NS / PS4 / Xbox / Steam / APP / Web）和类型（RPG / FPS / MOBA / SIM / ADV / OTHER）筛选
-- **开始游玩 (`/timer`)**: 实时计时器，选择平台 → 选择游戏 → 开始/暂停/继续/停止计时，支持沉浸模式限定单款游戏
-- **记录统计 (`/stats`)**: 展示最近 10 条游玩记录列表，支持手动补录（填时间段或直接填时长）
+- **游玩 (`/timer`)**: 实时计时器，选择平台 → 选择游戏 → 开始/暂停/继续/停止计时，支持沉浸模式限定单款游戏
+- **记录 (`/stats`)**: 展示最近 10 条游玩记录列表，支持手动补录（填时间段或直接填时长）
 - **日历 (`/calendar`)**: 按日历视图查看每日游玩时长和点击日期查看当天明细记录
 - **百科 (`/wiki`)**: 游戏类型百科，支持从后端 CRUD 管理类型及其代表游戏，支持图片上传
 - **设计 (`/design`)**: 应用设置页，包含沉浸模式开关、主题切换（浅色/深色/跟随系统）、手机模式切换（自动/桌面/手机）、侧边栏悬浮开关
@@ -36,8 +36,8 @@ GameFlow（前端项目名为 GameTracker）是一个游戏时间追踪和游戏
 ## 项目结构
 
 ```
-GameFlow/
-├── gametracker-client/       # 前端项目
+GameTracker/
+├── GameTracker-client/       # 前端项目
 │   ├── src/
 │   │   ├── api/
 │   │   │   └── index.js          # API 封装层：axios 实例配置和所有 API 方法
@@ -50,8 +50,8 @@ GameFlow/
 │   │   ├── pages/
 │   │   │   ├── Overview.jsx      # 总览页
 │   │   │   ├── Library.jsx       # 游戏库页（含筛选、增删改弹窗）
-│   │   │   ├── Timer.jsx         # 开始游玩页（计时器、沉浸模式阻止遮罩）
-│   │   │   ├── Stats.jsx         # 记录统计页（最近记录、补录表单）
+│   │   │   ├── Timer.jsx         # 游玩页（计时器、沉浸模式阻止遮罩）
+│   │   │   ├── Stats.jsx         # 记录页（最近记录、补录表单）
 │   │   │   ├── Calendar.jsx      # 日历页（月历 + 日期详情）
 │   │   │   ├── Wiki.jsx          # 百科页（类型 CRUD、游戏 CRUD、图片上传）
 │   │   │   └── Design.jsx        # 设计/设置页
@@ -66,7 +66,7 @@ GameFlow/
 │   ├── vite.config.js            # Vite 配置（含代理）
 │   └── eslint.config.js          # ESLint Flat Config
 │
-├── gametracker-server/       # 后端项目
+├── GameTracker-server/       # 后端项目
 │   ├── src/
 │   │   ├── db/
 │   │   │   ├── index.js          # PostgreSQL 连接池配置（Pool）
@@ -87,7 +87,7 @@ GameFlow/
 │
 ├── package.json              # 根项目脚本（使用 concurrently 同时启动前后端）
 ├── package-lock.json
-├── GameFlow.md               # 原始需求设计文档（含数据库设计参考）
+├── GameTracker.md               # 原始需求设计文档（含数据库设计参考）
 └── AGENTS.md                 # 本文档
 ```
 
@@ -106,10 +106,10 @@ npm run init-db
 npm run dev
 ```
 
-### 前端 (gametracker-client)
+### 前端 (GameTracker-client)
 
 ```bash
-cd gametracker-client
+cd GameTracker-client
 
 # 安装依赖
 npm install
@@ -127,10 +127,10 @@ npm run lint
 npm run preview
 ```
 
-### 后端 (gametracker-server)
+### 后端 (GameTracker-server)
 
 ```bash
-cd gametracker-server
+cd GameTracker-server
 
 # 安装依赖
 npm install
@@ -199,7 +199,7 @@ node src/db/migrate-wiki.js
 ## 代码规范与约定
 
 ### ESLint 配置
-- 使用 Flat Config 格式，配置在 `gametracker-client/eslint.config.js`
+- 使用 Flat Config 格式，配置在 `GameTracker-client/eslint.config.js`
 - 忽略 `dist` 目录
 - 特殊规则：`no-unused-vars` 忽略大写字母开头的变量（允许 React 组件名样式未被使用时不报错）
 
@@ -222,7 +222,7 @@ node src/db/migrate-wiki.js
 
 ## 前端状态管理
 
-设置状态通过 `SettingsContext` 管理，持久化到 `localStorage`（key: `gametracker-settings`）。
+设置状态通过 `SettingsContext` 管理，持久化到 `localStorage`（key: `GameTracker-settings`）。
 
 `defaultSettings` 包含：
 - `immersiveMode: false` — 沉浸模式开关
@@ -253,14 +253,14 @@ node src/db/migrate-wiki.js
 
 ## 安全注意事项
 
-1. **环境变量中的数据库凭据**：`gametracker-server/.env` 文件包含 PostgreSQL 数据库连接密码等敏感信息，**切勿将其提交到公开仓库**（已配置在 `.gitignore` 中，但仍需确认）。
+1. **环境变量中的数据库凭据**：`GameTracker-server/.env` 文件包含 PostgreSQL 数据库连接密码等敏感信息，**切勿将其提交到公开仓库**（已配置在 `.gitignore` 中，但仍需确认）。
 2. **CORS**：后端当前使用 `app.use(cors())` 允许所有来源，生产环境建议限制为前端部署域名。
-3. **文件上传**：`/api/wiki/upload` 限制了 5MB 且仅允许 `image/*` MIME 类型，上传文件存储在 `gametracker-server/uploads/wiki/` 目录并通过 `/uploads` 静态服务暴露。
+3. **文件上传**：`/api/wiki/upload` 限制了 5MB 且仅允许 `image/*` MIME 类型，上传文件存储在 `GameTracker-server/uploads/wiki/` 目录并通过 `/uploads` 静态服务暴露。
 4. **SQL 注入**：后端路由中使用参数化查询（`$1`, `$2`…），目前无直接拼接用户输入的情况，风险较低。
 5. **SSL**：数据库连接池配置中 `ssl: false`，若数据库暴露在公网，建议启用 SSL/TLS。
 
 ## 部署提示
 
-- 前端生产构建产物输出到 `gametracker-client/dist/`，可直接部署到静态托管服务。
-- 后端生产启动命令为 `npm start`（在 `gametracker-server` 目录下），监听端口由 `.env` 中的 `PORT` 决定（默认 3003）。
+- 前端生产构建产物输出到 `GameTracker-client/dist/`，可直接部署到静态托管服务。
+- 后端生产启动命令为 `npm start`（在 `GameTracker-server` 目录下），监听端口由 `.env` 中的 `PORT` 决定（默认 3003）。
 - 若前后端部署到不同域名，需调整前端 `src/api/index.js` 中的 `API_BASE_URL` 或正确配置 Vite 代理/生产环境请求转发。

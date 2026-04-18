@@ -217,7 +217,7 @@ export default function Timer() {
       <div className="page-header">
         <div className="page-title">
           <span style={{ fontSize: 32, marginRight: 10 }}>⏱️</span>
-          开始游玩
+          游玩
         </div>
         <div className="page-subtitle">
           {settings.immersiveMode 
@@ -430,7 +430,7 @@ export default function Timer() {
                   {selGame ? (
                     <>
                       <span style={{ fontSize: 22 }}>▶️</span>
-                      开始游玩「{selGame.name}」
+                      游玩「{selGame.name}」
                     </>
                   ) : (
                     <>

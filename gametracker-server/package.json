@@ -1,7 +1,7 @@
 {
-  "name": "gametracker-server",
+  "name": "GameTracker-server",
   "version": "1.0.0",
-  "description": "GameFlow Backend API Server",
+  "description": "GameTracker Backend API Server",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

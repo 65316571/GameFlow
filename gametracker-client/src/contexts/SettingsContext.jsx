@@ -5,7 +5,7 @@ export function SettingsProvider({ children }) {
   // 从 localStorage 加载设置
   const [settings, setSettings] = useState(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('gametracker-settings')
+      const saved = localStorage.getItem('GameTracker-settings')
       if (saved) {
         try {
           return { ...defaultSettings, ...JSON.parse(saved) }
@@ -19,7 +19,7 @@ export function SettingsProvider({ children }) {
 
   // 保存到 localStorage
   useEffect(() => {
-    localStorage.setItem('gametracker-settings', JSON.stringify(settings))
+    localStorage.setItem('GameTracker-settings', JSON.stringify(settings))
   }, [settings])
 
   // 检测系统主题偏好

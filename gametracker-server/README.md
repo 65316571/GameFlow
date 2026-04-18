@@ -1,13 +1,13 @@
 # GameTracker 后端服务
 
-GameFlow 后端 API 服务，使用 Node.js + Express + PostgreSQL 构建。
+GameTracker 后端 API 服务，使用 Node.js + Express + PostgreSQL 构建。
 
 ## 快速开始
 
 ### 1. 安装依赖
 
 ```bash
-cd gametracker-server
+cd GameTracker-server
 npm install
 ```
 
@@ -18,7 +18,7 @@ npm install
 ```env
 DB_HOST=47.100.230.33
 DB_PORT=5432
-DB_NAME=GameFlow
+DB_NAME=GameTracker
 DB_USER=hao
 DB_PASSWORD=@Aa65316571
 PORT=3003
@@ -143,7 +143,7 @@ curl -X POST http://localhost:3003/api/sessions/manual \
 ## 项目结构
 
 ```
-gametracker-server/
+GameTracker-server/
 ├── src/
 │   ├── db/
 │   │   ├── index.js      # 数据库连接
