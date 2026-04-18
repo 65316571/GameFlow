@@ -788,7 +788,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .library-grid-scroll {
-  max-height: calc(100vh - 320px);
+  /* max-height: calc(100vh - 320px); */
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
