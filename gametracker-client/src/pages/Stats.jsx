@@ -61,7 +61,7 @@ export default function Stats() {
   const manualSessions = recent.filter(s => s.source === 'manual').length
 
   return (
-    <div>
+    <div className="page-fit stats-page">
       <div className="page-header">
         <div className="page-title">
           <span style={{ fontSize: 32, marginRight: 10 }}>📈</span>
@@ -71,7 +71,7 @@ export default function Stats() {
       </div>
 
       {/* 统计卡片 */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20 }}>
+      <div className="metric-grid">
         <div className="metric-card">
           <div style={{ fontSize: 28, marginBottom: 8 }}>{STAT_ICONS.total}</div>
           <div className="metric-label">总记录数</div>
@@ -186,7 +186,7 @@ export default function Stats() {
               暂无记录
             </div>
           ) : (
-            <div className="stats-recent-scroll">
+            <div className="stats-recent-list">
               {recent.map(s => {
                 const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
                 return (
@@ -194,9 +194,9 @@ export default function Stats() {
                     <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 44, height: 44, fontSize: 14 }}>
                       {gameInitial(s.game_name)}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
-                      <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="record-item-title" style={{ fontWeight: 600, fontSize: 15 }}>{s.game_name}</div>
+                      <div className="record-item-sub" style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
                         {dayjs(s.start_time).format('MM/DD HH:mm')} · <span className="badge badge-platform" style={{ padding: '2px 6px', fontSize: 11 }}>
                           {PLATFORM_ICONS[s.platform_code] && (
                             <span

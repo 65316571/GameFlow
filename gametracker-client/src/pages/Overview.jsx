@@ -56,7 +56,7 @@ export default function Overview() {
   const chartKey = `${settings.mobileMode || 'auto'}-${settings.isMobileView ? 'm' : 'd'}-${settings.themeMode}`
 
   return (
-    <div>
+    <div className="page-fit overview-page">
       <div className="page-header">
         <div className="page-title">
           <span style={{ fontSize: 32, marginRight: 10 }}>📊</span>
@@ -104,7 +104,7 @@ export default function Overview() {
 
       {/* 图表和最近记录 */}
       <div className="overview-bottom-grid">
-        <div className="card overview-panel">
+        <div className="card overview-panel overview-panel-chart">
           <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 18 }}>📈</span> 本周每日时长
           </div>
@@ -179,7 +179,7 @@ export default function Overview() {
           </div>
         </div>
 
-        <div className="card overview-panel">
+        <div className="card overview-panel overview-panel-recent">
           <div className="section-label" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 18 }}>🕐</span> 最近游玩
           </div>
@@ -191,21 +191,21 @@ export default function Overview() {
               </div>
             )
             : (
-              <div className="overview-recent-scroll">
+              <div className="overview-recent-list">
                 {recentSessions.map((s) => {
                   const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
                   return (
                     <div key={s.id} style={{ 
                       display: 'flex', alignItems: 'center', gap: 14, 
-                      padding: '12px 0', 
+                      padding: '10px 0', 
                       borderBottom: '0.5px solid var(--border-light)' 
                     }}>
                       <div className="game-avatar" style={{ background: colors.bg, color: colors.color }}>
                         {gameInitial(s.game_name)}
                       </div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
-                        <div style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div className="record-item-title" style={{ fontSize: 15, fontWeight: 600 }}>{s.game_name}</div>
+                        <div className="record-item-sub" style={{ fontSize: 13, color: 'var(--text-tertiary)', marginTop: 3 }}>
                           {s.played_at} · <span className={`badge badge-platform`}>
                             {PLATFORM_ICONS[s.platform_code] && (
                               <span 

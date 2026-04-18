@@ -465,6 +465,136 @@ input:focus, select:focus, textarea:focus {
   min-height: 100%;
 }
 
+.main-wrapper.no-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.main-wrapper.no-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.main-wrapper.no-scroll .main {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 1.8vw, 1.75rem) clamp(1rem, 2.2vw, 2.25rem);
+}
+.main-wrapper.no-scroll .page-header {
+  margin-bottom: clamp(0.75rem, 1.8vh, 1.25rem);
+}
+.page-fit {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-wrapper.no-scroll .metric-grid {
+  margin-bottom: clamp(0.9rem, 2vh, 1.4rem);
+}
+.main-wrapper.no-scroll .metric-card {
+  padding: clamp(0.85rem, 1.6vw, 1.15rem);
+}
+.main-wrapper.no-scroll .metric-value {
+  font-size: clamp(22px, 2.4vw, 30px);
+  margin: 8px 0 3px;
+}
+.main-wrapper.no-scroll .card {
+  padding: clamp(1rem, 1.8vw, 1.25rem);
+}
+.main-wrapper.no-scroll .record-item {
+  padding: 10px 0;
+}
+
+.main-wrapper.no-scroll .overview-bottom-grid {
+  flex: 1;
+  min-height: 0;
+}
+.main-wrapper.no-scroll .overview-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.main-wrapper.no-scroll .overview-chart-wrap {
+  height: clamp(120px, 20vh, 220px);
+}
+.main-wrapper.no-scroll .overview-recent-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  column-gap: 18px;
+}
+.main-wrapper.no-scroll .overview-recent-list > div {
+  min-width: 0;
+}
+.main-wrapper.no-scroll .overview-recent-list > div:nth-last-child(-n+2) {
+  border-bottom: none !important;
+}
+
+.main-wrapper.no-scroll .stats-layout {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+.main-wrapper.no-scroll .stats-layout > .card {
+  min-height: 0;
+}
+.main-wrapper.no-scroll .stats-layout > .card:first-child {
+  display: flex;
+  flex-direction: column;
+}
+.main-wrapper.no-scroll .stats-layout > .card:last-child {
+  display: flex;
+  flex-direction: column;
+}
+.main-wrapper.no-scroll .stats-recent-list {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  column-gap: 18px;
+}
+
+.main-wrapper.no-scroll .calendar-layout {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+.main-wrapper.no-scroll .calendar-month-card,
+.main-wrapper.no-scroll .calendar-day-card {
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.cal-cell {
+  padding: clamp(6px, 0.9vh, 10px) 6px;
+  min-height: clamp(56px, 8.2vh, 72px);
+}
+.calendar-total {
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 700;
+  color: var(--primary-color);
+}
+.main-wrapper.no-scroll .calendar-day-list {
+  flex: 1;
+  min-height: 0;
+}
+
+.record-item-title {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.record-item-sub {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ============================================
    页面头部
    ============================================ */

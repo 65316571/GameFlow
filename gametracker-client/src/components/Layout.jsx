@@ -17,7 +17,7 @@ export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const location = useLocation()
   const isTimerRoute = location.pathname === '/timer'
-  const isDesktopZoomRoute = !settings.isMobileView && (
+  const isNoScrollRoute = !settings.isMobileView && (
     location.pathname === '/' ||
     location.pathname === '/calendar' ||
     location.pathname === '/stats'
@@ -185,7 +185,7 @@ export default function Layout({ children }) {
         className={
           'main-wrapper' +
           (isTimerRoute ? ' is-timer' : '') +
-          (isDesktopZoomRoute ? ' desktop-zoom-120' : '')
+          (isNoScrollRoute ? ' no-scroll' : '')
         }
         style={{ 
           marginLeft: settings.isMobileView ? 0 : sidebarWidth,

@@ -55,7 +55,7 @@ export default function Calendar() {
   const today = dayjs().format('YYYY-MM-DD')
 
   return (
-    <div>
+    <div className="page-fit calendar-page">
       <div className="page-header">
         <div className="page-title">
           <span style={{ fontSize: 32, marginRight: 10 }}>📅</span>
@@ -64,10 +64,10 @@ export default function Calendar() {
         <div className="page-subtitle">查看每天的游玩时长 🎯</div>
       </div>
 
-      <div className="calendar-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 20, alignItems: 'start' }}>
+      <div className="calendar-layout" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,360px)', gap: 20, alignItems: 'stretch' }}>
 
         {/* 日历 */}
-        <div className="card" style={{ minHeight: 520 }}>
+        <div className="card calendar-month-card">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
             <span style={{ fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 22 }}>📆</span>
@@ -111,14 +111,15 @@ export default function Calendar() {
               return (
                 <div key={day}
                   onClick={() => setSelectedDate(dateStr)}
+                  className="cal-cell"
                   style={{
-                    borderRadius: 12, padding: '10px 6px', minHeight: 72,
+                    borderRadius: 12,
                     cursor: 'pointer', display: 'flex', flexDirection: 'column',
                     alignItems: 'center', gap: 4,
                     border: `2px solid ${isSel ? 'var(--primary-border)' : 'transparent'}`,
                     background: isSel ? 'var(--primary-light)' : 'transparent',
                     transition: 'all 0.15s ease',
-                    transform: isSel ? 'scale(1.05)' : 'scale(1)',
+                    transform: isSel ? 'scale(1.03)' : 'scale(1)',
                   }}
                 >
                   <div style={{
@@ -159,7 +160,7 @@ export default function Calendar() {
         </div>
 
         {/* 日期详情 */}
-        <div className="card calendar-day-card" style={{ minHeight: 520 }}>
+        <div className="card calendar-day-card">
           {!selectedDate
             ? (
               <div className="empty-state">
@@ -203,12 +204,12 @@ export default function Calendar() {
                             display: 'flex', alignItems: 'baseline', gap: 8, 
                             padding: '0 0 1.25rem', borderBottom: '0.5px solid var(--border-color)', marginBottom: '1.25rem' 
                           }}>
-                            <span style={{ fontSize: 36, fontWeight: 700, color: 'var(--primary-color)' }}>
+                            <span className="calendar-total">
                               {fmtDuration(totalSec)}
                             </span>
                             <span style={{ fontSize: 15, color: 'var(--text-tertiary)' }}>今日总时长 ⏱️</span>
                           </div>
-                          <div className="calendar-day-scroll">
+                          <div className="calendar-day-list">
                             {sessions.map(s => {
                               const colors = GENRE_AVATAR_COLORS[s.genre_code] || GENRE_AVATAR_COLORS.OTHER
                               const pct = totalSec > 0 ? Math.round(s.duration_seconds / totalSec * 100) : 0
@@ -217,8 +218,8 @@ export default function Calendar() {
                                   <div className="game-avatar" style={{ background: colors.bg, color: colors.color, width: 48, height: 48, fontSize: 15 }}>
                                     {gameInitial(s.game_name)}
                                   </div>
-                                  <div style={{ flex: 1 }}>
-                                    <div style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                  <div style={{ flex: 1, minWidth: 0 }}>
+                                    <div className="record-item-title" style={{ fontSize: 15, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
                                       {s.game_name}
                                       {PLATFORM_ICONS[s.platform_code] && (
                                         <span 
