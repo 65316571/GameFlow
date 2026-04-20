@@ -25,7 +25,7 @@ export default function Layout({ children }) {
   
   // 沉浸模式下的游戏名称
   const immersiveGame = settings.immersiveMode ? 
-    JSON.parse(localStorage.getItem('GameTracker-games') || '[]').find(g => g.id === settings.immersiveGameId)?.name 
+    JSON.parse(localStorage.getItem('GameFlow-games') || '[]').find(g => g.id === settings.immersiveGameId)?.name 
     : null
 
   // 计算侧边栏宽度
@@ -60,8 +60,8 @@ export default function Layout({ children }) {
         <header className="mobile-topbar">
           <div className="mobile-topbar-inner">
             <div className="mobile-brand">
-              <img src="/logo.jpg" alt="GameTracker" className="mobile-brand-logo" />
-              <span className="mobile-brand-text">GameTracker</span>
+              <img src="/logo.jpg" alt="GameFlow" className="mobile-brand-logo" />
+              <span className="mobile-brand-text">GameFlow</span>
             </div>
             <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <button 
@@ -135,8 +135,8 @@ export default function Layout({ children }) {
           }}
         >
           <div className="sidebar-logo">
-            <img src="/logo.jpg" alt="GameTracker" className="sidebar-logo-img" />
-            {!settings.sidebarCollapsed && <span className="sidebar-logo-text">GameTracker</span>}
+            <img src="/logo.jpg" alt="GameFlow" className="sidebar-logo-img" />
+            {!settings.sidebarCollapsed && <span className="sidebar-logo-text">GameFlow</span>}
           </div>
           
           <nav className="sidebar-nav">

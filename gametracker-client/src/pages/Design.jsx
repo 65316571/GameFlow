@@ -270,7 +270,7 @@ export default function Design() {
               className="btn btn-danger"
               onClick={() => {
                 if (confirm('确定要重置所有设置吗？')) {
-                  localStorage.removeItem('GameTracker-settings')
+                  localStorage.removeItem('GameFlow-settings')
                   window.location.reload()
                 }
               }}

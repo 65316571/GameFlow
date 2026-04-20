@@ -196,7 +196,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════════════════════╗
-║          GameTracker Server is running!                ║
+║          GameFlow Server is running!                   ║
 ╠════════════════════════════════════════════════════════╣
 ║  Port:    ${PORT.toString().padEnd(45)}║
 ║  API:     http://localhost:${PORT}/api${' '.repeat(25)}║

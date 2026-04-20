@@ -176,17 +176,16 @@ const initDatabase = async () => {
       await query(`
         INSERT INTO platforms (code, name, description, sort_order) VALUES
         ('NS', 'Nintendo Switch', '任天堂出品的混合型游戏主机', 1),
-        ('PS4', 'PlayStation 4', '索尼出品的游戏主机', 2),
-        ('PC', '电脑游戏', '除去Steam平台的电脑游戏（拳头、暴雪等厂商）', 3),
+        ('PS', 'PlayStation', '索尼出品的游戏主机', 2),
+        ('PC', '电脑游戏', 'Windows 电脑游戏', 3),
         ('Steam', 'Steam 平台', 'Steam 游戏平台 (Windows/Mac/Linux)', 4),
-        ('Xbox', 'Xbox Series X/S', '微软出品的游戏主机', 5),
-        ('APP', '手机游戏', 'iOS/Android 移动设备', 6)
+        ('Xbox', 'Xbox Series X/S', '微软出品的游戏主机', 5)
       `)
       console.log('✓ platforms data inserted')
     }
 
     // 插入示例游戏数据
-    // 平台优先级: NS > PS4 > PC > Steam > Xbox > APP > Web
+    // 平台优先级: NS > PS > PC > Steam > Xbox
     // PS4 为独占游戏
     const gameCount = await query('SELECT COUNT(*) FROM games')
     if (parseInt(gameCount.rows[0].count) === 0) {
@@ -306,11 +305,11 @@ const initDatabase = async () => {
         ),
 
         -- ============================================
-        -- PS4 独占游戏 (platform_id = 2)
+        -- PS 独占游戏 (platform_id = 2)
         -- ============================================
         ('战神：诸神黄昏',
           (SELECT id FROM genres WHERE code = 'ACT'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Santa Monica Studio',
           'https://www.playstation.com/',
           NULL,
@@ -319,7 +318,7 @@ const initDatabase = async () => {
         ),
         ('神秘海域4',
           (SELECT id FROM genres WHERE code = 'ADV'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Naughty Dog',
           'https://www.playstation.com/',
           NULL,
@@ -328,7 +327,7 @@ const initDatabase = async () => {
         ),
         ('GT赛车7',
           (SELECT id FROM genres WHERE code = 'RAC'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Polyphony',
           'https://www.gran-turismo.com/',
           NULL,
@@ -337,7 +336,7 @@ const initDatabase = async () => {
         ),
         ('最后生还者 第二部',
           (SELECT id FROM genres WHERE code = 'ADV'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Naughty Dog',
           'https://www.playstation.com/',
           NULL,
@@ -346,7 +345,7 @@ const initDatabase = async () => {
         ),
         ('对马岛之魂',
           (SELECT id FROM genres WHERE code = 'ACT'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Sucker Punch',
           'https://www.playstation.com/',
           NULL,
@@ -355,7 +354,7 @@ const initDatabase = async () => {
         ),
         ('血源诅咒',
           (SELECT id FROM genres WHERE code = 'ARPG'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'FromSoftware',
           'https://www.playstation.com/',
           NULL,
@@ -364,7 +363,7 @@ const initDatabase = async () => {
         ),
         ('地平线：西之绝境',
           (SELECT id FROM genres WHERE code = 'ARPG'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Guerrilla',
           'https://www.playstation.com/',
           NULL,
@@ -373,7 +372,7 @@ const initDatabase = async () => {
         ),
         ('漫威蜘蛛侠2',
           (SELECT id FROM genres WHERE code = 'ACT'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Insomniac',
           'https://www.playstation.com/',
           NULL,
@@ -382,7 +381,7 @@ const initDatabase = async () => {
         ),
         ('死亡搁浅',
           (SELECT id FROM genres WHERE code = 'ADV'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Kojima Productions',
           'https://www.playstation.com/',
           NULL,
@@ -391,7 +390,7 @@ const initDatabase = async () => {
         ),
         ('恶魔之魂 重制版',
           (SELECT id FROM genres WHERE code = 'ARPG'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Bluepoint',
           'https://www.playstation.com/',
           NULL,
@@ -400,7 +399,7 @@ const initDatabase = async () => {
         ),
         ('瑞奇与叮当：时空跳转',
           (SELECT id FROM genres WHERE code = 'ACT'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Insomniac',
           'https://www.playstation.com/',
           NULL,
@@ -409,7 +408,7 @@ const initDatabase = async () => {
         ),
         ('麻布仔大冒险',
           (SELECT id FROM genres WHERE code = 'ADV'),
-          (SELECT id FROM platforms WHERE code = 'PS4'),
+          (SELECT id FROM platforms WHERE code = 'PS'),
           'Sumo Digital',
           'https://www.playstation.com/',
           NULL,
@@ -983,7 +982,7 @@ const initDatabase = async () => {
         -- ============================================
         ('王者荣耀',
           (SELECT id FROM genres WHERE code = 'MOBA'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '腾讯',
           'https://pvp.qq.com/',
           NULL,
@@ -992,7 +991,7 @@ const initDatabase = async () => {
         ),
         ('原神',
           (SELECT id FROM genres WHERE code = 'RPG'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '米哈游',
           'https://ys.mihoyo.com/',
           NULL,
@@ -1001,7 +1000,7 @@ const initDatabase = async () => {
         ),
         ('纪念碑谷2',
           (SELECT id FROM genres WHERE code = 'PUZ'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           'ustwo games',
           'https://www.monumentvalleygame.com/',
           NULL,
@@ -1010,7 +1009,7 @@ const initDatabase = async () => {
         ),
         ('和平精英',
           (SELECT id FROM genres WHERE code = 'TPS'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '腾讯',
           'https://gp.qq.com/',
           NULL,
@@ -1019,7 +1018,7 @@ const initDatabase = async () => {
         ),
         ('阴阳师',
           (SELECT id FROM genres WHERE code = 'RPG'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '网易',
           'https://yys.163.com/',
           NULL,
@@ -1028,7 +1027,7 @@ const initDatabase = async () => {
         ),
         ('明日方舟',
           (SELECT id FROM genres WHERE code = 'SLG'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '鹰角网络',
           'https://ak.hypergryph.com/',
           NULL,
@@ -1037,7 +1036,7 @@ const initDatabase = async () => {
         ),
         ('崩坏：星穹铁道',
           (SELECT id FROM genres WHERE code = 'RPG'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '米哈游',
           'https://sr.mihoyo.com/',
           NULL,
@@ -1046,7 +1045,7 @@ const initDatabase = async () => {
         ),
         ('蛋仔派对',
           (SELECT id FROM genres WHERE code = 'OTHER'),
-          (SELECT id FROM platforms WHERE code = 'APP'),
+          (SELECT id FROM platforms WHERE code = 'PC'),
           '网易',
           'https://party.163.com/',
           NULL,

@@ -28,11 +28,10 @@ const GENRE_ICONS = {
 
 const PLATFORM_EMOJIS = {
   'NS': '🎮',
-  'PS4': '🕹️',
+  'PS': '🕹️',
   'Xbox': '❎',
   'Steam': '♨️',
-  'APP': '📱',
-  // 'Web': '🌐',  // 已合并到 PC
+  'PC': '💻',
 }
 
 function GameModal({ game, genres, platforms, onClose, onSave }) {

@@ -21,16 +21,14 @@ export const GENRE_LABELS = {
   OTHER: '其他',
 }
 
-export const PLATFORM_CODES = ['NS', 'PS4', 'Xbox', 'Steam', 'APP']
+export const PLATFORM_CODES = ['NS', 'PS', 'Xbox', 'Steam', 'PC']
 
 export const PLATFORM_ICONS = {
   'NS': '/ns.svg',
-  'PS4': '/ps.svg',
+  'PS': '/ps.svg',
   'Xbox': '/xbox.svg',
   'Steam': '/steam.svg',
-  // 'Web': '/web.svg',  // 已合并到 PC
-  'APP': '/phone.svg',
-  // 'Web': '/web.svg',  // 已合并到 PC
+  'PC': '/windows.svg',
 }
 
 export const GENRE_CODES = ['RPG', 'ARPG', 'MMORPG', 'FPS', 'TPS', 'ACT', 'MOBA', 'RTS', 'SLG', 'SIM', 'RAC', 'SPG', 'FTG', 'ADV', 'PUZ', 'Roguelike', 'Horror', 'Sandbox', 'Rhythm', 'OTHER']

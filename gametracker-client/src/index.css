@@ -71,6 +71,7 @@
   /* 平台特定颜色 */
   --plat-ns: #e60012;
   --plat-ps: #003791;
+  --plat-pc: #0078d4;
   --plat-xbox: #107c10;
   --plat-steam: #171a21;
   --plat-app: #f5a623;
@@ -150,6 +151,7 @@
   /* 平台特定颜色 - 深色模式 */
   --plat-ns: #ff3e3e;
   --plat-ps: #3e8dff;
+  --plat-pc: #4cc2ff;
   --plat-xbox: #27d427;
   --plat-steam: #f0f0f0;
   --plat-app: #ffcc00;
@@ -1169,11 +1171,10 @@ input:focus, select:focus, textarea:focus {
 
 /* 平台特定的颜色应用 */
 .platform-icon[data-platform="NS"]    { background-color: var(--plat-ns); }
-.platform-icon[data-platform="PS4"]   { background-color: var(--plat-ps); }
+.platform-icon[data-platform="PS"]    { background-color: var(--plat-ps); }
 .platform-icon[data-platform="Xbox"]  { background-color: var(--plat-xbox); }
 .platform-icon[data-platform="Steam"] { background-color: var(--plat-steam); }
-.platform-icon[data-platform="APP"]   { background-color: var(--plat-app); }
-/* .platform-icon[data-platform="Web"] { background-color: var(--plat-web); }  // 已合并到 PC */
+.platform-icon[data-platform="PC"]    { background-color: var(--plat-pc); }
 
 .badge:hover .platform-icon {
   transform: scale(1.1);
