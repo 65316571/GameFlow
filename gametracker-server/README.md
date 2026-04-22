@@ -16,11 +16,11 @@ npm install
 编辑 `.env` 文件：
 
 ```env
-DB_HOST=47.100.230.33
+DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=GameTracker
-DB_USER=hao
-DB_PASSWORD=@Aa65316571
+DB_NAME=gametracker
+DB_USER=postgres
+DB_PASSWORD=your_password
 PORT=3003
 ```
 
